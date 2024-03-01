@@ -5,9 +5,9 @@ class_name EdgeComponent
 
 
 enum EDGE_SIDE {TOP, LEFT, RIGHT, BOTTOM}
-#@export var assigned_side : EDGE_SIDE
+@export var edge_side : EDGE_SIDE
 
-var edge_side : int
+#var edge_side : int
 
 # Rectangle specs (4, 26) (26, 4) and pos of (-16, 0) (0, -16)
 
@@ -29,7 +29,7 @@ func create_edge(side : int):
 	var new_edge : CollisionShape2D
 	var new_shape = RectangleShape2D.new()
 	
-	edge_side = side
+	#edge_side = side
 	
 	new_edge = CollisionShape2D.new()
 	

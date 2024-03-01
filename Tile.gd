@@ -6,13 +6,17 @@ var draggableComponent : DraggableComponent
 var clicked_at : Vector2
 var vector_to_center : Vector2
 
+var local_position : Vector2i
+var parent_tile_group : Node
+
 signal start_drag()
 signal end_drag()
-signal attempt_connection(area)
+signal attempt_connection(area, triggered_side)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	draggableComponent = $DraggableComponent
+	parent_tile_group = get_parent()
 	return
 	var e : EdgeComponent
 	e = EdgeComponent.new()
@@ -84,30 +88,61 @@ func highlight(toggle : bool):
 	
 
 
+func set_edge_collision(side : EdgeComponent.EDGE_SIDE, set_value : bool):
+	print("set " + str(side) + " to " + str(set_value))
+	match side:
+		EdgeComponent.EDGE_SIDE.LEFT:
+			$LeftEdgeComponent/CollisionShape2D.disabled = set_value
+		EdgeComponent.EDGE_SIDE.TOP:
+			$TopEdgeComponent/CollisionShape2D.disabled = set_value
+		EdgeComponent.EDGE_SIDE.RIGHT:
+			$RightEdgeComponent/CollisionShape2D.disabled = set_value
+		EdgeComponent.EDGE_SIDE.BOTTOM:
+			$BottomEdgeComponent/CollisionShape2D.disabled = set_value
+
+func turn_off_edges():
+	$LeftEdgeComponent/CollisionShape2D.disabled = true
+	$TopEdgeComponent/CollisionShape2D.disabled = true
+	$RightEdgeComponent/CollisionShape2D.disabled = true
+	$BottomEdgeComponent/CollisionShape2D.disabled = true
+
+
 # TODO: make these much more clean holy moly
 func _on_left_edge_component_area_entered(area):
-	if draggableComponent.being_dragged:
-		print("left")
-		attempt_connection.emit(area.get_parent().get_parent())
+	print("left")
+	if area.get_collision_layer_value(3) and\
+		draggableComponent.being_dragged and\
+		area.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
+			
+		attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.LEFT)
 	pass # Replace with function body.
 
 
 func _on_top_edge_component_area_entered(area):
-	if draggableComponent.being_dragged:
-		print("top")
-		attempt_connection.emit(area.get_parent().get_parent())
+	print("top")
+	if area.get_collision_layer_value(3) and\
+		draggableComponent.being_dragged and\
+		area.edge_side == EdgeComponent.EDGE_SIDE.BOTTOM:
+			
+		attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.TOP)
 	pass # Replace with function body.
 
 
 func _on_right_edge_component_area_entered(area):
-	if draggableComponent.being_dragged:
-		print("right")
-		attempt_connection.emit(area.get_parent().get_parent())
+	print("right")
+	if area.get_collision_layer_value(3) and\
+		draggableComponent.being_dragged and\
+		area.edge_side == EdgeComponent.EDGE_SIDE.LEFT:
+			
+		attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.RIGHT)
 	pass # Replace with function body.
 
 
 func _on_bottom_edge_component_area_entered(area):
-	if draggableComponent.being_dragged:
-		print("bottom")
-		attempt_connection.emit(area.get_parent().get_parent())
+	print("bottom")
+	if area.get_collision_layer_value(3) and\
+		draggableComponent.being_dragged and\
+		area.edge_side == EdgeComponent.EDGE_SIDE.TOP:
+			
+		attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.BOTTOM)
 	pass # Replace with function body.

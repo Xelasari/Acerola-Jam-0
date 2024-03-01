@@ -11,7 +11,12 @@ func _ready():
 	add_child(tgs)
 	
 	tgs = tileGroupScene.instantiate()
-	tgs.position = Vector2(640, 640)
+	tgs.position = Vector2(320, 320)
+	tgs.create_tile_at(Vector2i(0, 0))
+	add_child(tgs)
+	
+	tgs = tileGroupScene.instantiate()
+	tgs.position = Vector2(0, 320)
 	tgs.create_tile_at(Vector2i(0, 0))
 	add_child(tgs)
 	pass # Replace with function body.

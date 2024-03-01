@@ -35,13 +35,18 @@ script = ExtResource("2_u3k8y")
 shape = SubResource("RectangleShape2D_bqg63")
 
 [node name="LeftEdgeComponent" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("3_bdptn")
+edge_side = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftEdgeComponent"]
 position = Vector2(-18, 0)
 shape = SubResource("RectangleShape2D_w3k8e")
 
 [node name="TopEdgeComponent" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("3_bdptn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopEdgeComponent"]
@@ -49,14 +54,20 @@ position = Vector2(0, -18)
 shape = SubResource("RectangleShape2D_qtebb")
 
 [node name="RightEdgeComponent" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("3_bdptn")
+edge_side = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightEdgeComponent"]
 position = Vector2(18, 0)
 shape = SubResource("RectangleShape2D_6o0o2")
 
 [node name="BottomEdgeComponent" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("3_bdptn")
+edge_side = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomEdgeComponent"]
 position = Vector2(0, 18)
