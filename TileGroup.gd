@@ -107,7 +107,7 @@ func connect_tile_group(tile : Node, triggered_edge : EdgeComponent.EDGE_SIDE):
 	#tile.set_edge_collision((triggered_edge + 2) % 4, false)
 	#test[0].set_edge_collision(triggered_edge, false)
 	
-	tile.call_deferred("set_edge_collision", (triggered_edge + 2) % 4, false)
+	tile.call_deferred("set_edge_collision", (triggered_edge + 2) % 3, false)
 	test[0].call_deferred("set_edge_collision", triggered_edge, false)
 	
 	
@@ -119,3 +119,5 @@ func connect_tile_group(tile : Node, triggered_edge : EdgeComponent.EDGE_SIDE):
 	print("connect")
 	connect_cooldown = 3
 	pass
+	
+

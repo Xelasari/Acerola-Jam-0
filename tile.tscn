@@ -38,7 +38,7 @@ shape = SubResource("RectangleShape2D_bqg63")
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("3_bdptn")
-edge_side = 1
+edge_side = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftEdgeComponent"]
 position = Vector2(-18, 0)
@@ -57,7 +57,7 @@ shape = SubResource("RectangleShape2D_qtebb")
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("3_bdptn")
-edge_side = 2
+edge_side = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightEdgeComponent"]
 position = Vector2(18, 0)
@@ -67,11 +67,19 @@ shape = SubResource("RectangleShape2D_6o0o2")
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("3_bdptn")
-edge_side = 3
+edge_side = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomEdgeComponent"]
 position = Vector2(0, 18)
 shape = SubResource("RectangleShape2D_fvpfp")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -20.0
+offset_top = -12.0
+offset_right = 20.0
+offset_bottom = 11.0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="input_event" from="DraggableComponent" to="." method="_on_draggable_component_input_event"]
 [connection signal="mouse_entered" from="DraggableComponent" to="." method="_on_draggable_component_mouse_entered"]

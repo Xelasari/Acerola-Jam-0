@@ -9,14 +9,19 @@ var vector_to_center : Vector2
 var local_position : Vector2i
 var parent_tile_group : Node
 
+# This is used to move all tiles attached to
+var tiles_connected_to : Array
+
 signal start_drag()
 signal end_drag()
 signal attempt_connection(area, triggered_side)
+signal connect_two_tiles(tile1, tile2)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	draggableComponent = $DraggableComponent
 	parent_tile_group = get_parent()
+	tiles_connected_to.append(self)
 	return
 	var e : EdgeComponent
 	e = EdgeComponent.new()
@@ -45,12 +50,21 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	#if draggableComponent.being_dragged:
-	#	position = get_global_mouse_position() - vector_to_center
+func _process(delta):		
+	$Label.text = str(local_position)
+	if draggableComponent.being_dragged:
+		var new_pos = get_global_mouse_position() - vector_to_center
+		var delta_pos = new_pos - position
+		position = get_global_mouse_position() - vector_to_center
+		propogate_new_position(delta_pos)
 	
 	
 	pass
+
+func propogate_new_position(delta_pos):
+	for t in tiles_connected_to:
+		if t == self: continue
+		t.position += delta_pos
 
 
 func _on_draggable_component_mouse_entered():
@@ -88,7 +102,7 @@ func highlight(toggle : bool):
 	
 
 
-func set_edge_collision(side : EdgeComponent.EDGE_SIDE, set_value : bool):
+func disable_edge_collision(side : EdgeComponent.EDGE_SIDE, set_value : bool):
 	print("set " + str(side) + " to " + str(set_value))
 	match side:
 		EdgeComponent.EDGE_SIDE.LEFT:
@@ -109,40 +123,48 @@ func turn_off_edges():
 
 # TODO: make these much more clean holy moly
 func _on_left_edge_component_area_entered(area):
-	print("left")
+	#print("left")
+	
 	if area.get_collision_layer_value(3) and\
-		draggableComponent.being_dragged and\
+		#draggableComponent.being_dragged and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
-			
-		attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.LEFT)
+		
+		connect_two_tiles.emit(self, area.get_parent(), EdgeComponent.EDGE_SIDE.LEFT)	
+		#attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.LEFT)
 	pass # Replace with function body.
 
 
 func _on_top_edge_component_area_entered(area):
-	print("top")
+	#print("top")
+	
 	if area.get_collision_layer_value(3) and\
-		draggableComponent.being_dragged and\
+		#draggableComponent.being_dragged and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.BOTTOM:
-			
-		attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.TOP)
+		
+		connect_two_tiles.emit(self, area.get_parent(), EdgeComponent.EDGE_SIDE.TOP)	
+		#attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.TOP)
 	pass # Replace with function body.
 
 
 func _on_right_edge_component_area_entered(area):
-	print("right")
+	#print("right")
+	return
 	if area.get_collision_layer_value(3) and\
-		draggableComponent.being_dragged and\
+		#draggableComponent.being_dragged and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.LEFT:
-			
-		attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.RIGHT)
+		
+		connect_two_tiles.emit(self, area.get_parent(), EdgeComponent.EDGE_SIDE.RIGHT)	
+		#attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.RIGHT)
 	pass # Replace with function body.
 
 
 func _on_bottom_edge_component_area_entered(area):
-	print("bottom")
+	#print("bottom")
+	return
 	if area.get_collision_layer_value(3) and\
-		draggableComponent.being_dragged and\
+		#draggableComponent.being_dragged and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.TOP:
 			
-		attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.BOTTOM)
+		connect_two_tiles.emit(self, area.get_parent(), EdgeComponent.EDGE_SIDE.BOTTOM)
+		#attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.BOTTOM)
 	pass # Replace with function body.

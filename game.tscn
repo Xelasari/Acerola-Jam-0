@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://game.gd" id="1_koi76"]
 [ext_resource type="Texture2D" uid="uid://ccub31pwjydi" path="res://assets/checker_tile.png" id="1_sgc4s"]
 [ext_resource type="PackedScene" uid="uid://cv4h0203et3ea" path="res://tile_group.tscn" id="2_ppq8d"]
+[ext_resource type="PackedScene" uid="uid://clfhv0k3obo7t" path="res://tile_manager.tscn" id="3_0lihf"]
 [ext_resource type="PackedScene" uid="uid://c1no6g63ae2al" path="res://player.tscn" id="3_3spd3"]
 [ext_resource type="Texture2D" uid="uid://doeif5083xa6g" path="res://icon.svg" id="4_v7hey"]
-[ext_resource type="PackedScene" uid="uid://cdweu08hnlext" path="res://tile.tscn" id="6_k3p3t"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a0w7k"]
 texture = ExtResource("1_sgc4s")
@@ -22,6 +22,7 @@ size = Vector2(4, 26)
 [node name="Game" type="Node2D"]
 script = ExtResource("1_koi76")
 tileGroupScene = ExtResource("2_ppq8d")
+tileManager = ExtResource("3_0lihf")
 
 [node name="TileMap" type="TileMap" parent="."]
 texture_filter = 1
@@ -44,9 +45,3 @@ texture = ExtResource("4_v7hey")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tile/Edge"]
 position = Vector2(-16, 0)
 shape = SubResource("RectangleShape2D_thcjo")
-
-[node name="TileGroup" type="Node2D" parent="."]
-
-[node name="Tile2" parent="." instance=ExtResource("6_k3p3t")]
-
-[node name="TileGroup2" type="Node2D" parent="."]

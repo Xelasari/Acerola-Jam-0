@@ -4,7 +4,7 @@ extends Area2D
 class_name EdgeComponent
 
 
-enum EDGE_SIDE {TOP, LEFT, RIGHT, BOTTOM}
+enum EDGE_SIDE {TOP, RIGHT, BOTTOM, LEFT}
 @export var edge_side : EDGE_SIDE
 
 #var edge_side : int
