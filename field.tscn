@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdw0uokptclct"]
+
+[ext_resource type="Script" path="res://field.gd" id="1_w67ew"]
+[ext_resource type="Shader" path="res://field.gdshader" id="2_a2q5i"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_0rk6q"]
+viewport_path = NodePath("SubViewportContainer/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_57da4"]
+resource_local_to_scene = true
+shader = ExtResource("2_a2q5i")
+shader_parameter/distortionTexture = SubResource("ViewportTexture_0rk6q")
+
+[node name="Field" type="Area2D"]
+collision_layer = 0
+script = ExtResource("1_w67ew")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_right = 32.0
+offset_bottom = 32.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+size = Vector2i(32, 32)
+render_target_update_mode = 4
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+material = SubResource("ShaderMaterial_57da4")
+polygon = PackedVector2Array(0, 0, 32, 0, 32, 32, 0, 32)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+centered = false
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

@@ -1,0 +1,71 @@
+[gd_scene load_steps=10 format=3 uid="uid://cdweu08hnlext"]
+
+[ext_resource type="Script" path="res://Tile.gd" id="1_fomhf"]
+[ext_resource type="Texture2D" uid="uid://ccub31pwjydi" path="res://assets/checker_tile.png" id="2_aqyy7"]
+[ext_resource type="Script" path="res://draggable_component.gd" id="2_u3k8y"]
+[ext_resource type="Script" path="res://edge_component.gd" id="3_bdptn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bqg63"]
+size = Vector2(28, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w3k8e"]
+size = Vector2(4, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qtebb"]
+size = Vector2(26, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6o0o2"]
+size = Vector2(4, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fvpfp"]
+size = Vector2(26, 4)
+
+[node name="Tile" type="Node2D"]
+position = Vector2(92, 79)
+script = ExtResource("1_fomhf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_aqyy7")
+
+[node name="DraggableComponent" type="Area2D" parent="."]
+script = ExtResource("2_u3k8y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DraggableComponent"]
+shape = SubResource("RectangleShape2D_bqg63")
+
+[node name="LeftEdgeComponent" type="Area2D" parent="."]
+script = ExtResource("3_bdptn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftEdgeComponent"]
+position = Vector2(-18, 0)
+shape = SubResource("RectangleShape2D_w3k8e")
+
+[node name="TopEdgeComponent" type="Area2D" parent="."]
+script = ExtResource("3_bdptn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopEdgeComponent"]
+position = Vector2(0, -18)
+shape = SubResource("RectangleShape2D_qtebb")
+
+[node name="RightEdgeComponent" type="Area2D" parent="."]
+script = ExtResource("3_bdptn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightEdgeComponent"]
+position = Vector2(18, 0)
+shape = SubResource("RectangleShape2D_6o0o2")
+
+[node name="BottomEdgeComponent" type="Area2D" parent="."]
+script = ExtResource("3_bdptn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomEdgeComponent"]
+position = Vector2(0, 18)
+shape = SubResource("RectangleShape2D_fvpfp")
+
+[connection signal="input_event" from="DraggableComponent" to="." method="_on_draggable_component_input_event"]
+[connection signal="mouse_entered" from="DraggableComponent" to="." method="_on_draggable_component_mouse_entered"]
+[connection signal="mouse_exited" from="DraggableComponent" to="." method="_on_draggable_component_mouse_exited"]
+[connection signal="area_entered" from="LeftEdgeComponent" to="." method="_on_left_edge_component_area_entered"]
+[connection signal="area_entered" from="TopEdgeComponent" to="." method="_on_top_edge_component_area_entered"]
+[connection signal="area_entered" from="RightEdgeComponent" to="." method="_on_right_edge_component_area_entered"]
+[connection signal="area_entered" from="BottomEdgeComponent" to="." method="_on_bottom_edge_component_area_entered"]

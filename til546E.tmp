@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdweu08hnlext"]
+
+[ext_resource type="Script" path="res://Tile.gd" id="1_fomhf"]
+[ext_resource type="Texture2D" uid="uid://ccub31pwjydi" path="res://assets/checker_tile.png" id="2_aqyy7"]
+[ext_resource type="Script" path="res://draggable_component.gd" id="2_u3k8y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bqg63"]
+size = Vector2(28, 28)
+
+[node name="Tile" type="Node2D"]
+position = Vector2(92, 79)
+script = ExtResource("1_fomhf")
+
+[node name="DraggableComponent" type="Area2D" parent="."]
+script = ExtResource("2_u3k8y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DraggableComponent"]
+shape = SubResource("RectangleShape2D_bqg63")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_aqyy7")
