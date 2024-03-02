@@ -59,81 +59,24 @@ func create_tile_at(local_coord) -> Node:
 	return new_tile
 
 func create_map():
-	var map_size : Vector2i = Vector2i(3, 3)
-	var test_map = [[1, 0, 0],
-					[1, 1, 0],
-					[1, 1, 0]]
-	
-	
-	# likely will use a recursive solution to build this map
-	# start at (0, 0) and then check top, right, bottom, left to see what needs to be done
-	# will pass in previous tile to see if next location has a tile that needs to be
-	# connected
-	
-	# previous method did not work, new method
-	
-	# 2 passes
-	# first pass create all the nodes and where they are supposed to be
-	# then second pass, go through created nodes, use where they are supposed to be to attach
-	# new nodes
-	
-	
-	
-	# step through map, as soon as a 1 is found start following it
-	
-	# need to create groups, edges can be fixed by recalculate edges
-	# 
-	
+	var map_size : Vector2i = Vector2i(5, 10)
+	var test_map = [[1, 0, 0, 0, 1],
+					[1, 1, 0, 0, 1],
+					[1, 1, 0, 0, 0],
+					[1, 1, 1, 1, 0],
+					[1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0],
+					[1, 1, 1, 0, 0],
+					[0, 0, 0, 0, 0],
+					[1, 0, 1, 0, 0],
+					[1, 1, 0, 0, 0]]
 	
 	step_through_map(test_map, map_size)
 	
-	
-	
-	
-	
-	return
-	
-	var tile_connecter = []
-	
-	for y in range(map_size.y):
-		for x in range(map_size.x):
-			if test_map[y][x] == 1:
-				var new_tile = tileScene.instantiate()
-				new_tile.position = Vector2i(x, y) * 32
-				new_tile.local_position = Vector2i(0, 0)
-				new_tile.connect("connect_two_tiles", _on_connect_two_tiles)
-				add_child(new_tile)
-	
-	
-	
-	
-	
-	recalculate_edges(tile_connecter[0].tiles_connected_to)
-	return
-	
-	already_checked = []
-	
-	check_next = []
-	
-	process_coord(test_map, map_size, Vector2i(0, 0), null, null)
-	
-	
-	#var new_tile = tileScene.instantiate()
-	#new_tile.position = Vector2(0, 0)
-	#new_tile.local_position = Vector2i(0, 0)
-	#new_tile.connect("connect_two_tiles", _on_connect_two_tiles)
-	#add_child(new_tile)
-	#
-	#var new_tile2 = tileScene.instantiate()
-	#new_tile2.position = Vector2(0, 0)
-	#new_tile2.local_position = Vector2i(0, 0)
-	#new_tile2.connect("connect_two_tiles", _on_connect_two_tiles)
-	#add_child(new_tile2)
-	
-	#_on_connect_two_tiles(new_tile, new_tile2, EdgeComponent.EDGE_SIDE.RIGHT)
-	
+
 func step_through_map(map, map_size : Vector2i):
 	
+	# Set up coordinates to check
 	coords_to_check = []
 	for x in range(map_size.x):
 		for y in range(map_size.y):
@@ -143,22 +86,24 @@ func step_through_map(map, map_size : Vector2i):
 	already_checked = []
 	current_building_group = []
 	
+	# This will loop through the coordinates and create groupings of tiles
 	while !coords_to_check.is_empty():
 		current_building_group = []
-		process_coord2(map, map_size, coords_to_check.pop_front())
 		
-		var i = 0
+		# Once a "1", or tile, is found this will recursively grab all other
+		# tiles in the remaining coords_to_check
+		process_coord(map, map_size, coords_to_check.pop_front())
+		
+		# Ensure that all tiles know their respective group
 		for t in current_building_group:
-			print(i)
-			i += 1
 			t.tiles_connected_to = current_building_group
 		
+		# Reclculate edges and local positions now that the tiles know all
+		# other tiles in their group
 		recalculate_edges(current_building_group)
+		recalculate_local_position(current_building_group)
 	
-	
-	pass
-	
-func process_coord2(map, map_size : Vector2i, coord : Vector2i): #, previous_tile, edge_side):
+func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile, edge_side):
 	if map[coord.y][coord.x] == 0: return
 	if map[coord.y][coord.x] == 1:
 		var tile_ref = create_tile_at(Vector2i(coord.x, coord.y))
@@ -169,55 +114,20 @@ func process_coord2(map, map_size : Vector2i, coord : Vector2i): #, previous_til
 	# Check top
 	if coord.y - 1 > 0 and coords_to_check.has(Vector2i(coord.x, coord.y - 1)):
 		coords_to_check.erase(coord + Vector2i(0, -1))
-		process_coord2(map, map_size, coord + Vector2i(0, -1))
+		process_coord(map, map_size, coord + Vector2i(0, -1))
 	# Check right
 	if coord.x + 1 < map_size.x and coords_to_check.has(Vector2i(coord.x + 1, coord.y)):
 		coords_to_check.erase(coord + Vector2i(1, 0))
-		process_coord2(map, map_size, coord + Vector2i(1, 0))
+		process_coord(map, map_size, coord + Vector2i(1, 0))
 	# Check bottom
 	if coord.y + 1 < map_size.y and coords_to_check.has(Vector2i(coord.x, coord.y + 1)):
 		coords_to_check.erase(coord + Vector2i(0, 1))
-		process_coord2(map, map_size, coord + Vector2i(0, 1))
+		process_coord(map, map_size, coord + Vector2i(0, 1))
 	# Check left
 	if coord.x - 1 > 0 and coords_to_check.has(Vector2i(coord.x - 1, coord.y)):
 		coords_to_check.erase(coord + Vector2i(-1, 0))
-		process_coord2(map, map_size, coord + Vector2i(-1, 0))
+		process_coord(map, map_size, coord + Vector2i(-1, 0))
 	
-	
-func process_coord(map, map_size : Vector2i, coord : Vector2i, previous_tile, edge_side):
-	var new_tile
-	
-	print("Checking coord: " + str(coord))
-	
-	already_checked.append(coord)
-	if map[coord.y][coord.x] == 1:
-		new_tile = tileScene.instantiate()
-		new_tile.position = coord * 32
-		new_tile.local_position = Vector2i(0, 0)
-		new_tile.connect("connect_two_tiles", _on_connect_two_tiles)
-		add_child(new_tile)
-	elif map[coord.x][coord.y] == 0:
-		new_tile = null
-	
-	if previous_tile != null and new_tile != null:
-		print("this should be seen 5 times")
-		_on_connect_two_tiles(previous_tile, new_tile, edge_side)
-		
-	# Check top
-	if coord.y - 1 > 0 and !already_checked.has(Vector2i(coord.x, coord.y - 1)):
-		process_coord(map, map_size, coord + Vector2i(0, -1), new_tile, EdgeComponent.EDGE_SIDE.TOP)
-	# Check right
-	if coord.x + 1 < map_size.x and !already_checked.has(Vector2i(coord.x + 1, coord.y)):
-		process_coord(map, map_size, coord + Vector2i(1, 0), new_tile, EdgeComponent.EDGE_SIDE.RIGHT)
-	# Check bottom
-	if coord.y + 1 < map_size.y and !already_checked.has(Vector2i(coord.x, coord.y + 1)):
-		process_coord(map, map_size, coord + Vector2i(0, 1), new_tile, EdgeComponent.EDGE_SIDE.BOTTOM)
-	# Check left
-	if coord.x - 1 > 0 and !already_checked.has(Vector2i(coord.x - 1, coord.y)):
-		process_coord(map, map_size, coord + Vector2i(-1, 0), new_tile, EdgeComponent.EDGE_SIDE.LEFT)
-	
-	
-
 
 func _on_connect_two_tiles(tile1, tile2, edge_side):
 	if connect_cooldown != 0: return
@@ -295,15 +205,16 @@ func _on_connect_two_tiles(tile1, tile2, edge_side):
 	
 	# iterate through all tiles in new tile set to re-calculate top left corner
 	
+	recalculate_local_position(tile1.tiles_connected_to)
 	
-	var smallest : Vector2i
-	smallest = get_smallest_coord(tile1.tiles_connected_to)
-	
-	print("Smallest: (" + str(smallest.x) + ", " + str(smallest.y) +")")
-	
-	# use new top left corner to properly set all tiles
-	for t in tile1.tiles_connected_to:
-		t.local_position += Vector2i(abs(smallest.x), abs(smallest.y))
+	#var smallest : Vector2i
+	#smallest = get_smallest_coord(tile1.tiles_connected_to)
+	#
+	#print("Smallest: (" + str(smallest.x) + ", " + str(smallest.y) +")")
+	#
+	## use new top left corner to properly set all tiles
+	#for t in tile1.tiles_connected_to:
+	#	t.local_position += Vector2i(abs(smallest.x), abs(smallest.y))
 	
 	
 	# Re-calculate all edges, see if they need to be turned off
@@ -353,6 +264,17 @@ func get_smallest_coord(tile_group) -> Vector2i:
 	
 	return smallest
 
+
+func recalculate_local_position(tile_group):
+	var smallest : Vector2i
+	smallest = get_smallest_coord(tile_group)
+	
+	print("Smallest: (" + str(smallest.x) + ", " + str(smallest.y) +")")
+	
+	# use new top left corner to properly set all tiles
+	for t in tile_group:
+		t.local_position += Vector2i(smallest.x * -1, smallest.y * -1)
+	pass
 
 
 func recalculate_edges(tile_group):
