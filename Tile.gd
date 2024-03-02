@@ -1,6 +1,7 @@
 extends Node2D
 
 var draggableComponent : DraggableComponent
+var movementComponent : MovementComponent
 
 
 var clicked_at : Vector2
@@ -20,6 +21,7 @@ signal connect_two_tiles(tile1, tile2)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	draggableComponent = $DraggableComponent
+	movementComponent = $MovementComponent
 	parent_tile_group = get_parent()
 	tiles_connected_to.append(self)
 	return
@@ -103,7 +105,7 @@ func highlight(toggle : bool):
 
 
 func disable_edge_collision(side : EdgeComponent.EDGE_SIDE, set_value : bool):
-	print("set " + str(side) + " to " + str(set_value))
+	#print("set " + str(side) + " to " + str(set_value))
 	match side:
 		EdgeComponent.EDGE_SIDE.LEFT:
 			$LeftEdgeComponent/CollisionShape2D.disabled = set_value
@@ -167,4 +169,9 @@ func _on_bottom_edge_component_area_entered(area):
 			
 		connect_two_tiles.emit(self, area.get_parent(), EdgeComponent.EDGE_SIDE.BOTTOM)
 		#attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.BOTTOM)
+	pass # Replace with function body.
+
+
+func _on_movement_component_update_position(pos):
+	position = pos
 	pass # Replace with function body.

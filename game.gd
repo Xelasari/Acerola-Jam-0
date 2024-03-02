@@ -24,9 +24,10 @@ func _ready():
 	
 	var tm = tileManager.instantiate()
 	
-	for x in range(0, 10):
-		for y in range(0, 10):
-			tm.create_tile_at(Vector2i(x, y))
+	#for x in range(0, 10):
+	#	for y in range(0, 10):
+	#		tm.create_tile_at(Vector2i(x, y))
+	
 	
 	
 	#tm.create_tile_at(Vector2i(0, 0))
@@ -41,6 +42,8 @@ func _ready():
 	#tm.create_tile_at(Vector2i(5, 9))
 	#tm.create_tile_at(Vector2i(5, 11))
 	add_child(tm)
+	
+	tm.create_map()
 	pass
 	
 	
