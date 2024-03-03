@@ -36,6 +36,7 @@ var current_building_group : Array
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	position += Vector2(16, 16)
 	pass # Replace with function body.
 
 

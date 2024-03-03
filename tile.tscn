@@ -1,13 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://cdweu08hnlext"]
+[gd_scene load_steps=13 format=3 uid="uid://cdweu08hnlext"]
 
 [ext_resource type="Script" path="res://Tile.gd" id="1_fomhf"]
 [ext_resource type="Texture2D" uid="uid://ccub31pwjydi" path="res://assets/checker_tile.png" id="2_aqyy7"]
 [ext_resource type="Script" path="res://draggable_component.gd" id="2_u3k8y"]
 [ext_resource type="Script" path="res://edge_component.gd" id="3_bdptn"]
 [ext_resource type="Script" path="res://movement_component.gd" id="5_y8ck8"]
+[ext_resource type="Script" path="res://Repulser.gd" id="6_rs5tl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bqg63"]
-size = Vector2(28, 28)
+size = Vector2(32, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w3k8e"]
 size = Vector2(4, 26)
@@ -20,6 +21,9 @@ size = Vector2(4, 26)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fvpfp"]
 size = Vector2(26, 4)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4ra3l"]
+radius = 36.0
 
 [node name="Tile" type="Node2D"]
 position = Vector2(92, 79)
@@ -75,15 +79,23 @@ position = Vector2(0, 18)
 shape = SubResource("RectangleShape2D_fvpfp")
 
 [node name="Label" type="Label" parent="."]
-offset_left = -20.0
+offset_left = -14.0
 offset_top = -12.0
-offset_right = 20.0
+offset_right = 14.0
 offset_bottom = 11.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MovementComponent" type="Node" parent="."]
 script = ExtResource("5_y8ck8")
+
+[node name="Repulser" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("6_rs5tl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Repulser"]
+shape = SubResource("CircleShape2D_4ra3l")
 
 [connection signal="input_event" from="DraggableComponent" to="." method="_on_draggable_component_input_event"]
 [connection signal="mouse_entered" from="DraggableComponent" to="." method="_on_draggable_component_mouse_entered"]
@@ -93,3 +105,5 @@ script = ExtResource("5_y8ck8")
 [connection signal="area_entered" from="RightEdgeComponent" to="." method="_on_right_edge_component_area_entered"]
 [connection signal="area_entered" from="BottomEdgeComponent" to="." method="_on_bottom_edge_component_area_entered"]
 [connection signal="update_position" from="MovementComponent" to="." method="_on_movement_component_update_position"]
+[connection signal="area_entered" from="Repulser" to="." method="_on_repulser_area_entered"]
+[connection signal="area_exited" from="Repulser" to="." method="_on_repulser_area_exited"]

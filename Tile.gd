@@ -13,6 +13,10 @@ var parent_tile_group : Node
 # This is used to move all tiles attached to
 var tiles_connected_to : Array
 
+# This holds all areas that this tile will slowly drift away from
+var areas_to_move_away_from : Array
+
+
 signal start_drag()
 signal end_drag()
 signal attempt_connection(area, triggered_side)
@@ -57,10 +61,44 @@ func _process(delta):
 	if draggableComponent.being_dragged:
 		var new_pos = get_global_mouse_position() - vector_to_center
 		var delta_pos = new_pos - position
-		position = get_global_mouse_position() - vector_to_center
+		position = new_pos
 		propogate_new_position(delta_pos)
-	
-	
+		
+	if !draggableComponent.being_dragged:
+		var vector_to_move : Vector2 = Vector2(0, 0)
+		var area_count : int = 1
+		var movement_intensity : float = 5.0
+		for a in areas_to_move_away_from:
+			# This block ensures that dragged groups don't push other tiles away
+			var should_skip : bool = false
+			for t in a.get_parent().tiles_connected_to:
+				if t.draggableComponent.being_dragged: should_skip = true
+			if should_skip: continue
+			
+			var p1 : Vector2 = position 
+			var p2 : Vector2 = a.get_parent().position
+			var rad = p2.angle_to_point(p1)
+			
+			var d = p1.distance_to(p2)
+			
+			if d < 50:
+				movement_intensity += 30
+			elif 50 <= d and d < 60:
+				movement_intensity += 20
+			elif 65 <= d:
+				movement_intensity += 10
+			
+			
+			area_count += 1
+			vector_to_move += Vector2.RIGHT.rotated(rad)
+		
+		# TODO: maybe do something more interesting with this, but for now it works
+		var final_movement_speed = movement_intensity / area_count
+		
+		var delta_pos = 5 * delta * vector_to_move
+		position += delta_pos
+		propogate_new_position(delta_pos)
+		
 	pass
 
 func propogate_new_position(delta_pos):
@@ -125,53 +163,63 @@ func turn_off_edges():
 
 # TODO: make these much more clean holy moly
 func _on_left_edge_component_area_entered(area):
-	#print("left")
-	
+
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
 		
-		connect_two_tiles.emit(self, area.get_parent(), EdgeComponent.EDGE_SIDE.LEFT)	
-		#attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.LEFT)
-	pass # Replace with function body.
+		edge_entered(self, area.get_parent(), EdgeComponent.EDGE_SIDE.LEFT)	
 
 
 func _on_top_edge_component_area_entered(area):
-	#print("top")
-	
+
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.BOTTOM:
 		
-		connect_two_tiles.emit(self, area.get_parent(), EdgeComponent.EDGE_SIDE.TOP)	
-		#attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.TOP)
-	pass # Replace with function body.
+		edge_entered(self, area.get_parent(), EdgeComponent.EDGE_SIDE.TOP)	
+
 
 
 func _on_right_edge_component_area_entered(area):
-	#print("right")
 	return
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.LEFT:
 		
-		connect_two_tiles.emit(self, area.get_parent(), EdgeComponent.EDGE_SIDE.RIGHT)	
-		#attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.RIGHT)
-	pass # Replace with function body.
+		edge_entered(self, area.get_parent(), EdgeComponent.EDGE_SIDE.RIGHT)	
 
 
 func _on_bottom_edge_component_area_entered(area):
-	#print("bottom")
 	return
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.TOP:
 			
-		connect_two_tiles.emit(self, area.get_parent(), EdgeComponent.EDGE_SIDE.BOTTOM)
-		#attempt_connection.emit(area.get_parent(), EdgeComponent.EDGE_SIDE.BOTTOM)
-	pass # Replace with function body.
+		edge_entered(self, area.get_parent(), EdgeComponent.EDGE_SIDE.BOTTOM)
+
+
+func edge_entered(source_tile, connecting_tile, edge_connected_on):
+	connect_two_tiles.emit(source_tile, connecting_tile, edge_connected_on)
 
 
 func _on_movement_component_update_position(pos):
 	position = pos
+	pass # Replace with function body.
+
+
+func _on_repulser_area_entered(area):
+	if area.get_collision_layer_value(4) && !area.get_parent().tiles_connected_to.has(self):
+		areas_to_move_away_from.append(area)
+	
+	# First check if collided area is seperate group
+	# if it is, add to overlapping repulser group to calculate new position
+	pass # Replace with function body.
+
+
+func _on_repulser_area_exited(area):
+	if areas_to_move_away_from.has(area):
+		areas_to_move_away_from.erase(area)
+	
+	# Use this to remove previously overlapping repulsers
 	pass # Replace with function body.
