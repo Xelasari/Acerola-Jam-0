@@ -43,6 +43,7 @@ extends Node2D
 @export var tileScene : PackedScene
 
 var connect_cooldown : int = 0
+var connection_queue = []
 
 var check_next : Array[Vector2i]
 var already_checked : Array[Vector2i]
@@ -51,6 +52,10 @@ var current_building_group : Array
 
 
 var test_tile_ref = null
+
+
+# This points at the tile to spawn the player in
+var starting_tile : Node = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -73,7 +78,10 @@ func create_tile_at(local_coord) -> Node:
 	new_tile.local_position = local_coord
 	#new_tile.connect("start_drag", _on_start_drag)
 	#new_tile.connect("end_drag", _on_end_drag)
-	new_tile.connect("connect_two_tiles", _on_connect_two_tiles)
+	new_tile.connect("attempt_connection", _on_attempt_connection)
+	#new_tile.connect("connect_two_tiles", _on_connect_two_tiles)
+	new_tile.connect("queue_connection", _on_queue_connection)
+	new_tile.connect("dequeue_connection", _on_dequeue_connection)
 	#tiles_in_group.append(new_tile)
 	add_child(new_tile)
 	return new_tile
@@ -90,6 +98,11 @@ func create_map():
 					[0, 0, 0, 0, 0],
 					[1, 0, 1, 0, 0],
 					[1, 1, 0, 0, 0]]
+	
+	var points_of_interest : Dictionary = {}
+	
+	points_of_interest["spawn"] = Vector2i(1, 1)
+	points_of_interest["exit"] = Vector2i(3, 3)
 	
 	#map_size = Vector2i(5, 6)
 	#test_map = [[0, 0, 0, 0, 0],
@@ -161,6 +174,35 @@ func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile
 		process_coord(map, map_size, coord + Vector2i(-1, 0))
 	
 
+func _on_queue_connection(tile1, tile2, edge_side):
+	var connection_entry = {}
+	
+	print("queue connection")
+	
+	connection_entry["tile1"] = tile1
+	connection_entry["tile2"] = tile2
+	connection_entry["edge_side"] = edge_side
+	
+	connection_queue.append(connection_entry)
+	
+	
+func _on_dequeue_connection(tile1, tile2):
+	for item in connection_queue:
+		if item["tile1"] == tile1 && item["tile2"] == tile2:
+			connection_queue.erase(item)
+			break
+			
+
+func _on_attempt_connection():
+	if connect_cooldown != 0: return
+	if connection_queue.is_empty(): return
+	var connection = connection_queue.pop_front()
+	
+	_on_connect_two_tiles(connection["tile1"], connection["tile2"], connection["edge_side"])
+	connection_queue.clear()
+		
+
+
 func _on_connect_two_tiles(tile1, tile2, edge_side):
 	if connect_cooldown != 0: return
 	
@@ -215,8 +257,12 @@ func _on_connect_two_tiles(tile1, tile2, edge_side):
 	for t in tile2_group:
 		t.local_position += shift_vector
 	
+	
+	
 	# make sure all tiles know of each other
 	var new_tiles_connected_to : Array
+	var old_tile_group1 : Array = tile1.tiles_connected_to
+	var old_tile_group2 : Array = tile2.tiles_connected_to
 	
 	for t in tile1.tiles_connected_to:
 		new_tiles_connected_to.append(t)
@@ -229,14 +275,21 @@ func _on_connect_two_tiles(tile1, tile2, edge_side):
 	
 	# using tile1, set new positions for clean tiling
 	
-	var reference_pos = tile1.position
-	for t in tile1.tiles_connected_to:
-		#if t == tile1: continue
-		t.position = reference_pos + Vector2((t.local_position * 32))
-		#t.position = Vector2((t.local_position * 32))
+	# BUG: This might be causing the strange shift, need more data though
+	# This definitely is the issue, may need to use a small shift (ie some value between 
 	
+	if !old_tile_group1[0].does_group_have_player():
+		var reference_pos = tile1.position - Vector2(tile1.local_position * 32)
+		for t in old_tile_group2:
+			t.position = (reference_pos + Vector2((t.local_position * 32)))
+	else:
+		var reference_pos = tile2.position - Vector2(tile2.local_position * 32)
+		for t in old_tile_group1:
+			t.position = (reference_pos + Vector2((t.local_position * 32)))
+
+		
+		
 	# iterate through all tiles in new tile set to re-calculate top left corner
-	
 	recalculate_local_position(tile1.tiles_connected_to)
 	
 	#var smallest : Vector2i

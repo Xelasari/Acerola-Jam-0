@@ -64,3 +64,5 @@ rotate={
 2d_physics/layer_2="Field"
 2d_physics/layer_3="TileEdge"
 2d_physics/layer_4="RepulserField"
+2d_physics/layer_5="Draggable"
+2d_physics/layer_6="PlayerDetector"

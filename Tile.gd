@@ -16,11 +16,16 @@ var tiles_connected_to : Array
 # This holds all areas that this tile will slowly drift away from
 var areas_to_move_away_from : Array
 
+# This is toggled when a player enters/leaves a tile
+var has_player : bool = false
 
 signal start_drag()
 signal end_drag()
-signal attempt_connection(area, triggered_side)
-signal connect_two_tiles(tile1, tile2)
+signal attempt_connection()
+signal connect_two_tiles(tile1, tile2, edge_connecting)
+signal queue_connection(tile1, tile2, edge_connecting)
+signal dequeue_connection(tile1, tile2)
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -56,7 +61,8 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):		
+func _process(delta):
+	
 	$Label.text = str(local_position)
 	if draggableComponent.being_dragged:
 		var new_pos = get_global_mouse_position() - vector_to_center
@@ -73,6 +79,10 @@ func _process(delta):
 			var should_skip : bool = false
 			for t in a.get_parent().tiles_connected_to:
 				if t.draggableComponent.being_dragged: should_skip = true
+			if should_skip: continue
+			
+			# This makes sure player's platform does not move
+			if does_group_have_player(): should_skip = true
 			if should_skip: continue
 			
 			# This block ensures that tiles in the same group are not affecting each other
@@ -122,14 +132,16 @@ func _on_draggable_component_mouse_exited():
 
 
 func _on_draggable_component_input_event(viewport, event, shape_idx):
-	if Input.is_action_just_pressed("click") && draggableComponent.is_hovered:
+	if Input.is_action_just_pressed("click") && draggableComponent.is_hovered && !does_group_have_player():
 		draggableComponent.being_dragged = true
 		clicked_at = get_global_mouse_position()
 		vector_to_center = clicked_at - position
 		start_drag.emit(clicked_at)
-	if Input.is_action_just_released("click"): # && draggableComponent.is_hovered:
+	# TODO: This might still be buggy
+	if Input.is_action_just_released("click") or !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): # && draggableComponent.is_hovered:
 		draggableComponent.being_dragged = false
 		end_drag.emit()
+		attempt_connection.emit()
 
 func test():
 	start_drag.emit()
@@ -147,7 +159,7 @@ func highlight(toggle : bool):
 	pass
 	
 
-
+# TODO: this might not be needed anymore
 func disable_edge_collision(side : EdgeComponent.EDGE_SIDE, set_value : bool):
 	#print("set " + str(side) + " to " + str(set_value))
 	match side:
@@ -221,7 +233,31 @@ func _on_bottom_edge_component_area_entered(area):
 
 
 func edge_entered(source_tile, connecting_tile, edge_connected_on):
+	# queue_to_be_connected(source_tile, connecting_tile, edge_connected_on)
+	
+	queue_connection.emit(source_tile, connecting_tile, edge_connected_on)
+	return 
 	connect_two_tiles.emit(source_tile, connecting_tile, edge_connected_on)
+
+
+func _on_left_edge_component_area_exited(area):
+	edge_exited(self, area.get_parent())
+
+
+func _on_top_edge_component_area_exited(area):
+	edge_exited(self, area.get_parent())
+
+
+func _on_right_edge_component_area_exited(area):
+	edge_exited(self, area.get_parent())
+
+
+func _on_bottom_edge_component_area_exited(area):
+	edge_exited(self, area.get_parent())
+
+func edge_exited(source_tile, connecting_tile):
+	dequeue_connection.emit(source_tile, connecting_tile)
+
 
 
 func _on_movement_component_update_position(pos):
@@ -244,3 +280,19 @@ func _on_repulser_area_exited(area):
 	
 	# Use this to remove previously overlapping repulsers
 	pass # Replace with function body.
+
+
+func _on_player_detector_area_entered(area):
+	has_player = true
+
+
+func _on_player_detector_area_exited(area):
+	has_player = false
+	
+func does_group_have_player() -> bool:
+	for t in tiles_connected_to:
+		if t.has_player: return true
+	return false
+
+
+
