@@ -2,7 +2,10 @@ extends Node2D
 
 
 @export var tileGroupScene : PackedScene
-@export var tileManager : PackedScene
+@export var tileManagerScene : PackedScene
+@export var slicerScene : PackedScene
+
+var tileManager
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -22,8 +25,8 @@ func _ready():
 	#add_child(tgs)
 	#pass # Replace with function body.
 	
-	var tm = tileManager.instantiate()
-	
+	var tm = tileManagerScene.instantiate()
+	tileManager = tm
 	#for x in range(0, 10):
 	#	for y in range(0, 10):
 	#		tm.create_tile_at(Vector2i(x, y))
@@ -54,5 +57,5 @@ func _process(delta):
 	pass
 
 
-
-
+func _on_slicer_cut_at(tile_group, direction_of_cut, location_of_cut):
+	tileManager.cut_tiles(tile_group, direction_of_cut, location_of_cut)

@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3qol24ks2ua1"]
+
+[ext_resource type="Script" path="res://slicer.gd" id="1_0jrbb"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_mgr1v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rqc7r"]
+size = Vector2(12, 16)
+
+[node name="Slicer" type="Node2D"]
+script = ExtResource("1_0jrbb")
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="."]
+visible = false
+shape = SubResource("SegmentShape2D_mgr1v")
+target_position = Vector2(0, 1000)
+margin = 1.0
+collision_mask = 4
+collide_with_areas = true
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_rqc7r")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

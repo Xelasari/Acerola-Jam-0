@@ -23,6 +23,22 @@ extends Node2D
 # maybe to make this even more simple, maybe just have a horizontal/vertical line
 # following the mouse and use that?
 
+# okay yeah, slicing mechanic
+# maybe use a line raycast or something?
+# but, when checking for split, take for example vertical cut
+# when hit, check every edge connector that was hit, which should have directions
+# gather all nodes in group into two, set them, and then reactivate edges
+# NOTE: probably need to get connections working on mouse release to prevent bugs
+# parameters
+# cut: horizontal or verticle
+# x or y value1: from 
+# x or y value2: to
+# ^^^ for example, horizontal, 3, 4:
+#	this should make a horizontal slice, between the y values of the tile
+# Also, maybe make a check to only cut based on tile group? (to prevent weird shenangins)
+
+# BUG: Need to really polish up drag and connect mechanic (connect on release mouse should really help)
+
 
 @export var tileScene : PackedScene
 
@@ -33,6 +49,8 @@ var already_checked : Array[Vector2i]
 var coords_to_check : Array[Vector2i]
 var current_building_group : Array
 
+
+var test_tile_ref = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -45,6 +63,7 @@ func _process(delta):
 	if connect_cooldown != 0:
 		connect_cooldown -= 1
 	pass
+	
 	
 func create_tile_at(local_coord) -> Node:
 	var new_tile = tileScene.instantiate()
@@ -71,6 +90,14 @@ func create_map():
 					[0, 0, 0, 0, 0],
 					[1, 0, 1, 0, 0],
 					[1, 1, 0, 0, 0]]
+	
+	#map_size = Vector2i(5, 6)
+	#test_map = [[0, 0, 0, 0, 0],
+	#			[0, 0, 0, 0, 0],
+	#			[0, 0, 1, 0, 0],
+	#			[0, 0, 0, 0, 0],
+	#			[0, 0, 0, 1, 0],
+	#			[0, 0, 0, 0, 0]]
 	
 	step_through_map(test_map, map_size)
 	
@@ -108,6 +135,10 @@ func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile
 	if map[coord.y][coord.x] == 0: return
 	if map[coord.y][coord.x] == 1:
 		var tile_ref = create_tile_at(Vector2i(coord.x, coord.y))
+		var x_offset = 640 - ((map_size.x * 32) / 2)
+		var y_offset = 360 - ((map_size.y * 32) / 2)
+		tile_ref.position = tile_ref.position + Vector2(x_offset, y_offset)
+		if test_tile_ref == null: test_tile_ref = tile_ref
 		if !current_building_group.has(tile_ref):
 			print("appending to group")
 			current_building_group.append(tile_ref)
@@ -251,7 +282,57 @@ func _on_connect_two_tiles(tile1, tile2, edge_side):
 	
 	connect_cooldown = 3
 	
-
+# Location of cut will use the lower of the two indexes
+# i.e. 0 will cut between 0 and 1, 3 will cut between 3 and 4
+func cut_tiles(tile_group, direction_of_cut, location_of_cut):
+	var new_tile_group1 = []
+	var new_tile_group2 = []
+	
+	for t in tile_group:
+		if direction_of_cut == "vertical":
+			if t.local_position.x <= location_of_cut:
+				new_tile_group1.append(t)
+			else:
+				new_tile_group2.append(t)
+		elif direction_of_cut == "horizontal":
+			if t.local_position.y <= location_of_cut:
+				new_tile_group1.append(t)
+			else:
+				new_tile_group2.append(t)
+	
+	for t in new_tile_group1:
+		t.tiles_connected_to = new_tile_group1
+		
+	for t in new_tile_group2:
+		t.tiles_connected_to = new_tile_group2
+	
+	
+	
+	for t in new_tile_group1:
+		if direction_of_cut == "vertical":
+			if t.local_position.x == location_of_cut:
+				t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.RIGHT, true)
+		elif direction_of_cut == "horizontal":
+			if t.local_position.y == location_of_cut:
+				t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.BOTTOM, true)
+	
+	for t in new_tile_group2:
+		if direction_of_cut == "vertical":
+			if t.local_position.x == location_of_cut + 1:
+				t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.LEFT, true)
+		elif direction_of_cut == "horizontal":
+			if t.local_position.y == location_of_cut + 1:
+				t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.TOP, true)
+	
+	
+	recalculate_local_position(new_tile_group1)
+	recalculate_local_position(new_tile_group2)
+	
+	recalculate_edges(new_tile_group1)
+	recalculate_edges(new_tile_group2)
+	
+	ensure_contiguous_group(new_tile_group1)
+	ensure_contiguous_group(new_tile_group2)
 
 func get_smallest_coord(tile_group) -> Vector2i:
 	var smallest : Vector2i = Vector2i(99999, 99999)
@@ -287,17 +368,81 @@ func recalculate_edges(tile_group):
 		var check 
 		check = t.local_position + Vector2i(0, -1)
 		if tiles_at.has(check):
-			t.call_deferred("disable_edge_collision", EdgeComponent.EDGE_SIDE.TOP, true)
+			#t.call_deferred("disable_edge_collision", EdgeComponent.EDGE_SIDE.TOP, true)
+			t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.TOP, false)
 			#t.disable_edge_collision(EdgeComponent.EDGE_SIDE.TOP, true)
 		check = t.local_position + Vector2i(1, 0)
 		if tiles_at.has(check):
-			t.call_deferred("disable_edge_collision", EdgeComponent.EDGE_SIDE.RIGHT, true)
+			#t.call_deferred("disable_edge_collision", EdgeComponent.EDGE_SIDE.RIGHT, true)
+			t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.RIGHT, false)
 			#t.disable_edge_collision(EdgeComponent.EDGE_SIDE.RIGHT, true)
 		check = t.local_position + Vector2i(0, 1)
 		if tiles_at.has(check):
-			t.call_deferred("disable_edge_collision", EdgeComponent.EDGE_SIDE.BOTTOM, true)
+			#t.call_deferred("disable_edge_collision", EdgeComponent.EDGE_SIDE.BOTTOM, true)
+			t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.BOTTOM, false)
 			#t.disable_edge_collision(EdgeComponent.EDGE_SIDE.BOTTOM, true)
 		check = t.local_position + Vector2i(-1, 0)
 		if tiles_at.has(check):
-			t.call_deferred("disable_edge_collision", EdgeComponent.EDGE_SIDE.LEFT, true)
+			#t.call_deferred("disable_edge_collision", EdgeComponent.EDGE_SIDE.LEFT, true)
+			t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.LEFT, false)
 			#t.disable_edge_collision(EdgeComponent.EDGE_SIDE.LEFT, true)
+			
+
+# This should go through all tiles in a group and make sure that they are
+# actually all in a group
+
+# TODO: make this much more efficient (very bad bigO right now)
+func ensure_contiguous_group(tile_group : Array):
+	# Start at a tile and check all other reachable tiles, set group, and
+	# repeat until initial tilegroup is empty
+	var tiles_at : Dictionary
+	var tiles_to_check : Array[Vector2i]
+	for t in tile_group:
+		tiles_at[t.local_position] = t
+		tiles_to_check.append(t.local_position)
+
+	# Have starting tile
+	# Remove starting tile from tile_group and add to new_group
+	# Check all areas adjacent to see if there are tiles there
+	# if there are, set those to the next check group
+	# take next off the top of the next check group, repeat
+	
+	while !tile_group.is_empty():
+		var new_tile_group : Array = []
+		var check_queue : Array = []
+		
+		check_queue.append(tile_group.pop_front())
+		
+		while !check_queue.is_empty():
+			var t = check_queue.pop_front()
+			
+			if new_tile_group.has(t): continue
+			
+			new_tile_group.append(t)
+			tile_group.erase(t)
+			
+			var check
+			# Check Top
+			check = t.local_position + Vector2i(0, -1)
+			if tiles_at.has(check) and !new_tile_group.has(tiles_at[check]):
+				check_queue.append(tiles_at[check])
+			# Check Right
+			check = t.local_position + Vector2i(1, 0)
+			if tiles_at.has(check) and !new_tile_group.has(tiles_at[check]):
+				check_queue.append(tiles_at[check])
+			# Check Bottom
+			check = t.local_position + Vector2i(0, 1)
+			if tiles_at.has(check) and !new_tile_group.has(tiles_at[check]):
+				check_queue.append(tiles_at[check])
+			# Check Left
+			check = t.local_position + Vector2i(-1, 0)
+			if tiles_at.has(check) and !new_tile_group.has(tiles_at[check]):
+				check_queue.append(tiles_at[check])
+		
+		
+		# once no more tiles can be reached
+		for t in new_tile_group:
+			t.tiles_connected_to = new_tile_group
+			
+		recalculate_local_position(new_tile_group)
+		

@@ -20,8 +20,7 @@ sources/0 = SubResource("TileSetAtlasSource_a0w7k")
 [node name="Game" type="Node2D"]
 script = ExtResource("1_koi76")
 tileGroupScene = ExtResource("2_ppq8d")
-tileManagerScene = ExtResource("3_0lihf")
-slicerScene = ExtResource("7_8xnds")
+tileManager = ExtResource("3_0lihf")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2
@@ -42,10 +41,9 @@ position = Vector2(48, 15)
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground"]
 modulate = Color(0.384314, 0.384314, 0.384314, 1)
 z_index = -1
-position = Vector2(642.857, 585)
-scale = Vector2(0.558095, 0.558095)
+position = Vector2(574.952, 523)
+scale = Vector2(0.499048, 0.499048)
 texture = ExtResource("4_32ndq")
 
 [node name="Slicer" parent="." instance=ExtResource("7_8xnds")]
-
-[connection signal="cut_at" from="Slicer" to="." method="_on_slicer_cut_at"]
+visible = false

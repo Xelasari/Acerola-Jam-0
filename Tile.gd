@@ -75,6 +75,11 @@ func _process(delta):
 				if t.draggableComponent.being_dragged: should_skip = true
 			if should_skip: continue
 			
+			# This block ensures that tiles in the same group are not affecting each other
+			if tiles_connected_to.has(a):
+				should_skip = true
+			if should_skip: continue
+			
 			var p1 : Vector2 = position 
 			var p2 : Vector2 = a.get_parent().position
 			var rad = p2.angle_to_point(p1)
@@ -91,6 +96,7 @@ func _process(delta):
 			
 			area_count += 1
 			vector_to_move += Vector2.RIGHT.rotated(rad)
+			
 		
 		# TODO: maybe do something more interesting with this, but for now it works
 		var final_movement_speed = movement_intensity / area_count
@@ -121,7 +127,7 @@ func _on_draggable_component_input_event(viewport, event, shape_idx):
 		clicked_at = get_global_mouse_position()
 		vector_to_center = clicked_at - position
 		start_drag.emit(clicked_at)
-	if Input.is_action_just_released("click") && draggableComponent.is_hovered:
+	if Input.is_action_just_released("click"): # && draggableComponent.is_hovered:
 		draggableComponent.being_dragged = false
 		end_drag.emit()
 
@@ -153,6 +159,17 @@ func disable_edge_collision(side : EdgeComponent.EDGE_SIDE, set_value : bool):
 			$RightEdgeComponent/CollisionShape2D.disabled = set_value
 		EdgeComponent.EDGE_SIDE.BOTTOM:
 			$BottomEdgeComponent/CollisionShape2D.disabled = set_value
+			
+func set_edge_connectivity(side : EdgeComponent.EDGE_SIDE, set_value : bool):
+	match side:
+		EdgeComponent.EDGE_SIDE.LEFT:
+			$LeftEdgeComponent.can_connect = set_value
+		EdgeComponent.EDGE_SIDE.TOP:
+			$TopEdgeComponent.can_connect = set_value
+		EdgeComponent.EDGE_SIDE.RIGHT:
+			$RightEdgeComponent.can_connect = set_value
+		EdgeComponent.EDGE_SIDE.BOTTOM:
+			$BottomEdgeComponent.can_connect = set_value
 
 func turn_off_edges():
 	$LeftEdgeComponent/CollisionShape2D.disabled = true
@@ -166,6 +183,7 @@ func _on_left_edge_component_area_entered(area):
 
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		area.can_connect == true and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
 		
 		edge_entered(self, area.get_parent(), EdgeComponent.EDGE_SIDE.LEFT)	
@@ -175,6 +193,7 @@ func _on_top_edge_component_area_entered(area):
 
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		area.can_connect == true and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.BOTTOM:
 		
 		edge_entered(self, area.get_parent(), EdgeComponent.EDGE_SIDE.TOP)	
@@ -185,6 +204,7 @@ func _on_right_edge_component_area_entered(area):
 	return
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		area.can_connect == true and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.LEFT:
 		
 		edge_entered(self, area.get_parent(), EdgeComponent.EDGE_SIDE.RIGHT)	
@@ -194,6 +214,7 @@ func _on_bottom_edge_component_area_entered(area):
 	return
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		area.can_connect == true and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.TOP:
 			
 		edge_entered(self, area.get_parent(), EdgeComponent.EDGE_SIDE.BOTTOM)
@@ -209,7 +230,7 @@ func _on_movement_component_update_position(pos):
 
 
 func _on_repulser_area_entered(area):
-	if area.get_collision_layer_value(4) && !area.get_parent().tiles_connected_to.has(self):
+	if area.get_collision_layer_value(4): # && !area.get_parent().tiles_connected_to.has(self):
 		areas_to_move_away_from.append(area)
 	
 	# First check if collided area is seperate group
