@@ -7,13 +7,18 @@ extends Node2D
 
 var tileManager
 
+
+# Game mechanics to add in:
+# - Portals
+# - Non-cuttable tiles
+# - Orbs/keys to unlock exit
+# - Enemies
+# - Power lines to do stuff (open door/area, unlock exit)
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var tm = tileManagerScene.instantiate()
-	tileManager = tm
-	add_child(tm)
-	
-	tm.create_map()
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -21,5 +26,3 @@ func _process(delta):
 	pass
 
 
-func _on_slicer_cut_at(tile_group, direction_of_cut, location_of_cut):
-	tileManager.cut_tiles(tile_group, direction_of_cut, location_of_cut)

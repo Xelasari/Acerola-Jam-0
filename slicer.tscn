@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c3qol24ks2ua1"]
+[gd_scene load_steps=5 format=3 uid="uid://c3qol24ks2ua1"]
 
 [ext_resource type="Script" path="res://slicer.gd" id="1_0jrbb"]
+[ext_resource type="Texture2D" uid="uid://dl5jy4llel76" path="res://assets/cut_marker.png" id="2_506ps"]
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_mgr1v"]
 
@@ -9,6 +10,11 @@ size = Vector2(12, 16)
 
 [node name="Slicer" type="Node2D"]
 script = ExtResource("1_0jrbb")
+
+[node name="CutMarker" type="Sprite2D" parent="."]
+z_index = 2
+texture_filter = 1
+texture = ExtResource("2_506ps")
 
 [node name="ShapeCast2D" type="ShapeCast2D" parent="."]
 visible = false

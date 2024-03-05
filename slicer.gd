@@ -4,7 +4,8 @@ var x_length = 2000
 var y_length = 2000
 
 var shapeCast2D : ShapeCast2D
-var collisionShape2D: CollisionShape2D
+var collisionShape2D : CollisionShape2D
+var cutMarker : Sprite2D
 
 
 var currently_touching_edges : Array[EdgeComponent] = []
@@ -19,6 +20,7 @@ signal cut_at(tile_group, direction_of_cut, location_of_cut)
 func _ready():
 	shapeCast2D = $ShapeCast2D
 	collisionShape2D = $Area2D/CollisionShape2D
+	cutMarker = $CutMarker
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,18 +45,20 @@ func _process(delta):
 				#if e.edge_side == EdgeComponent.EDGE_SIDE.BOTTOM:
 				#	cut_at.emit(e.get_parent().tiles_connected_to, "horizontal", e.get_parent().local_position.y - 1)
 				#	break
-	if Input.is_action_just_pressed("rotate"):
+	if Input.is_action_just_pressed("right click"):
 		orientation = (orientation + 1) % 2
 		print(orientation)
 		
 		if orientation == ORIENTATION.VERTICAL:
 			collisionShape2D.rotate(deg_to_rad(-90))
+			cutMarker.rotate(deg_to_rad(-90))
 			#collisionShape2D.shape.set("x", 4)
 			#collisionShape2D.shape.set("y", 16)
 			#$Area2D/CollisionShape2D.shape.x = 4
 			#$Area2D/CollisionShape2D.shape.x = 16
 		if orientation == ORIENTATION.HORIZONTAL:
 			collisionShape2D.rotate(deg_to_rad(90))
+			cutMarker.rotate(deg_to_rad(90))
 			#collisionShape2D.shape.set("x", 16)
 			#collisionShape2D.shape.set("y", 4)
 			#$Area2D/CollisionShape2D.shape.x = 16

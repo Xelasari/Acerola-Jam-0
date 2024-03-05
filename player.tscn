@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c1no6g63ae2al"]
+[gd_scene load_steps=7 format=3 uid="uid://c1no6g63ae2al"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_75cgs"]
 [ext_resource type="Texture2D" uid="uid://doeif5083xa6g" path="res://icon.svg" id="2_b858t"]
@@ -8,7 +8,9 @@
 size = Vector2(24, 24)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gn5fv"]
-radius = 8.0
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cw3s0"]
 
 [node name="Player" type="Node2D"]
 z_index = 1
@@ -31,6 +33,14 @@ collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GroundDetector"]
 shape = SubResource("CircleShape2D_gn5fv")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+collision_layer = 0
+collision_mask = 64
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("CircleShape2D_cw3s0")
 
 [connection signal="set_speed_scale" from="Hitbox" to="." method="_on_hitbox_set_speed_scale"]
 [connection signal="area_entered" from="GroundDetector" to="." method="_on_ground_detector_area_entered"]

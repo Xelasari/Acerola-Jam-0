@@ -2,6 +2,8 @@ extends Node2D
 
 var draggableComponent : DraggableComponent
 var movementComponent : MovementComponent
+var spriteReference : Sprite2D
+var staticBody2DReference : StaticBody2D
 
 
 var clicked_at : Vector2
@@ -19,6 +21,8 @@ var areas_to_move_away_from : Array
 # This is toggled when a player enters/leaves a tile
 var has_player : bool = false
 
+var blocks_player : bool = false
+
 signal start_drag()
 signal end_drag()
 signal attempt_connection()
@@ -31,33 +35,10 @@ signal dequeue_connection(tile1, tile2)
 func _ready():
 	draggableComponent = $DraggableComponent
 	movementComponent = $MovementComponent
+	spriteReference = $Sprite2D
+	staticBody2DReference = $StaticBody2D
 	parent_tile_group = get_parent()
 	tiles_connected_to.append(self)
-	return
-	var e : EdgeComponent
-	e = EdgeComponent.new()
-	e.create_edge(EdgeComponent.EDGE_SIDE.TOP)
-	e.connect("area_event", test)
-	add_child(e)
-	
-	e = EdgeComponent.new()
-	e.create_edge(EdgeComponent.EDGE_SIDE.LEFT)
-	e.connect("area_event", test)
-	add_child(e)
-	
-	e = EdgeComponent.new()
-	e.create_edge(EdgeComponent.EDGE_SIDE.RIGHT)
-	e.connect("area_event", test)
-	add_child(e)
-	
-	e = EdgeComponent.new()
-	e.create_edge(EdgeComponent.EDGE_SIDE.BOTTOM)
-	e.connect("area_event", test)
-	add_child(e)
-	
-	draggableComponent = $DraggableComponent
-	
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -132,21 +113,16 @@ func _on_draggable_component_mouse_exited():
 
 
 func _on_draggable_component_input_event(viewport, event, shape_idx):
-	if Input.is_action_just_pressed("click") && draggableComponent.is_hovered && !does_group_have_player():
+	if Input.is_action_just_pressed("left click") && draggableComponent.is_hovered && !does_group_have_player():
 		draggableComponent.being_dragged = true
 		clicked_at = get_global_mouse_position()
 		vector_to_center = clicked_at - position
 		start_drag.emit(clicked_at)
 	# TODO: This might still be buggy
-	if Input.is_action_just_released("click") or !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): # && draggableComponent.is_hovered:
+	if Input.is_action_just_released("left click") or !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): # && draggableComponent.is_hovered:
 		draggableComponent.being_dragged = false
 		end_drag.emit()
 		attempt_connection.emit()
-
-func test():
-	start_drag.emit()
-	print("sugoi")
-	pass
 
 func _on_edge_component_area_entered(area):
 	print("area entered")

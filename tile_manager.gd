@@ -41,6 +41,7 @@ extends Node2D
 
 
 @export var tileScene : PackedScene
+@export var exitPointScene : PackedScene
 
 var connect_cooldown : int = 0
 var connection_queue = []
@@ -54,8 +55,18 @@ var current_building_group : Array
 var test_tile_ref = null
 
 
+var points_of_interest : Dictionary = {}
+
 # This points at the tile to spawn the player in
 var starting_tile : Node = null
+
+
+var current_level : int
+var next_level : int
+
+
+signal load_next_level(level_number : int)
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -86,23 +97,32 @@ func create_tile_at(local_coord) -> Node:
 	add_child(new_tile)
 	return new_tile
 
-func create_map():
+
+func clear_map():
+	for n in get_children():
+		remove_child(n)
+		n.queue_free()
+
+
+func create_map(map_data : Dictionary):
+	points_of_interest.clear()
 	var map_size : Vector2i = Vector2i(5, 10)
 	var test_map = [[1, 0, 0, 0, 1],
 					[1, 1, 0, 0, 1],
 					[1, 1, 0, 0, 0],
-					[1, 1, 1, 1, 0],
-					[1, 1, 1, 0, 0],
+					[1, 1, 2, 1, 0],
+					[1, 1, 2, 0, 0],
 					[0, 0, 0, 0, 0],
 					[1, 1, 1, 0, 0],
 					[0, 0, 0, 0, 0],
 					[1, 0, 1, 0, 0],
 					[1, 1, 0, 0, 0]]
 	
-	var points_of_interest : Dictionary = {}
 	
-	points_of_interest["spawn"] = Vector2i(1, 1)
-	points_of_interest["exit"] = Vector2i(3, 3)
+	current_level = map_data["current_level"]
+	next_level = map_data["next_level"]
+	points_of_interest["spawn"] = Vector2i(map_data["spawn"].x, map_data["spawn"].y)
+	points_of_interest["exit"] = Vector2i(map_data["exit"].x, map_data["exit"].y)
 	
 	#map_size = Vector2i(5, 6)
 	#test_map = [[0, 0, 0, 0, 0],
@@ -112,7 +132,9 @@ func create_map():
 	#			[0, 0, 0, 1, 0],
 	#			[0, 0, 0, 0, 0]]
 	
-	step_through_map(test_map, map_size)
+	map_size = Vector2i(map_data["map_size"]["x"], map_data["map_size"]["y"])
+	
+	step_through_map(map_data["map"], map_size)
 	
 
 func step_through_map(map, map_size : Vector2i):
@@ -146,11 +168,21 @@ func step_through_map(map, map_size : Vector2i):
 	
 func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile, edge_side):
 	if map[coord.y][coord.x] == 0: return
-	if map[coord.y][coord.x] == 1:
+	if map[coord.y][coord.x] == 1 or map[coord.y][coord.x] == 2:
 		var tile_ref = create_tile_at(Vector2i(coord.x, coord.y))
 		var x_offset = 640 - ((map_size.x * 32) / 2)
 		var y_offset = 360 - ((map_size.y * 32) / 2)
 		tile_ref.position = tile_ref.position + Vector2(x_offset, y_offset)
+		if map[coord.y][coord.x] == 2:
+			tile_ref.blocks_player = true
+			tile_ref.spriteReference.texture = load("res://assets/blocked_tile.png")
+			tile_ref.staticBody2DReference.set_collision_layer_value(7, true)
+		if coord.x == points_of_interest["spawn"].x && coord.y == points_of_interest["spawn"].y:
+			starting_tile = tile_ref
+		if coord.x == points_of_interest["exit"].x && coord.y == points_of_interest["exit"].y:
+			var exit_point = exitPointScene.instantiate()
+			exit_point.connect("player_entered_exit", _on_player_entered_exit)
+			tile_ref.add_child(exit_point)
 		if test_tile_ref == null: test_tile_ref = tile_ref
 		if !current_building_group.has(tile_ref):
 			print("appending to group")
@@ -193,8 +225,11 @@ func _on_dequeue_connection(tile1, tile2):
 			break
 			
 
+# BUG: Need to have a way to ensure that tiles can't be overlapping when attempting to connect
 func _on_attempt_connection():
-	if connect_cooldown != 0: return
+	if connect_cooldown != 0:
+		connection_queue.clear()
+		return
 	if connection_queue.is_empty(): return
 	var connection = connection_queue.pop_front()
 	
@@ -404,7 +439,7 @@ func recalculate_local_position(tile_group):
 	var smallest : Vector2i
 	smallest = get_smallest_coord(tile_group)
 	
-	print("Smallest: (" + str(smallest.x) + ", " + str(smallest.y) +")")
+	#print("Smallest: (" + str(smallest.x) + ", " + str(smallest.y) +")")
 	
 	# use new top left corner to properly set all tiles
 	for t in tile_group:
@@ -499,3 +534,7 @@ func ensure_contiguous_group(tile_group : Array):
 			
 		recalculate_local_position(new_tile_group)
 		
+
+func _on_player_entered_exit():
+	print("Yippie")
+	load_next_level.emit(next_level)
