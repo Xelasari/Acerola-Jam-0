@@ -1,5 +1,6 @@
 extends Node2D
 
+@export var playerScene : PackedScene
 @export var tileManagerScene : PackedScene
 @export var slicerScene : PackedScene
 
@@ -16,6 +17,11 @@ func _ready():
 	tm.connect("load_next_level", _on_load_next_level)
 	tileManager = tm
 	add_child(tm)
+	
+	playerReference = playerScene.instantiate()
+	add_child(playerReference)
+	
+	
 	
 	#tm.create_map()
 	

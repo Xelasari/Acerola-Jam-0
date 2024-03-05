@@ -16,11 +16,9 @@ slicerScene = ExtResource("7_8xnds")
 
 [node name="Level" type="Node2D" parent="."]
 script = ExtResource("5_ijrof")
+playerScene = ExtResource("3_3spd3")
 tileManagerScene = ExtResource("3_0lihf")
 slicerScene = ExtResource("7_8xnds")
-
-[node name="Player" parent="Level" instance=ExtResource("3_3spd3")]
-position = Vector2(48, 15)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="Level"]
 

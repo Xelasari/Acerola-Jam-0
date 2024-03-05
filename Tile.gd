@@ -43,7 +43,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
+	if !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		draggableComponent.being_dragged = false
 	$Label.text = str(local_position)
 	if draggableComponent.being_dragged:
 		var new_pos = get_global_mouse_position() - vector_to_center
@@ -119,8 +120,16 @@ func _on_draggable_component_input_event(viewport, event, shape_idx):
 		vector_to_center = clicked_at - position
 		start_drag.emit(clicked_at)
 	# TODO: This might still be buggy
-	if Input.is_action_just_released("left click") or !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): # && draggableComponent.is_hovered:
+	if Input.is_action_just_released("left click"): # or !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): # && draggableComponent.is_hovered:
 		draggableComponent.being_dragged = false
+		#print("Are there any overlapping areas?")
+		# on release, use these in tile_manager to check each tile in group, and make a decision to
+		# collide there
+		#print($LeftEdgeComponent.get_overlapping_areas())
+		#print($TopEdgeComponent.get_overlapping_areas())
+		#print($RightEdgeComponent.get_overlapping_areas())
+		#print($BottomEdgeComponent.get_overlapping_areas())
+		
 		end_drag.emit()
 		attempt_connection.emit()
 
@@ -152,12 +161,20 @@ func set_edge_connectivity(side : EdgeComponent.EDGE_SIDE, set_value : bool):
 	match side:
 		EdgeComponent.EDGE_SIDE.LEFT:
 			$LeftEdgeComponent.can_connect = set_value
+			if set_value: $ColorLeft.color = Color(0, 1, 0)
+			else: $ColorLeft.color = Color(1, 0, 0)
 		EdgeComponent.EDGE_SIDE.TOP:
 			$TopEdgeComponent.can_connect = set_value
+			if set_value: $ColorTop.color = Color(0, 1, 0)
+			else: $ColorTop.color = Color(1, 0, 0)
 		EdgeComponent.EDGE_SIDE.RIGHT:
 			$RightEdgeComponent.can_connect = set_value
+			if set_value: $ColorRight.color = Color(0, 1, 0)
+			else: $ColorRight.color = Color(1, 0, 0)
 		EdgeComponent.EDGE_SIDE.BOTTOM:
 			$BottomEdgeComponent.can_connect = set_value
+			if set_value: $ColorBottom.color = Color(0, 1, 0)
+			else: $ColorBottom.color = Color(1, 0, 0)
 
 func turn_off_edges():
 	$LeftEdgeComponent/CollisionShape2D.disabled = true
@@ -167,10 +184,19 @@ func turn_off_edges():
 
 
 # TODO: make these much more clean holy moly
+# BUG: This is so messy and likely causing all sorts of problems
+# potential fix: since desired behavior is to use mouse release to trigger
+# connection, use check_overlapping_bodies() on mouse release and make collision
+# decisions then
+# Release mouse -> if !check_overlapping_bodies().is_empty() -> find first pair (left-right, top-bottom)
+# edges -> connect
+
 func _on_left_edge_component_area_entered(area):
 
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		is_group_being_dragged() == true and\
+		$LeftEdgeComponent.can_connect == true and\
 		area.can_connect == true and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
 		
@@ -181,6 +207,8 @@ func _on_top_edge_component_area_entered(area):
 
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		is_group_being_dragged() == true and\
+		$TopEdgeComponent.can_connect == true and\
 		area.can_connect == true and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.BOTTOM:
 		
@@ -189,9 +217,11 @@ func _on_top_edge_component_area_entered(area):
 
 
 func _on_right_edge_component_area_entered(area):
-	return
+	
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		is_group_being_dragged() == true and\
+		$RightEdgeComponent.can_connect == true and\
 		area.can_connect == true and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.LEFT:
 		
@@ -199,9 +229,11 @@ func _on_right_edge_component_area_entered(area):
 
 
 func _on_bottom_edge_component_area_entered(area):
-	return
+	
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		is_group_being_dragged() == true and\
+		$BottomEdgeComponent.can_connect == true and\
 		area.can_connect == true and\
 		area.edge_side == EdgeComponent.EDGE_SIDE.TOP:
 			
@@ -217,19 +249,27 @@ func edge_entered(source_tile, connecting_tile, edge_connected_on):
 
 
 func _on_left_edge_component_area_exited(area):
-	edge_exited(self, area.get_parent())
+	if area.get_collision_layer_value(3) and\
+		area.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
+		edge_exited(self, area.get_parent())
 
 
 func _on_top_edge_component_area_exited(area):
-	edge_exited(self, area.get_parent())
+	if area.get_collision_layer_value(3) and\
+		area.edge_side == EdgeComponent.EDGE_SIDE.BOTTOM:
+		edge_exited(self, area.get_parent())
 
 
 func _on_right_edge_component_area_exited(area):
-	edge_exited(self, area.get_parent())
+	if area.get_collision_layer_value(3) and\
+		area.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
+		edge_exited(self, area.get_parent())
 
 
 func _on_bottom_edge_component_area_exited(area):
-	edge_exited(self, area.get_parent())
+	if area.get_collision_layer_value(3) and\
+		area.edge_side == EdgeComponent.EDGE_SIDE.TOP:
+		edge_exited(self, area.get_parent())
 
 func edge_exited(source_tile, connecting_tile):
 	dequeue_connection.emit(source_tile, connecting_tile)
@@ -259,16 +299,22 @@ func _on_repulser_area_exited(area):
 
 
 func _on_player_detector_area_entered(area):
-	has_player = true
+	if !is_group_being_dragged():
+		has_player = true
 
 
 func _on_player_detector_area_exited(area):
-	has_player = false
+	if !is_group_being_dragged():
+		has_player = false
 	
 func does_group_have_player() -> bool:
 	for t in tiles_connected_to:
 		if t.has_player: return true
 	return false
 
+func is_group_being_dragged() -> bool:
+	for t in tiles_connected_to:
+		if t.draggableComponent.being_dragged: return true
+	return false
 
 

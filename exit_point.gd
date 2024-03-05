@@ -15,5 +15,6 @@ func _process(delta):
 
 func _on_hitbox_area_entered(area):
 	print("heyo")
-	player_entered_exit.emit()
-	pass # Replace with function body.
+	if get_parent().does_group_have_player():
+		player_entered_exit.emit()
+		pass # Replace with function body.

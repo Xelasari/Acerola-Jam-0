@@ -175,7 +175,7 @@ func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile
 		tile_ref.position = tile_ref.position + Vector2(x_offset, y_offset)
 		if map[coord.y][coord.x] == 2:
 			tile_ref.blocks_player = true
-			tile_ref.spriteReference.texture = load("res://assets/blocked_tile.png")
+			tile_ref.spriteReference.texture = load("res://assets/wall_light.png")
 			tile_ref.staticBody2DReference.set_collision_layer_value(7, true)
 		if coord.x == points_of_interest["spawn"].x && coord.y == points_of_interest["spawn"].y:
 			starting_tile = tile_ref
@@ -226,14 +226,23 @@ func _on_dequeue_connection(tile1, tile2):
 			
 
 # BUG: Need to have a way to ensure that tiles can't be overlapping when attempting to connect
+# BUG: Maybe refine this to find the closest two connections and use that
 func _on_attempt_connection():
 	if connect_cooldown != 0:
 		connection_queue.clear()
 		return
 	if connection_queue.is_empty(): return
-	var connection = connection_queue.pop_front()
+	#var connection = connection_queue.pop_front()
 	
-	_on_connect_two_tiles(connection["tile1"], connection["tile2"], connection["edge_side"])
+	var closest_connection
+	var closest_distance : float = 9999999999
+	
+	for c in connection_queue:
+		if c["tile1"].position.distance_to(c["tile2"].position) < closest_distance:
+			closest_connection = c
+			closest_distance = c["tile1"].position.distance_to(c["tile2"].position)
+	
+	_on_connect_two_tiles(closest_connection["tile1"], closest_connection["tile2"], closest_connection["edge_side"])
 	connection_queue.clear()
 		
 
@@ -277,9 +286,10 @@ func _on_connect_two_tiles(tile1, tile2, edge_side):
 			shift_vector = tile1.local_position - tile2.local_position
 			shift_vector += Vector2i(0, -1)
 		EdgeComponent.EDGE_SIDE.BOTTOM:
+			shift_vector = tile1.local_position - tile2.local_position
 			shift_vector += Vector2i(0, 1)
 		EdgeComponent.EDGE_SIDE.RIGHT:
-			shift_vector = tile1.local_position + tile2.local_position
+			shift_vector = tile1.local_position - tile2.local_position
 			shift_vector += Vector2i(1, 0)
 		EdgeComponent.EDGE_SIDE.LEFT:
 			shift_vector = tile1.local_position - tile2.local_position
@@ -299,6 +309,26 @@ func _on_connect_two_tiles(tile1, tile2, edge_side):
 	var old_tile_group1 : Array = tile1.tiles_connected_to
 	var old_tile_group2 : Array = tile2.tiles_connected_to
 	
+	
+	
+	# using tile1, set new positions for clean tiling
+	
+	# BUG: This might be causing the strange shift, need more data though
+	# This definitely is the issue, may need to use a small shift (ie some value between 
+	
+	if old_tile_group1[0].does_group_have_player(): print("Group 1 has player")
+	if old_tile_group2[0].does_group_have_player(): print("Group 2 has player")
+	
+	if !old_tile_group1[0].does_group_have_player():
+		var reference_pos = tile2.position - Vector2(tile2.local_position * 32)
+		for t in old_tile_group1:
+			t.position = (reference_pos + Vector2((t.local_position * 32)))
+	else:
+		var reference_pos = tile1.position - Vector2(tile1.local_position * 32)
+		for t in old_tile_group2:
+			t.position = (reference_pos + Vector2((t.local_position * 32)))
+
+	
 	for t in tile1.tiles_connected_to:
 		new_tiles_connected_to.append(t)
 	
@@ -307,22 +337,6 @@ func _on_connect_two_tiles(tile1, tile2, edge_side):
 		
 	for t in new_tiles_connected_to:
 		t.tiles_connected_to = new_tiles_connected_to
-	
-	# using tile1, set new positions for clean tiling
-	
-	# BUG: This might be causing the strange shift, need more data though
-	# This definitely is the issue, may need to use a small shift (ie some value between 
-	
-	if !old_tile_group1[0].does_group_have_player():
-		var reference_pos = tile1.position - Vector2(tile1.local_position * 32)
-		for t in old_tile_group2:
-			t.position = (reference_pos + Vector2((t.local_position * 32)))
-	else:
-		var reference_pos = tile2.position - Vector2(tile2.local_position * 32)
-		for t in old_tile_group1:
-			t.position = (reference_pos + Vector2((t.local_position * 32)))
-
-		
 		
 	# iterate through all tiles in new tile set to re-calculate top left corner
 	recalculate_local_position(tile1.tiles_connected_to)
@@ -533,6 +547,7 @@ func ensure_contiguous_group(tile_group : Array):
 			t.tiles_connected_to = new_tile_group
 			
 		recalculate_local_position(new_tile_group)
+		recalculate_edges(new_tile_group)
 		
 
 func _on_player_entered_exit():
