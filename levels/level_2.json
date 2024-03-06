@@ -24,6 +24,10 @@
 		"x" : 6,
 		"y" : 2
 	},
+	"number_of_orbs" : 0,
+	"orb_positions" : [
+		{ "x" : 0, "y" : 0 }
+	],
 	"cuts_allowed" : 2,
 	"current_level" : 2,
 	"next_level" : 3

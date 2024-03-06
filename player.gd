@@ -11,6 +11,9 @@ var walls_colliding_with : Array = []
 
 var tiles_on_top_of : Array = []
 
+
+signal player_died()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	speed = Vector2(2.0, 2.0)
@@ -53,6 +56,7 @@ func _process(delta):
 	
 	if tiles_on_top_of.is_empty():
 		print("Technically dead")
+		player_died.emit()
 	else:
 		var safe_or_not = true
 		for area in tiles_on_top_of:
@@ -60,6 +64,7 @@ func _process(delta):
 			for t in tile.tiles_connected_to:
 				if t.draggableComponent.being_dragged:
 					safe_or_not = false
+					player_died.emit()
 					#print("Technically also dead")
 		if safe_or_not:
 			pass

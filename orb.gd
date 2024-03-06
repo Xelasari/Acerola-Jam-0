@@ -1,7 +1,6 @@
 extends Node2D
 
-signal player_entered_exit()
-
+signal player_touched_orb()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,4 +14,6 @@ func _process(delta):
 
 func _on_hitbox_area_entered(area):
 	if get_parent().does_group_have_player():
-		player_entered_exit.emit()
+		print("orb")
+		player_touched_orb.emit()
+		queue_free()

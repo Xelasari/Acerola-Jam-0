@@ -23,6 +23,8 @@ var has_player : bool = false
 
 var blocks_player : bool = false
 
+var is_cuttable : bool = true
+
 signal start_drag()
 signal end_drag()
 signal attempt_connection()
@@ -262,7 +264,7 @@ func _on_top_edge_component_area_exited(area):
 
 func _on_right_edge_component_area_exited(area):
 	if area.get_collision_layer_value(3) and\
-		area.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
+		area.edge_side == EdgeComponent.EDGE_SIDE.LEFT:
 		edge_exited(self, area.get_parent())
 
 

@@ -42,6 +42,7 @@ extends Node2D
 
 @export var tileScene : PackedScene
 @export var exitPointScene : PackedScene
+@export var orbScene : PackedScene
 
 var connect_cooldown : int = 0
 var connection_queue = []
@@ -66,6 +67,8 @@ var next_level : int
 
 
 signal load_next_level(level_number : int)
+signal exit_entered(level_number : int)
+signal orb_collected()
 
 
 # Called when the node enters the scene tree for the first time.
@@ -123,6 +126,10 @@ func create_map(map_data : Dictionary):
 	next_level = map_data["next_level"]
 	points_of_interest["spawn"] = Vector2i(map_data["spawn"].x, map_data["spawn"].y)
 	points_of_interest["exit"] = Vector2i(map_data["exit"].x, map_data["exit"].y)
+	points_of_interest["number_of_orbs"] = map_data["number_of_orbs"]
+	points_of_interest["orb_positions"] = []
+	for i in range(points_of_interest["number_of_orbs"]):
+		points_of_interest["orb_positions"].append(Vector2i(map_data["orb_positions"][i]["x"], map_data["orb_positions"][i]["y"]))
 	
 	#map_size = Vector2i(5, 6)
 	#test_map = [[0, 0, 0, 0, 0],
@@ -168,14 +175,24 @@ func step_through_map(map, map_size : Vector2i):
 	
 func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile, edge_side):
 	if map[coord.y][coord.x] == 0: return
-	if map[coord.y][coord.x] == 1 or map[coord.y][coord.x] == 2:
+	if map[coord.y][coord.x] != 0:
 		var tile_ref = create_tile_at(Vector2i(coord.x, coord.y))
 		var x_offset = 640 - ((map_size.x * 32) / 2)
 		var y_offset = 360 - ((map_size.y * 32) / 2)
 		tile_ref.position = tile_ref.position + Vector2(x_offset, y_offset)
 		if map[coord.y][coord.x] == 2:
 			tile_ref.blocks_player = true
+			tile_ref.is_cuttable = true
 			tile_ref.spriteReference.texture = load("res://assets/wall_light.png")
+			tile_ref.staticBody2DReference.set_collision_layer_value(7, true)
+		if map[coord.y][coord.x] == 3:
+			tile_ref.blocks_player = false
+			tile_ref.is_cuttable = false
+			tile_ref.spriteReference.texture = load("res://assets/checker_tile_dark.png")
+		if map[coord.y][coord.x] == 4:
+			tile_ref.blocks_player = true
+			tile_ref.is_cuttable = false
+			tile_ref.spriteReference.texture = load("res://assets/wall_dark.png")
 			tile_ref.staticBody2DReference.set_collision_layer_value(7, true)
 		if coord.x == points_of_interest["spawn"].x && coord.y == points_of_interest["spawn"].y:
 			starting_tile = tile_ref
@@ -183,6 +200,11 @@ func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile
 			var exit_point = exitPointScene.instantiate()
 			exit_point.connect("player_entered_exit", _on_player_entered_exit)
 			tile_ref.add_child(exit_point)
+		for i in range(points_of_interest["number_of_orbs"]):
+			if coord.x == points_of_interest["orb_positions"][i].x and coord.y == points_of_interest["orb_positions"][i].y:
+				var orb = orbScene.instantiate()
+				orb.connect("player_touched_orb", _on_player_touched_orb)
+				tile_ref.add_child(orb)
 		if test_tile_ref == null: test_tile_ref = tile_ref
 		if !current_building_group.has(tile_ref):
 			print("appending to group")
@@ -384,11 +406,34 @@ func _on_connect_two_tiles(tile1, tile2, edge_side):
 	
 	connect_cooldown = 3
 	
+func can_cut(tile_group, direction_of_cut, location_of_cut) -> bool:
+	# Need to add a loop here that checks if it is a valid cut
+	# An invalid cut would be anywhere the cut tries to take apart 2 dark tiles
+	var tiles_at : Dictionary
+	for t in tile_group:
+		tiles_at[t.local_position] = t
+		
+	for t in tile_group:
+		if direction_of_cut == "vertical":
+			if t.local_position.x == location_of_cut:
+				if tiles_at.has(t.local_position) and tiles_at.has(t.local_position + Vector2i(1, 0)):
+					if !tiles_at[t.local_position].is_cuttable and !tiles_at[t.local_position + Vector2i(1, 0)].is_cuttable:
+						return false
+		
+		if direction_of_cut == "horizontal":
+			if t.local_position.y == location_of_cut:
+				if tiles_at.has(t.local_position) and tiles_at.has(t.local_position + Vector2i(0, 1)):
+					if !tiles_at[t.local_position].is_cuttable and !tiles_at[t.local_position + Vector2i(0, 1)].is_cuttable:
+						return false
+	
+	return true
+	
 # Location of cut will use the lower of the two indexes
 # i.e. 0 will cut between 0 and 1, 3 will cut between 3 and 4
 func cut_tiles(tile_group, direction_of_cut, location_of_cut):
 	var new_tile_group1 = []
 	var new_tile_group2 = []
+	
 	
 	for t in tile_group:
 		if direction_of_cut == "vertical":
@@ -552,4 +597,9 @@ func ensure_contiguous_group(tile_group : Array):
 
 func _on_player_entered_exit():
 	print("Yippie")
-	load_next_level.emit(next_level)
+	#load_next_level.emit(next_level)
+	exit_entered.emit(next_level)
+	
+func _on_player_touched_orb():
+	print("Orb Collected")
+	orb_collected.emit()
