@@ -88,7 +88,7 @@ func create_tile_at(local_coord) -> Node:
 	var new_tile = tileScene.instantiate()
 	new_tile.position = local_coord * 32
 	
-	print("Creating tile at: " + str(new_tile.position))
+	#print("Creating tile at: " + str(new_tile.position))
 	new_tile.local_position = local_coord
 	#new_tile.connect("start_drag", _on_start_drag)
 	#new_tile.connect("end_drag", _on_end_drag)
@@ -207,7 +207,7 @@ func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile
 				tile_ref.add_child(orb)
 		if test_tile_ref == null: test_tile_ref = tile_ref
 		if !current_building_group.has(tile_ref):
-			print("appending to group")
+			#print("appending to group")
 			current_building_group.append(tile_ref)
 	
 	# Check top

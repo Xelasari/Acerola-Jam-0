@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://3a66x5n51qbc"]
+[gd_scene load_steps=9 format=3 uid="uid://3a66x5n51qbc"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_koi76"]
 [ext_resource type="PackedScene" uid="uid://cv4h0203et3ea" path="res://tile_group.tscn" id="2_ppq8d"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ybedp34dhcor" path="res://assets/wallhaven-42190.jpg" id="4_32ndq"]
 [ext_resource type="Script" path="res://Level.gd" id="5_ijrof"]
 [ext_resource type="PackedScene" uid="uid://c3qol24ks2ua1" path="res://slicer.tscn" id="7_8xnds"]
+[ext_resource type="Texture2D" uid="uid://dft7njf55p5ic" path="res://assets/knife_with_sheen.png" id="8_h8y6w"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_koi76")
@@ -30,6 +31,14 @@ scale = Vector2(0.558095, 0.558095)
 texture = ExtResource("4_32ndq")
 
 [node name="Slicer" parent="Level" instance=ExtResource("7_8xnds")]
+
+[node name="TextureRect" type="TextureRect" parent="Level"]
+texture_filter = 1
+offset_left = 1182.0
+offset_top = 621.0
+offset_right = 1280.0
+offset_bottom = 719.0
+texture = ExtResource("8_h8y6w")
 
 [node name="CutsRemaining" type="Label" parent="."]
 offset_right = 40.0

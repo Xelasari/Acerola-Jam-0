@@ -21,7 +21,7 @@ var restart_cooldown : int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	playerReference = $Player
+	#playerReference = $Player
 	cutsRemainingLabel = get_parent().get_node("CutsRemaining")
 	
 	var tm = tileManagerScene.instantiate()
@@ -78,7 +78,7 @@ func load_map_data():
 				
 				map_data[file_name.split(".")[0]] = json_as_dict
 				
-				print(map_data)
+				#print(map_data)
 				
 			file_name = dir.get_next()
 	else:
@@ -97,6 +97,8 @@ func load_level(level_number : int):
 func _on_slicer_cut_at(tile_group, direction_of_cut, location_of_cut):
 	if tileManager.can_cut(tile_group, direction_of_cut, location_of_cut) and\
 		cuts_remaining > 0:
+		if $Slicer/SlicerAudioPlayer.playing != true:
+			$Slicer/SlicerAudioPlayer.playing = true
 		tileManager.cut_tiles(tile_group, direction_of_cut, location_of_cut)
 		cuts_remaining -= 1
 	
@@ -108,8 +110,8 @@ func _on_load_next_level(level_number : int):
 	#load_level(level_number)
 
 func _on_exit_entered(level_number : int):
-	print(orb_counter)
-	print(orbs_in_level)
+	#print(orb_counter)
+	#print(orbs_in_level)
 	if orb_counter == orbs_in_level:
 		tileManager.call_deferred("clear_map")
 		call_deferred("load_level", level_number)

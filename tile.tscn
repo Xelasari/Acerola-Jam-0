@@ -50,40 +50,44 @@ shape = SubResource("RectangleShape2D_bqg63")
 [node name="LeftEdgeComponent" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 4
+input_pickable = false
 script = ExtResource("3_bdptn")
 edge_side = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftEdgeComponent"]
-position = Vector2(-17, 0)
+position = Vector2(-16, 0)
 shape = SubResource("RectangleShape2D_w3k8e")
 
 [node name="TopEdgeComponent" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 4
+input_pickable = false
 script = ExtResource("3_bdptn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopEdgeComponent"]
-position = Vector2(0, -17)
+position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_qtebb")
 
 [node name="RightEdgeComponent" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 4
+input_pickable = false
 script = ExtResource("3_bdptn")
 edge_side = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightEdgeComponent"]
-position = Vector2(17, 0)
+position = Vector2(16, 0)
 shape = SubResource("RectangleShape2D_6o0o2")
 
 [node name="BottomEdgeComponent" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 4
+input_pickable = false
 script = ExtResource("3_bdptn")
 edge_side = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomEdgeComponent"]
-position = Vector2(0, 17)
+position = Vector2(0, 16)
 shape = SubResource("RectangleShape2D_fvpfp")
 
 [node name="Label" type="Label" parent="."]
@@ -101,6 +105,7 @@ script = ExtResource("5_y8ck8")
 [node name="Repulser" type="Area2D" parent="."]
 collision_layer = 8
 collision_mask = 8
+input_pickable = false
 script = ExtResource("6_rs5tl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Repulser"]
@@ -121,32 +126,32 @@ collision_mask = 0
 shape = SubResource("RectangleShape2D_5vbfa")
 
 [node name="ColorRight" type="ColorRect" parent="."]
-visible = false
-offset_left = 10.0
-offset_top = -4.0
-offset_right = 15.0
-offset_bottom = 4.0
+offset_left = 14.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(1, 1, 1, 0)
 
 [node name="ColorBottom" type="ColorRect" parent="."]
-visible = false
-offset_left = -5.0
-offset_top = 11.0
-offset_right = 5.0
-offset_bottom = 15.0
+offset_left = -16.0
+offset_top = 14.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(1, 1, 1, 0)
 
 [node name="ColorTop" type="ColorRect" parent="."]
-visible = false
-offset_left = -5.0
-offset_top = -15.0
-offset_right = 5.0
-offset_bottom = -11.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = -14.0
+color = Color(1, 1, 1, 0)
 
 [node name="ColorLeft" type="ColorRect" parent="."]
-visible = false
-offset_left = -15.0
-offset_top = -4.0
-offset_right = -10.0
-offset_bottom = 4.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = -14.0
+offset_bottom = 16.0
+color = Color(1, 1, 1, 0)
 
 [connection signal="input_event" from="DraggableComponent" to="." method="_on_draggable_component_input_event"]
 [connection signal="mouse_entered" from="DraggableComponent" to="." method="_on_draggable_component_mouse_entered"]

@@ -98,8 +98,24 @@ func _process(delta):
 		var delta_pos = 5 * delta * vector_to_move
 		position += delta_pos
 		propogate_new_position(delta_pos)
-		
-	pass
+	
+	var c
+	c = $ColorRight.get_color()
+	if c.a > 0:
+		var new_color = Color(0, 0, 0, c.a - 0.05)
+		$ColorRight.set_color(new_color)
+	c = $ColorBottom.get_color()
+	if c.a > 0:
+		var new_color = Color(0, 0, 0, c.a - 0.05)
+		$ColorBottom.set_color(new_color)
+	c = $ColorTop.get_color()
+	if c.a > 0:
+		var new_color = Color(0, 0, 0, c.a - 0.05)
+		$ColorTop.set_color(new_color)
+	c = $ColorLeft.get_color()
+	if c.a > 0:
+		var new_color = Color(0, 0, 0, c.a - 0.05)
+		$ColorLeft.set_color(new_color)
 
 func propogate_new_position(delta_pos):
 	for t in tiles_connected_to:
@@ -163,20 +179,20 @@ func set_edge_connectivity(side : EdgeComponent.EDGE_SIDE, set_value : bool):
 	match side:
 		EdgeComponent.EDGE_SIDE.LEFT:
 			$LeftEdgeComponent.can_connect = set_value
-			if set_value: $ColorLeft.color = Color(0, 1, 0)
-			else: $ColorLeft.color = Color(1, 0, 0)
+			#if set_value: $ColorLeft.color = Color(0, 1, 0)
+			#else: $ColorLeft.color = Color(1, 0, 0)
 		EdgeComponent.EDGE_SIDE.TOP:
 			$TopEdgeComponent.can_connect = set_value
-			if set_value: $ColorTop.color = Color(0, 1, 0)
-			else: $ColorTop.color = Color(1, 0, 0)
+			#if set_value: $ColorTop.color = Color(0, 1, 0)
+			#else: $ColorTop.color = Color(1, 0, 0)
 		EdgeComponent.EDGE_SIDE.RIGHT:
 			$RightEdgeComponent.can_connect = set_value
-			if set_value: $ColorRight.color = Color(0, 1, 0)
-			else: $ColorRight.color = Color(1, 0, 0)
+			#if set_value: $ColorRight.color = Color(0, 1, 0)
+			#else: $ColorRight.color = Color(1, 0, 0)
 		EdgeComponent.EDGE_SIDE.BOTTOM:
 			$BottomEdgeComponent.can_connect = set_value
-			if set_value: $ColorBottom.color = Color(0, 1, 0)
-			else: $ColorBottom.color = Color(1, 0, 0)
+			#if set_value: $ColorBottom.color = Color(0, 1, 0)
+			#else: $ColorBottom.color = Color(1, 0, 0)
 
 func turn_off_edges():
 	$LeftEdgeComponent/CollisionShape2D.disabled = true
@@ -318,5 +334,35 @@ func is_group_being_dragged() -> bool:
 	for t in tiles_connected_to:
 		if t.draggableComponent.being_dragged: return true
 	return false
+
+
+# takes a tile and a direction and highlights all edges along that line
+func turn_on_highlight_line(area, direction):
+	if direction == "vertical":
+		for t in tiles_connected_to:
+			if area.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
+				$ColorRight.color = Color(0, 0, 0, 1)
+			if area.edge_side == EdgeComponent.EDGE_SIDE.LEFT:
+				$ColorLeft.color = Color(0, 0, 0, 1)
+	if direction == "horizontal":
+		for t in tiles_connected_to:
+			if area.edge_side == EdgeComponent.EDGE_SIDE.BOTTOM:
+				$ColorBottom.color = Color(0, 0, 0, 1)
+			if area.edge_side == EdgeComponent.EDGE_SIDE.TOP:
+				$ColorTop.color = Color(0, 0, 0, 1)
+	
+func turn_off_highlight_line(area, direction):
+	#if direction == "vertical":
+	for t in tiles_connected_to:
+		if area.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
+			$ColorRight.color = Color(0, 0, 0, 0)
+		if area.edge_side == EdgeComponent.EDGE_SIDE.LEFT:
+			$ColorLeft.color = Color(0, 0, 0, 0)
+	#if direction == "horizontal":
+	for t in tiles_connected_to:
+		if area.edge_side == EdgeComponent.EDGE_SIDE.BOTTOM:
+			$ColorBottom.color = Color(0, 0, 0, 0)
+		if area.edge_side == EdgeComponent.EDGE_SIDE.TOP:
+			$ColorTop.color = Color(0, 0, 0, 0)
 
 

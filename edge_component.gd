@@ -9,6 +9,8 @@ enum EDGE_SIDE {TOP, RIGHT, BOTTOM, LEFT}
 
 var can_connect : bool = true
 
+var should_highlight : bool = false
+
 #var edge_side : int
 
 # Rectangle specs (4, 26) (26, 4) and pos of (-16, 0) (0, -16)

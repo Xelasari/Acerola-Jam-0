@@ -26,6 +26,17 @@ func _ready():
 func _process(delta):
 	var input_vector = Input.get_vector("left", "right", "up", "down")
 	
+	if input_vector != Vector2.ZERO:
+		if input_vector.x < 0:
+			$PlayerAnimatedSprite.flip_h = true
+		else:
+			$PlayerAnimatedSprite.flip_h = false
+		$PlayerAnimatedSprite.play("walk")
+	else:
+		$PlayerAnimatedSprite.play("idle")
+	
+	
+	
 	#if walls_colliding_with.is_empty(): position += (speed * speed_scale) * input_vector
 	#else: position += (speed * speed_scale * -1) * input_vector
 	
@@ -76,12 +87,16 @@ func _on_hitbox_set_speed_scale(scale):
 
 
 func _on_ground_detector_area_entered(area):
+	if area.get_parent().is_group_being_dragged(): return
+	
 	if area.get_parent().blocks_player:
 		walls_colliding_with.append(area)
 	tiles_on_top_of.append(area)
 
 
 func _on_ground_detector_area_exited(area):
+	if area.get_parent().is_group_being_dragged(): return
+	
 	if area.get_parent().blocks_player:
 		walls_colliding_with.erase(area)
 	tiles_on_top_of.erase(area)
