@@ -27,9 +27,9 @@ func _process(delta):
 	var input_vector = Input.get_vector("left", "right", "up", "down")
 	
 	if input_vector != Vector2.ZERO:
-		if input_vector.x < 0:
+		if input_vector.x < -0.05:
 			$PlayerAnimatedSprite.flip_h = true
-		else:
+		elif input_vector.x > 0.05:
 			$PlayerAnimatedSprite.flip_h = false
 		$PlayerAnimatedSprite.play("walk")
 	else:
@@ -66,7 +66,7 @@ func _process(delta):
 	
 	
 	if tiles_on_top_of.is_empty():
-		print("Technically dead")
+		#print("Technically dead")
 		player_died.emit()
 	else:
 		var safe_or_not = true

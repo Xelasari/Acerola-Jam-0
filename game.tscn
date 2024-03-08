@@ -1,13 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://3a66x5n51qbc"]
+[gd_scene load_steps=14 format=3 uid="uid://3a66x5n51qbc"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_koi76"]
 [ext_resource type="PackedScene" uid="uid://cv4h0203et3ea" path="res://tile_group.tscn" id="2_ppq8d"]
 [ext_resource type="PackedScene" uid="uid://clfhv0k3obo7t" path="res://tile_manager.tscn" id="3_0lihf"]
 [ext_resource type="PackedScene" uid="uid://c1no6g63ae2al" path="res://player.tscn" id="3_3spd3"]
-[ext_resource type="Texture2D" uid="uid://ybedp34dhcor" path="res://assets/wallhaven-42190.jpg" id="4_32ndq"]
 [ext_resource type="Script" path="res://Level.gd" id="5_ijrof"]
 [ext_resource type="PackedScene" uid="uid://c3qol24ks2ua1" path="res://slicer.tscn" id="7_8xnds"]
+[ext_resource type="Script" path="res://Background.gd" id="7_pybko"]
+[ext_resource type="Texture2D" uid="uid://d15ih7hfiwltq" path="res://assets/background.png" id="7_tolkj"]
+[ext_resource type="Texture2D" uid="uid://q171g8war6qe" path="res://assets/far_planets.png" id="8_27bw6"]
 [ext_resource type="Texture2D" uid="uid://dft7njf55p5ic" path="res://assets/knife_with_sheen.png" id="8_h8y6w"]
+[ext_resource type="Texture2D" uid="uid://itwndqbeoi02" path="res://assets/Blackhole.png" id="9_ddfwp"]
+[ext_resource type="Texture2D" uid="uid://b07ea2sple2ge" path="res://assets/close_planets.png" id="9_ghelw"]
+[ext_resource type="Texture2D" uid="uid://djyipxrrphgeu" path="res://assets/small_stars.png" id="10_maf5a"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_koi76")
@@ -21,14 +26,61 @@ playerScene = ExtResource("3_3spd3")
 tileManagerScene = ExtResource("3_0lihf")
 slicerScene = ExtResource("7_8xnds")
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="Level"]
+[node name="Background" type="ParallaxBackground" parent="Level"]
+script = ExtResource("7_pybko")
 
-[node name="Sprite2D" type="Sprite2D" parent="Level/ParallaxBackground"]
+[node name="SpaceBackground" type="Sprite2D" parent="Level/Background"]
 modulate = Color(0.384314, 0.384314, 0.384314, 1)
-z_index = -1
-position = Vector2(642.857, 585)
-scale = Vector2(0.558095, 0.558095)
-texture = ExtResource("4_32ndq")
+z_index = -6
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(640, 360)
+scale = Vector2(4, 4)
+texture = ExtResource("7_tolkj")
+
+[node name="StarLayer" type="ParallaxLayer" parent="Level/Background"]
+z_index = -5
+motion_scale = Vector2(0.2, 0.2)
+motion_mirroring = Vector2(1280, 0)
+
+[node name="Stars" type="Sprite2D" parent="Level/Background/StarLayer"]
+z_index = -5
+texture_filter = 1
+position = Vector2(640, 360)
+scale = Vector2(4, 4)
+texture = ExtResource("10_maf5a")
+
+[node name="FarPlanetsLayer" type="ParallaxLayer" parent="Level/Background"]
+z_index = -4
+motion_scale = Vector2(0.6, 0.6)
+motion_mirroring = Vector2(1280, 0)
+
+[node name="FarPlanets" type="Sprite2D" parent="Level/Background/FarPlanetsLayer"]
+z_index = -4
+texture_filter = 1
+position = Vector2(640, 360)
+scale = Vector2(4, 4)
+texture = ExtResource("8_27bw6")
+
+[node name="ClosePlanetsLayer" type="ParallaxLayer" parent="Level/Background"]
+z_index = -3
+motion_mirroring = Vector2(1280, 0)
+
+[node name="ClosePlanets" type="Sprite2D" parent="Level/Background/ClosePlanetsLayer"]
+z_index = -3
+texture_filter = 1
+position = Vector2(640, 360)
+scale = Vector2(4, 4)
+texture = ExtResource("9_ghelw")
+
+[node name="Blackhole" type="Sprite2D" parent="Level/Background"]
+modulate = Color(0.384314, 0.384314, 0.384314, 1)
+z_index = -2
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(640, 360)
+scale = Vector2(4, 4)
+texture = ExtResource("9_ddfwp")
 
 [node name="Slicer" parent="Level" instance=ExtResource("7_8xnds")]
 
@@ -41,7 +93,7 @@ offset_bottom = 719.0
 texture = ExtResource("8_h8y6w")
 
 [node name="CutsRemaining" type="Label" parent="."]
-offset_right = 40.0
+offset_right = 126.0
 offset_bottom = 23.0
 text = "Cuts Remaining:"
 

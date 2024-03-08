@@ -59,6 +59,7 @@ z_index = 1
 script = ExtResource("1_75cgs")
 
 [node name="PlayerAnimatedSprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_drpeq")
 animation = &"walk"
 
