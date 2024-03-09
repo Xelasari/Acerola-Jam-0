@@ -25,6 +25,12 @@ var blocks_player : bool = false
 
 var is_cuttable : bool = true
 
+var is_overlapping : bool = false
+
+var areas_overlapping : Array
+
+
+
 signal start_drag()
 signal end_drag()
 signal attempt_connection()
@@ -45,6 +51,11 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	#if is_group_overlapping():
+	#	spriteReference.modulate = Color(0, 1, 0)
+	#else: 
+	#	spriteReference.modulate = Color(1, 0, 0)
+		
 	if !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		draggableComponent.being_dragged = false
 	$Label.text = str(local_position)
@@ -210,9 +221,10 @@ func turn_off_edges():
 # edges -> connect
 
 func _on_left_edge_component_area_entered(area):
-
+	
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		is_group_overlapping() == false and\
 		is_group_being_dragged() == true and\
 		$LeftEdgeComponent.can_connect == true and\
 		area.can_connect == true and\
@@ -225,6 +237,7 @@ func _on_top_edge_component_area_entered(area):
 
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		is_group_overlapping() == false and\
 		is_group_being_dragged() == true and\
 		$TopEdgeComponent.can_connect == true and\
 		area.can_connect == true and\
@@ -235,9 +248,10 @@ func _on_top_edge_component_area_entered(area):
 
 
 func _on_right_edge_component_area_entered(area):
-	
+
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		is_group_overlapping() == false and\
 		is_group_being_dragged() == true and\
 		$RightEdgeComponent.can_connect == true and\
 		area.can_connect == true and\
@@ -247,9 +261,10 @@ func _on_right_edge_component_area_entered(area):
 
 
 func _on_bottom_edge_component_area_entered(area):
-	
+
 	if area.get_collision_layer_value(3) and\
 		#draggableComponent.being_dragged and\
+		is_group_overlapping() == false and\
 		is_group_being_dragged() == true and\
 		$BottomEdgeComponent.can_connect == true and\
 		area.can_connect == true and\
@@ -325,6 +340,18 @@ func _on_player_detector_area_exited(area):
 	if !is_group_being_dragged():
 		has_player = false
 	
+	
+func _on_tile_detector_area_entered(area):
+	#if is_group_being_dragged():
+	is_overlapping = true
+	areas_overlapping.append(area)
+
+
+func _on_tile_detector_area_exited(area):
+	is_overlapping = false
+	areas_overlapping.erase(area)
+	
+	
 func does_group_have_player() -> bool:
 	for t in tiles_connected_to:
 		if t.has_player: return true
@@ -333,6 +360,11 @@ func does_group_have_player() -> bool:
 func is_group_being_dragged() -> bool:
 	for t in tiles_connected_to:
 		if t.draggableComponent.being_dragged: return true
+	return false
+	
+func is_group_overlapping() -> bool:
+	for t in tiles_connected_to:
+		if !t.areas_overlapping.is_empty(): return true
 	return false
 
 
@@ -364,5 +396,8 @@ func turn_off_highlight_line(area, direction):
 			$ColorBottom.color = Color(0, 0, 0, 0)
 		if area.edge_side == EdgeComponent.EDGE_SIDE.TOP:
 			$ColorTop.color = Color(0, 0, 0, 0)
+
+
+
 
 

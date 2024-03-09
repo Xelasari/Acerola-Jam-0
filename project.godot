@@ -73,3 +73,4 @@ restart={
 2d_physics/layer_5="Draggable"
 2d_physics/layer_6="PlayerDetector"
 2d_physics/layer_7="BlockingTile"
+2d_physics/layer_8="CheckOtherTiles"

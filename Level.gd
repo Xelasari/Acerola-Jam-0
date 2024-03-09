@@ -43,7 +43,7 @@ func _ready():
 	
 	load_map_data()
 	
-	load_level(99)
+	load_level(5)
 
 
 

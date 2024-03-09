@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cdweu08hnlext"]
+[gd_scene load_steps=16 format=3 uid="uid://cdweu08hnlext"]
 
 [ext_resource type="Script" path="res://Tile.gd" id="1_fomhf"]
 [ext_resource type="Script" path="res://draggable_component.gd" id="2_u3k8y"]
@@ -27,6 +27,9 @@ radius = 36.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_67x06"]
 size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_djbfa"]
+size = Vector2(26, 26)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5vbfa"]
 size = Vector2(32, 32)
@@ -118,6 +121,14 @@ input_pickable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
 shape = SubResource("RectangleShape2D_67x06")
 
+[node name="TileDetector" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 128
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TileDetector"]
+shape = SubResource("RectangleShape2D_djbfa")
+
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 0
 collision_mask = 0
@@ -169,3 +180,5 @@ color = Color(1, 1, 1, 0)
 [connection signal="area_exited" from="Repulser" to="." method="_on_repulser_area_exited"]
 [connection signal="area_entered" from="PlayerDetector" to="." method="_on_player_detector_area_entered"]
 [connection signal="area_exited" from="PlayerDetector" to="." method="_on_player_detector_area_exited"]
+[connection signal="area_entered" from="TileDetector" to="." method="_on_tile_detector_area_entered"]
+[connection signal="area_exited" from="TileDetector" to="." method="_on_tile_detector_area_exited"]

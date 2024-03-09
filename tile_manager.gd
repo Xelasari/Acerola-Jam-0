@@ -86,6 +86,7 @@ func _process(delta):
 	
 func create_tile_at(local_coord) -> Node:
 	var new_tile = tileScene.instantiate()
+	
 	new_tile.position = local_coord * 32
 	
 	#print("Creating tile at: " + str(new_tile.position))
@@ -97,6 +98,7 @@ func create_tile_at(local_coord) -> Node:
 	new_tile.connect("queue_connection", _on_queue_connection)
 	new_tile.connect("dequeue_connection", _on_dequeue_connection)
 	#tiles_in_group.append(new_tile)
+	# BUG: Why is add_child causing a printout in output?
 	add_child(new_tile)
 	return new_tile
 

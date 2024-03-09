@@ -53,7 +53,7 @@ func _process(delta):
 				#	break
 	if Input.is_action_just_pressed("right click"):
 		orientation = (orientation + 1) % 2
-		print(orientation)
+		#print(orientation)
 		
 		if orientation == ORIENTATION.VERTICAL:
 			collisionShape2D.rotate(deg_to_rad(90))
