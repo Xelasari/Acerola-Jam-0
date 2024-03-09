@@ -22,7 +22,7 @@ var restart_cooldown : int
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#playerReference = $Player
-	cutsRemainingLabel = get_parent().get_node("CutsRemaining")
+	cutsRemainingLabel = get_node("CutsRemaining")
 	
 	var tm = tileManagerScene.instantiate()
 	tm.connect("load_next_level", _on_load_next_level)
@@ -43,13 +43,13 @@ func _ready():
 	
 	load_map_data()
 	
-	load_level(1)
+	load_level(99)
 
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	cutsRemainingLabel.text = "Cuts Remaining: " + str(cuts_remaining)
+	cutsRemainingLabel.text = "x" + str(cuts_remaining)
 	
 	if restart_cooldown != 0:
 		restart_cooldown -= 1

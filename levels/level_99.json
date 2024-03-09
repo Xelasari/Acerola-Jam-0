@@ -1,0 +1,51 @@
+{
+	"current_level": 99,
+	"cuts_allowed": 1,
+	"exit": {
+		"x": 2,
+		"y": 1
+	},
+	"map": [
+		[
+			1,
+			1,
+			1,
+			4
+		],
+		[
+			1,
+			1,
+			1,
+			4
+		],
+		[
+			1,
+			1,
+			1,
+			4
+		],
+		[
+			4,
+			4,
+			4,
+			4
+		]
+	],
+	"map_size": {
+		"x": 4,
+		"y": 4
+	},
+	"name": "test",
+	"next_level": 99,
+	"number_of_orbs": 1,
+	"orb_positions": [
+		{
+			"x": 1,
+			"y": 2
+		}
+	],
+	"spawn": {
+		"x": 0,
+		"y": 1
+	}
+}

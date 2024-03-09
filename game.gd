@@ -7,6 +7,12 @@ extends Node2D
 
 var tileManager
 
+# Things to finished before submission
+# - Cuts as pick-up-able resources
+# - Notes to provide lore breadcrumbs
+# - Goal of 20 levels, maybe 25-30 as stretch
+# - Start menu + game end screen
+# - Music?
 
 # Game mechanics to add in:
 # - Portals

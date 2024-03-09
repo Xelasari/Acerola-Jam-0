@@ -84,6 +84,13 @@ texture = ExtResource("9_ddfwp")
 
 [node name="Slicer" parent="Level" instance=ExtResource("7_8xnds")]
 
+[node name="CutsRemaining" type="Label" parent="Level"]
+offset_left = 1182.0
+offset_top = 621.0
+offset_right = 1308.0
+offset_bottom = 644.0
+text = "x3"
+
 [node name="TextureRect" type="TextureRect" parent="Level"]
 texture_filter = 1
 offset_left = 1182.0
@@ -91,10 +98,5 @@ offset_top = 621.0
 offset_right = 1280.0
 offset_bottom = 719.0
 texture = ExtResource("8_h8y6w")
-
-[node name="CutsRemaining" type="Label" parent="."]
-offset_right = 126.0
-offset_bottom = 23.0
-text = "Cuts Remaining:"
 
 [connection signal="cut_at" from="Level/Slicer" to="Level" method="_on_slicer_cut_at"]

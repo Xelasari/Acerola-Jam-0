@@ -1,9 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://wqqtc1ukhckd"]
+[gd_scene load_steps=5 format=3 uid="uid://wqqtc1ukhckd"]
 
 [ext_resource type="Script" path="res://level_editor.gd" id="1_iie6x"]
 [ext_resource type="Texture2D" uid="uid://ty6asoqk0ayu" path="res://assets/tileset.png" id="2_cct3y"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lq5dv"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fq7gu"]
 texture = ExtResource("2_cct3y")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
@@ -11,29 +11,10 @@ texture_region_size = Vector2i(32, 32)
 2:0/0 = 0
 3:0/0 = 0
 0:1/0 = 0
-1:1/0 = 0
-2:1/0 = 0
-3:1/0 = 0
 
-[sub_resource type="TileSet" id="TileSet_vd2gq"]
+[sub_resource type="TileSet" id="TileSet_ja734"]
 tile_size = Vector2i(32, 32)
-sources/0 = SubResource("TileSetAtlasSource_lq5dv")
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yoea4"]
-texture = ExtResource("2_cct3y")
-texture_region_size = Vector2i(32, 32)
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-3:0/0 = 0
-0:1/0 = 0
-1:1/0 = 0
-2:1/0 = 0
-3:1/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_s0drl"]
-tile_size = Vector2i(32, 32)
-sources/0 = SubResource("TileSetAtlasSource_yoea4")
+sources/0 = SubResource("TileSetAtlasSource_fq7gu")
 
 [node name="LevelEditor" type="Node2D"]
 script = ExtResource("1_iie6x")
@@ -43,16 +24,12 @@ format = 2
 
 [node name="TileMap" type="TileMap" parent="."]
 texture_filter = 1
-tile_set = SubResource("TileSet_vd2gq")
+tile_set = SubResource("TileSet_ja734")
 rendering_quadrant_size = 4
 format = 2
-layer_0/name = "Tile Layer"
 layer_0/tile_data = PackedInt32Array(196608, 196608, 0, 196609, 196608, 0, 196610, 196608, 0, 196611, 196608, 0, 131075, 196608, 0, 65539, 196608, 0, 3, 196608, 0)
-layer_1/name = "Object Layer"
-layer_1/tile_data = PackedInt32Array()
 
 [node name="ObjectMap" type="TileMap" parent="."]
-tile_set = SubResource("TileSet_s0drl")
 format = 2
 
 [node name="Panel" type="Panel" parent="."]
@@ -63,22 +40,6 @@ offset_left = 980.0
 offset_right = 1280.0
 offset_bottom = 720.0
 grow_horizontal = 0
-
-[node name="Filename" type="TextEdit" parent="Panel"]
-offset_left = 1.0
-offset_top = 689.0
-offset_right = 206.0
-offset_bottom = 720.0
-placeholder_text = "Filename"
-
-[node name="LevelName" type="TextEdit" parent="Panel"]
-layout_mode = 0
-offset_left = 1.0
-offset_top = 654.0
-offset_right = 300.0
-offset_bottom = 689.0
-placeholder_text = "Level Name Here
-"
 
 [node name="LoadButton" type="Button" parent="Panel"]
 layout_mode = 0
@@ -97,11 +58,4 @@ offset_bottom = 720.0
 text = "Save
 "
 
-[node name="MenuButton" type="MenuButton" parent="Panel"]
-layout_mode = 0
-offset_right = 301.0
-offset_bottom = 31.0
-text = "Select Tile"
-
 [connection signal="pressed" from="Panel/LoadButton" to="." method="_on_load_button_pressed"]
-[connection signal="pressed" from="Panel/SaveButton" to="." method="_on_save_button_pressed"]
