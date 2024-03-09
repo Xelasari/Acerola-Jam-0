@@ -29,7 +29,6 @@ radius = 36.0
 size = Vector2(32, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_djbfa"]
-size = Vector2(26, 26)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5vbfa"]
 size = Vector2(32, 32)

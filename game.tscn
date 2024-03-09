@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://3a66x5n51qbc"]
+[gd_scene load_steps=17 format=3 uid="uid://3a66x5n51qbc"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_koi76"]
 [ext_resource type="PackedScene" uid="uid://cv4h0203et3ea" path="res://tile_group.tscn" id="2_ppq8d"]
@@ -13,6 +13,9 @@
 [ext_resource type="Texture2D" uid="uid://itwndqbeoi02" path="res://assets/Blackhole.png" id="9_ddfwp"]
 [ext_resource type="Texture2D" uid="uid://b07ea2sple2ge" path="res://assets/close_planets.png" id="9_ghelw"]
 [ext_resource type="Texture2D" uid="uid://djyipxrrphgeu" path="res://assets/small_stars.png" id="10_maf5a"]
+[ext_resource type="Texture2D" uid="uid://cxh4i0p0e6hmq" path="res://assets/q_indicator.png" id="14_6l63p"]
+[ext_resource type="Texture2D" uid="uid://bf18pcxgxuaxd" path="res://assets/mage_hand.png" id="14_h6n4d"]
+[ext_resource type="Texture2D" uid="uid://bojggysvoarrh" path="res://assets/e_indicator.png" id="16_pn0ia"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_koi76")
@@ -84,19 +87,57 @@ texture = ExtResource("9_ddfwp")
 
 [node name="Slicer" parent="Level" instance=ExtResource("7_8xnds")]
 
-[node name="CutsRemaining" type="Label" parent="Level"]
+[node name="HandGroup" type="Control" parent="Level"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1086.0
+offset_top = 621.0
+offset_right = 1184.0
+offset_bottom = 719.0
+
+[node name="HandIcon" type="TextureRect" parent="Level/HandGroup"]
+texture_filter = 1
+layout_mode = 0
+offset_right = 98.0
+offset_bottom = 98.0
+texture = ExtResource("14_h6n4d")
+
+[node name="HandKeyHint" type="TextureRect" parent="Level/HandGroup"]
+texture_filter = 1
+layout_mode = 0
+offset_top = 64.0
+offset_right = 40.0
+offset_bottom = 104.0
+texture = ExtResource("14_6l63p")
+
+[node name="KnifeGroup" type="Control" parent="Level"]
+layout_mode = 3
+anchors_preset = 0
 offset_left = 1182.0
 offset_top = 621.0
-offset_right = 1308.0
-offset_bottom = 644.0
+offset_right = 1222.0
+offset_bottom = 661.0
+
+[node name="KnifeIcon" type="TextureRect" parent="Level/KnifeGroup"]
+texture_filter = 1
+layout_mode = 0
+offset_right = 98.0
+offset_bottom = 98.0
+texture = ExtResource("8_h8y6w")
+
+[node name="CutsRemaining" type="Label" parent="Level/KnifeGroup"]
+layout_mode = 0
+offset_right = 126.0
+offset_bottom = 23.0
 text = "x3"
 
-[node name="TextureRect" type="TextureRect" parent="Level"]
+[node name="KnifeKeyHint" type="TextureRect" parent="Level/KnifeGroup"]
 texture_filter = 1
-offset_left = 1182.0
-offset_top = 621.0
-offset_right = 1280.0
-offset_bottom = 719.0
-texture = ExtResource("8_h8y6w")
+layout_mode = 0
+offset_left = 67.0
+offset_top = 64.0
+offset_right = 107.0
+offset_bottom = 104.0
+texture = ExtResource("16_pn0ia")
 
 [connection signal="cut_at" from="Level/Slicer" to="Level" method="_on_slicer_cut_at"]

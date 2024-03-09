@@ -22,8 +22,7 @@ var restart_cooldown : int
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#playerReference = $Player
-	cutsRemainingLabel = get_node("CutsRemaining")
-	
+	cutsRemainingLabel = get_node("KnifeGroup/CutsRemaining")
 	var tm = tileManagerScene.instantiate()
 	tm.connect("load_next_level", _on_load_next_level)
 	tm.connect("exit_entered", _on_exit_entered)
@@ -43,7 +42,7 @@ func _ready():
 	
 	load_map_data()
 	
-	load_level(5)
+	load_level(1)
 
 
 
@@ -97,8 +96,9 @@ func load_level(level_number : int):
 func _on_slicer_cut_at(tile_group, direction_of_cut, location_of_cut):
 	if tileManager.can_cut(tile_group, direction_of_cut, location_of_cut) and\
 		cuts_remaining > 0:
-		if $Slicer/SlicerAudioPlayer.playing != true:
-			$Slicer/SlicerAudioPlayer.playing = true
+		$Slicer/SlicerAudioPlayer.play()
+		#if $Slicer/SlicerAudioPlayer.playing != true:
+		#	$Slicer/SlicerAudioPlayer.playing = true
 		tileManager.cut_tiles(tile_group, direction_of_cut, location_of_cut)
 		cuts_remaining -= 1
 	

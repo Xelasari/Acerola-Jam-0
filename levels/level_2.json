@@ -28,6 +28,8 @@
 	"orb_positions" : [
 		{ "x" : 0, "y" : 0 }
 	],
+	"message": { "x" : 1, "y" : 6},
+	"message_text" : "And Garmrow, if [i]you're[/i] reading this, portals worked just fine before you tried figuring out what lies between the \"here\" and \"there\" and now look at the mess you've caused.",						
 	"cuts_allowed" : 2,
 	"current_level" : 2,
 	"next_level" : 3

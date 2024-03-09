@@ -13,6 +13,7 @@ var tileManager
 # - Goal of 20 levels, maybe 25-30 as stretch
 # - Start menu + game end screen
 # - Music?
+# - BUG: Need to have a "last valid position" if overlapping player
 
 # Game mechanics to add in:
 # - Portals

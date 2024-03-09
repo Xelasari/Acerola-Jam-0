@@ -14,5 +14,5 @@ func _process(delta):
 
 
 func _on_hitbox_area_entered(area):
-	if get_parent().does_group_have_player():
+	if get_parent().does_group_have_player() && !get_parent().is_group_overlapping():
 		player_entered_exit.emit()

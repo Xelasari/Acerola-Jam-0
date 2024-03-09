@@ -37,23 +37,23 @@ extends Node2D
 #	this should make a horizontal slice, between the y values of the tile
 # Also, maybe make a check to only cut based on tile group? (to prevent weird shenangins)
 
-# BUG: Need to really polish up drag and connect mechanic (connect on release mouse should really help)
-
 
 @export var tileScene : PackedScene
 @export var exitPointScene : PackedScene
 @export var orbScene : PackedScene
+@export var messageScene : PackedScene
 
 var connect_cooldown : int = 0
 var connection_queue = []
+
+
+var dragging_allowed : bool = true
+
 
 var check_next : Array[Vector2i]
 var already_checked : Array[Vector2i]
 var coords_to_check : Array[Vector2i]
 var current_building_group : Array
-
-
-var test_tile_ref = null
 
 
 var points_of_interest : Dictionary = {}
@@ -130,6 +130,8 @@ func create_map(map_data : Dictionary):
 	points_of_interest["exit"] = Vector2i(map_data["exit"].x, map_data["exit"].y)
 	points_of_interest["number_of_orbs"] = map_data["number_of_orbs"]
 	points_of_interest["orb_positions"] = []
+	points_of_interest["message"] = Vector2i(map_data["message"].x, map_data["message"].y)
+	points_of_interest["message_text"] = map_data["message_text"]
 	for i in range(points_of_interest["number_of_orbs"]):
 		points_of_interest["orb_positions"].append(Vector2i(map_data["orb_positions"][i]["x"], map_data["orb_positions"][i]["y"]))
 	
@@ -207,7 +209,10 @@ func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile
 				var orb = orbScene.instantiate()
 				orb.connect("player_touched_orb", _on_player_touched_orb)
 				tile_ref.add_child(orb)
-		if test_tile_ref == null: test_tile_ref = tile_ref
+		if coord.x == points_of_interest["message"].x && coord.y == points_of_interest["message"].y:
+			var msg = messageScene.instantiate()
+			msg.set_message_text(points_of_interest["message_text"])
+			tile_ref.add_child(msg)
 		if !current_building_group.has(tile_ref):
 			#print("appending to group")
 			current_building_group.append(tile_ref)
@@ -233,7 +238,7 @@ func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile
 func _on_queue_connection(tile1, tile2, edge_side):
 	var connection_entry = {}
 	
-	print("queue connection")
+	#print("queue connection")
 	
 	connection_entry["tile1"] = tile1
 	connection_entry["tile2"] = tile2

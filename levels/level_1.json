@@ -23,6 +23,8 @@
 	"orb_positions" : [
 		{ "x" : 0, "y" : 0 },
 	],
+	"message": { "x" : 1, "y" : 1},
+	"message_text" : "If you're reading this, you are the lucky soul who has been sent to fetch me from this little accident. Follow these notes and we'll both be out of this mess before lunchtime.",
 	"cuts_allowed" : 1,
 	"current_level" : 1,
 	"next_level" : 2

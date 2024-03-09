@@ -12,6 +12,11 @@ var vector_to_center : Vector2
 var local_position : Vector2i
 var parent_tile_group : Node
 
+
+var connection_attempted : bool = false
+var position_drag_check : bool = false
+var position_before_drag : Vector2
+
 # This is used to move all tiles attached to
 var tiles_connected_to : Array
 
@@ -58,6 +63,10 @@ func _process(delta):
 		
 	if !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		draggableComponent.being_dragged = false
+		
+		
+		
+		
 	$Label.text = str(local_position)
 	if draggableComponent.being_dragged:
 		var new_pos = get_global_mouse_position() - vector_to_center
@@ -145,6 +154,8 @@ func _on_draggable_component_mouse_exited():
 func _on_draggable_component_input_event(viewport, event, shape_idx):
 	if Input.is_action_just_pressed("left click") && draggableComponent.is_hovered && !does_group_have_player():
 		draggableComponent.being_dragged = true
+		position_drag_check = true
+		position_before_drag = position
 		clicked_at = get_global_mouse_position()
 		vector_to_center = clicked_at - position
 		start_drag.emit(clicked_at)
@@ -161,6 +172,8 @@ func _on_draggable_component_input_event(viewport, event, shape_idx):
 		
 		end_drag.emit()
 		attempt_connection.emit()
+		
+		
 
 func _on_edge_component_area_entered(area):
 	print("area entered")
