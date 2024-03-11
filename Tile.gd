@@ -25,6 +25,7 @@ var areas_to_move_away_from : Array
 
 # This is toggled when a player enters/leaves a tile
 var has_player : bool = false
+var cached_player_tile : Node = null
 
 var blocks_player : bool = false
 
@@ -33,7 +34,6 @@ var is_cuttable : bool = true
 var is_overlapping : bool = false
 
 var areas_overlapping : Array
-
 
 
 signal start_drag()
@@ -61,24 +61,31 @@ func _process(delta):
 	#else: 
 	#	spriteReference.modulate = Color(1, 0, 0)
 		
-	if !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if draggableComponent.being_dragged and !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		draggableComponent.being_dragged = false
 		
 		
 		
-		
+	
 	$Label.text = str(local_position)
 	if draggableComponent.being_dragged:
 		var new_pos = get_global_mouse_position() - vector_to_center
 		var delta_pos = new_pos - position
 		position = new_pos
 		propogate_new_position(delta_pos)
-		
+	
+	
+	# BUG: This causes so much lag, need to figure out a good way to optimize it
+	# Maybe do a pre-check that checks to see if 
+	
 	if !draggableComponent.being_dragged:
 		var vector_to_move : Vector2 = Vector2(0, 0)
 		var area_count : int = 1
 		var movement_intensity : float = 5.0
-		for a in areas_to_move_away_from:
+		for a : Area2D in areas_to_move_away_from:
+			if a.get_parent().tiles_connected_to.has(self):
+				continue
+			
 			# This block ensures that dragged groups don't push other tiles away
 			var should_skip : bool = false
 			for t in a.get_parent().tiles_connected_to:
@@ -116,8 +123,9 @@ func _process(delta):
 		var final_movement_speed = movement_intensity / area_count
 		
 		var delta_pos = 5 * delta * vector_to_move
-		position += delta_pos
-		propogate_new_position(delta_pos)
+		if delta_pos != Vector2.ZERO:
+			position += delta_pos
+			propogate_new_position(delta_pos)
 	
 	var c
 	c = $ColorRight.get_color()
@@ -144,10 +152,12 @@ func propogate_new_position(delta_pos):
 
 
 func _on_draggable_component_mouse_entered():
+	#$Sprite2D.modulate = Color(0, 1, 0)
 	draggableComponent.is_hovered = true
 
 
 func _on_draggable_component_mouse_exited():
+	#$Sprite2D.modulate = Color(1, 0, 0)
 	draggableComponent.is_hovered = false
 
 
@@ -366,8 +376,13 @@ func _on_tile_detector_area_exited(area):
 	
 	
 func does_group_have_player() -> bool:
+	if cached_player_tile != null:
+		if cached_player_tile.has_player: return true
+		
 	for t in tiles_connected_to:
-		if t.has_player: return true
+		if t.has_player:
+			cached_player_tile = t
+			return true
 	return false
 
 func is_group_being_dragged() -> bool:
@@ -410,7 +425,10 @@ func turn_off_highlight_line(area, direction):
 		if area.edge_side == EdgeComponent.EDGE_SIDE.TOP:
 			$ColorTop.color = Color(0, 0, 0, 0)
 
-
+func has_coord_in_group(coord : Vector2i):
+	for t in tiles_connected_to:
+		if t.local_position == coord: return true
+	return false
 
 
 

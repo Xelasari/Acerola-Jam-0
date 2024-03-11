@@ -1,36 +1,37 @@
 {
-	"name" : "Level 1",
-	"map_size" : {
-		"x" : 9,
-		"y" : 10
-	},
-	"map" : [
-			[0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 2, 2, 2, 2, 2],
-			[0, 0, 0, 0, 2, 1, 1, 1, 2],
-			[0, 0, 0, 0, 2, 1, 1, 1, 2],
-			[0, 0, 0, 0, 2, 1, 1, 1, 2],
-			[2, 2, 2, 2, 2, 2, 2, 2, 2],
-			[2, 1, 1, 1, 2, 1, 1, 1, 2],
-			[2, 1, 1, 1, 2, 1, 1, 1, 2],
-			[2, 1, 1, 1, 2, 1, 1, 1, 2],
-			[2, 2, 2, 2, 2, 2, 2, 2, 2]
-			],
-	"spawn" : {
-		"x" : 1,
-		"y" : 6
-	},
-	"exit" : {
-		"x" : 6,
-		"y" : 2
-	},
-	"number_of_orbs" : 0,
-	"orb_positions" : [
-		{ "x" : 0, "y" : 0 }
-	],
-	"message": { "x" : 1, "y" : 6},
-	"message_text" : "And Garmrow, if [i]you're[/i] reading this, portals worked just fine before you tried figuring out what lies between the \"here\" and \"there\" and now look at the mess you've caused.",						
-	"cuts_allowed" : 2,
-	"current_level" : 2,
-	"next_level" : 3
+  "current_level": "level_2",
+  "exit": {
+    "x": 7,
+    "y": 6
+  },
+  "has_message": true,
+  "knife_positions": [],
+  "map": [
+    [ 2, 2, 2, 2, 2, 2, 2, 2, 2 ],
+    [ 2, 1, 1, 1, 1, 1, 1, 1, 2 ],
+    [ 2, 1, 1, 1, 1, 1, 1, 1, 2 ],
+    [ 2, 2, 2, 2, 2, 2, 1, 1, 2 ],
+    [ 0, 0, 0, 0, 0, 2, 1, 1, 2 ],
+    [ 0, 0, 0, 0, 0, 2, 1, 1, 2 ],
+    [ 0, 0, 0, 0, 0, 2, 1, 1, 2 ],
+    [ 0, 0, 0, 0, 0, 2, 2, 2, 2 ]
+  ],
+  "map_size": {
+    "x": 9,
+    "y": 8
+  },
+  "message_location": {
+    "x": 7,
+    "y": 1
+  },
+  "message_text": "If [i]you're[/i] reading this Garmrow, this is why you leave well enough alone.\nPortals have always had a \"here\" and \"there,\" there was no need to pry that apart and see what was \"between\".\nExpect disciplinary action as soon as I get out of here.\n\t- Archmage R",
+  "name": "level_2",
+  "next_level": "level_3",
+  "number_of_knives": 0,
+  "number_of_orbs": 0,
+  "orb_positions": [],
+  "spawn": {
+    "x": 1,
+    "y": 1
+  }
 }

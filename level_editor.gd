@@ -36,7 +36,8 @@ var TileToVectorDict : Dictionary = {
 	5 : Vector2i(0, 1),
 	6 : Vector2i(1, 1),
 	7 : Vector2i(2, 1),
-	8 : Vector2i(3, 1)
+	8 : Vector2i(3, 1),
+	9 : Vector2i(0, 2)
 }
 
 
@@ -52,6 +53,7 @@ func _ready():
 	menuButton.get_popup().add_item("Knife")
 	menuButton.get_popup().add_item("Orb")
 	menuButton.get_popup().add_item("Spawn")
+	menuButton.get_popup().add_item("Message")
 	var popup = menuButton.get_popup()
 	popup.connect("id_pressed", get_tile)
 	
@@ -134,9 +136,23 @@ func read_map_from_json(filename):
 	var exit_position = Vector2i(map_data["exit"]["x"], map_data["exit"]["y"])
 	objectMap.set_cell(0, exit_position, 0, TileToVectorDict[5])
 	
+	for i in range(int(map_data["number_of_knives"])):
+		var orb_position = Vector2i(map_data["knife_positions"][i]["x"], map_data["knife_positions"][i]["y"])
+		objectMap.set_cell(0, orb_position, 0, TileToVectorDict[6])
+	
 	for i in range(int(map_data["number_of_orbs"])):
 		var orb_position = Vector2i(map_data["orb_positions"][i]["x"], map_data["orb_positions"][i]["y"])
 		objectMap.set_cell(0, orb_position, 0, TileToVectorDict[7])
+		
+	if map_data["has_message"] == true:
+		var message_location = Vector2i(map_data["message_location"]["x"], map_data["message_location"]["y"])
+		objectMap.set_cell(0, message_location, 0, TileToVectorDict[9])
+		$Panel/MessageText.text = map_data["message_text"]
+		
+	$Panel/LevelName.text = map_data["current_level"] 
+	$Panel/NextLevelName.text = map_data["next_level"] 
+	
+	
 	
 
 
@@ -195,8 +211,17 @@ func write_map_to_json(filename):
 	var orb_counter : int = 0
 	var orb_positions : Array
 	
+	var knife_counter : int = 0
+	var knife_positions : Array
+	
+	var has_message : bool = false
+	var message_location : Dictionary
+	var message : String
+		
 	var spawn_point : Dictionary
 	var exit_point : Dictionary
+	
+
 	
 	for o in filled_objects:
 		var objectData = objectMap.get_pattern(0, filled_objects).get_cell_atlas_coords(o - objectMap.get_used_rect().position) 
@@ -205,12 +230,18 @@ func write_map_to_json(filename):
 		print(key)
 		if key == 5:
 			exit_point = {"x" : o.x, "y" : o.y}
+		if key == 6:
+			knife_counter += 1
+			knife_positions.append({"x" : o.x, "y" : o.y})
 		if key == 7:
 			orb_counter += 1
 			orb_positions.append({"x" : o.x, "y" : o.y})
 		if key == 8:
 			spawn_point = {"x" : o.x, "y" : o.y}
-			
+		if key == 9:
+			has_message = true
+			message_location = {"x" : o.x, "y" : o.y}
+			message = $Panel/MessageText.text
 	
 	
 	print(map)
@@ -221,9 +252,17 @@ func write_map_to_json(filename):
 	
 	save_data["number_of_orbs"] = orb_counter
 	save_data["orb_positions"] = orb_positions
-	save_data["cuts_allowed"] = 1
-	save_data["current_level"] = 99
-	save_data["next_level"] = 99
+	
+	save_data["number_of_knives"] = knife_counter
+	save_data["knife_positions"] = knife_positions
+	
+	save_data["has_message"] = has_message
+	save_data["message_location"] = message_location
+	save_data["message_text"] = message
+	
+	#save_data["cuts_allowed"] = 1
+	save_data["current_level"] = $Panel/LevelName.text
+	save_data["next_level"] = $Panel/NextLevelName.text
 	
 	print(save_data)
 	

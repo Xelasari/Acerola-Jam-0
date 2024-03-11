@@ -1,0 +1,50 @@
+{
+  "current_level": "level_18",
+  "exit": {
+	"x": 12,
+	"y": 5
+  },
+  "has_message": true,
+  "knife_positions": [
+	{
+	  "x": 5,
+	  "y": 5
+	}
+  ],
+  "map": [
+	[ 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0, 0, 0 ],
+	[ 2, 1, 2, 0, 2, 1, 2, 0, 2, 1, 2, 0, 0, 0 ],
+	[ 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0, 0, 0 ],
+	[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+	[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
+	[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
+	[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
+  ],
+  "map_size": {
+	"x": 14,
+	"y": 7
+  },
+  "message_location": {
+	"x": 9,
+	"y": 1
+  },
+  "message_text": "The properties of splitting and merging space seems to only further support my theory of this being the foundation of portal traversal.\nCould this process of spatial reconfiguration be occuring every time a portal is created?\nIs this the hidden bridge that is crossed every time one steps into a portal?\nMuch to think about.",
+  "name": "level_18",
+  "next_level": "level_19",
+  "number_of_knives": 1,
+  "number_of_orbs": 2,
+  "orb_positions": [
+	{
+	  "x": 5,
+	  "y": 1
+	},
+	{
+	  "x": 1,
+	  "y": 1
+	}
+  ],
+  "spawn": {
+	"x": 1,
+	"y": 5
+  }
+}

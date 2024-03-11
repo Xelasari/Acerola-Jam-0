@@ -13,7 +13,7 @@ var tileManager
 # - Goal of 20 levels, maybe 25-30 as stretch
 # - Start menu + game end screen
 # - Music?
-# - BUG: Need to have a "last valid position" if overlapping player
+# - BUG: Need to have a "last valid position" if overlapping player (maybe can use overlapping tiles fix?)
 
 # Game mechanics to add in:
 # - Portals
@@ -52,6 +52,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	#print(get_local_mouse_position())
+	#print(get_global_mouse_position())
 	pass
 
 

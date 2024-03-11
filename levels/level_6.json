@@ -1,34 +1,43 @@
 {
-	"name" : "Level 1",
-	"map_size" : {
-		"x" : 13,
-		"y" : 10
-	},
-	"map" : [
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4],
-			[0, 0, 0, 0, 0, 0, 4, 3, 3, 3, 0, 0, 4],
-			[1, 1, 1, 1, 1, 0, 4, 3, 3, 3, 4, 0, 4],
-			[1, 1, 1, 1, 1, 0, 4, 3, 3, 3, 4, 0, 4],
-			[1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 0, 4],
-			[1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-			[1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-			],
-	"spawn" : {
-		"x" : 2,
-		"y" : 7
-	},
-	"exit" : {
-		"x" : 8,
-		"y" : 5
-	},
-	"number_of_orbs" : 0,
-	"orb_positions" : [
-		{ "x" : 0, "y" : 0 }
-	],
-	"cuts_allowed" : 2,
-	"current_level" : 6,
-	"next_level" : 7
+  "current_level": "level_6",
+  "exit": {
+    "x": 5,
+    "y": 2
+  },
+  "has_message": true,
+  "knife_positions": [],
+  "map": [
+    [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ],
+    [ 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 ],
+    [ 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 ],
+    [ 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 ],
+    [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ]
+  ],
+  "map_size": {
+    "x": 11,
+    "y": 5
+  },
+  "message_location": {
+    "x": 4,
+    "y": 2
+  },
+  "message_text": "[s] This seems to be the end for me.\nI've tried stepping through the gateway in this area to no avail.\nI have lost track of how much time has passed, and I am losing hope.\nFarewell.\n- Archmage R[/s]\nIgnore this, I just needed to collect enough of these strange orbs.",
+  "name": "level_6",
+  "next_level": "level_7",
+  "number_of_knives": 0,
+  "number_of_orbs": 2,
+  "orb_positions": [
+    {
+      "x": 9,
+      "y": 3
+    },
+    {
+      "x": 9,
+      "y": 1
+    }
+  ],
+  "spawn": {
+    "x": 2,
+    "y": 2
+  }
 }

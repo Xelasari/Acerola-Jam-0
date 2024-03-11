@@ -1,0 +1,34 @@
+{
+  "current_level": "level_11",
+  "exit": {
+    "x": 8,
+    "y": 2
+  },
+  "has_message": true,
+  "knife_positions": [],
+  "map": [
+    [ 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2 ],
+    [ 2, 1, 1, 1, 0, 0, 0, 1, 1, 1, 2 ],
+    [ 2, 1, 1, 1, 0, 0, 0, 1, 1, 1, 2 ],
+    [ 2, 1, 1, 1, 0, 0, 0, 1, 1, 1, 2 ],
+    [ 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2 ]
+  ],
+  "map_size": {
+    "x": 11,
+    "y": 5
+  },
+  "message_location": {
+    "x": 3,
+    "y": 3
+  },
+  "message_text": "Well this is fascinating, I had expected to see nothing but more hallways and corridors, but this area appears to open up into what I can only assume is the subspace that makes portal transfer possible.\nIt seems space is less stable here, as I can see what I presume to be the other end of the hallway floating in the ether.\nSurely nothing a little Telekinesis can't fix.",
+  "name": "level_11",
+  "next_level": "level_12",
+  "number_of_knives": 0,
+  "number_of_orbs": 0,
+  "orb_positions": [],
+  "spawn": {
+    "x": 2,
+    "y": 2
+  }
+}

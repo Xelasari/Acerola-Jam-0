@@ -14,6 +14,7 @@ texture = ExtResource("1_e8umi")
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 0
+input_pickable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("CircleShape2D_0xj7m")

@@ -1,33 +1,43 @@
 {
-	"name" : "Level 7",
-	"map_size" : {
-		"x" : 13,
-		"y" : 9
-	},
-	"map" : [
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 2, 1, 2, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0],
-			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-			[1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 1],
-			[1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 1],
-			[1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 1],
-			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-			],
-	"spawn" : {
-		"x" : 2,
-		"y" : 7
-	},
-	"exit" : {
-		"x" : 10,
-		"y" : 6
-	},
-	"number_of_orbs" : 1,
-	"orb_positions" : [
-		{ "x" : 6, "y" : 2 }
-	],
-	"cuts_allowed" : 1,
-	"current_level" : 7,
-	"next_level" : 8
+  "current_level": "level_7",
+  "exit": {
+    "x": 12,
+    "y": 2
+  },
+  "has_message": true,
+  "knife_positions": [],
+  "map": [
+    [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ],
+    [ 2, 1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1, 2 ],
+    [ 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 ],
+    [ 2, 1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1, 2 ],
+    [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ]
+  ],
+  "map_size": {
+    "x": 15,
+    "y": 5
+  },
+  "message_location": {
+    "x": 7,
+    "y": 1
+  },
+  "message_text": "To the whoever who has been sent down here to find me:\nAs much as I hate to admit this, I think Garmrow might have been onto something.\nPlease record these writings as academic notes, as I do not have my usual research materials due to the... [i]impromptu nature[/i] of this expedition.\n- Archmage R",
+  "name": "level_7",
+  "next_level": "level_8",
+  "number_of_knives": 0,
+  "number_of_orbs": 2,
+  "orb_positions": [
+    {
+      "x": 9,
+      "y": 3
+    },
+    {
+      "x": 5,
+      "y": 1
+    }
+  ],
+  "spawn": {
+    "x": 2,
+    "y": 2
+  }
 }

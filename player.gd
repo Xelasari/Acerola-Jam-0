@@ -49,7 +49,7 @@ func _process(delta):
 	var test_hold : KinematicCollision2D = characterBody2D.move_and_collide(Vector2(0, 0))
 	if test_hold != null:
 		test_hold.get_collider()
-		print("Testing?")
+		#print("Testing?")
 	
 	#characterBody2D.position = position
 	

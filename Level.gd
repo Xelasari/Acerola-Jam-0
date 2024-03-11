@@ -9,7 +9,7 @@ var playerReference
 
 var map_data : Dictionary
 
-var current_level : int
+var current_level : String
 
 var cuts_remaining : int
 var cutsRemainingLabel
@@ -27,6 +27,7 @@ func _ready():
 	tm.connect("load_next_level", _on_load_next_level)
 	tm.connect("exit_entered", _on_exit_entered)
 	tm.connect("orb_collected", _on_orb_collected)
+	tm.connect("knife_collected", _on_knife_collected)
 	tileManager = tm
 	add_child(tm)
 	
@@ -42,7 +43,7 @@ func _ready():
 	
 	load_map_data()
 	
-	load_level(1)
+	load_level("level_30")
 
 
 
@@ -84,13 +85,15 @@ func load_map_data():
 		print("An error occurred when trying to access the path.")
 
 
-func load_level(level_number : int):
-	tileManager.create_map(map_data["level_" + str(level_number)])
+func load_level(level_name : String):
+	tileManager.create_map(map_data[level_name])
 	playerReference.position = tileManager.starting_tile.position + Vector2(16, 16)
-	cuts_remaining = map_data["level_" + str(level_number)]["cuts_allowed"]
-	current_level = map_data["level_" + str(level_number)]["current_level"]
+	#cuts_remaining = map_data["level_" + str(level_number)]["cuts_allowed"]
+	cuts_remaining = 0
+	#current_level = map_data["level_" + str(level_number)]["current_level"]
+	current_level = map_data[level_name]["current_level"]
 	orb_counter = 0
-	orbs_in_level = map_data["level_" + str(level_number)]["number_of_orbs"]
+	orbs_in_level = map_data[level_name]["number_of_orbs"]
 
 
 func _on_slicer_cut_at(tile_group, direction_of_cut, location_of_cut):
@@ -102,22 +105,25 @@ func _on_slicer_cut_at(tile_group, direction_of_cut, location_of_cut):
 		tileManager.cut_tiles(tile_group, direction_of_cut, location_of_cut)
 		cuts_remaining -= 1
 	
-func _on_load_next_level(level_number : int):
+func _on_load_next_level(level_name : String):
 	tileManager.call_deferred("clear_map")
-	call_deferred("load_level", level_number)
+	call_deferred("load_level", level_name)
 	
 	#tileManager.clear_map()
 	#load_level(level_number)
 
-func _on_exit_entered(level_number : int):
+func _on_exit_entered(level_name : String):
 	#print(orb_counter)
 	#print(orbs_in_level)
 	if orb_counter == orbs_in_level:
 		tileManager.call_deferred("clear_map")
-		call_deferred("load_level", level_number)
+		call_deferred("load_level", level_name)
 
 func _on_orb_collected():
 	orb_counter += 1
+	
+func _on_knife_collected():
+	cuts_remaining += 1
 
 func _on_player_died():
 	if restart_cooldown == 0:

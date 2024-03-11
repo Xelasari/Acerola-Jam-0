@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://wocoxr2354i0"]
+
+[ext_resource type="Script" path="res://knife.gd" id="1_a68kc"]
+[ext_resource type="Texture2D" uid="uid://dft7njf55p5ic" path="res://assets/knife_with_sheen.png" id="1_rop5a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mtp2w"]
+size = Vector2(30, 28)
+
+[node name="Knife" type="Node2D"]
+script = ExtResource("1_a68kc")
+
+[node name="KnifeSprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_rop5a")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("RectangleShape2D_mtp2w")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

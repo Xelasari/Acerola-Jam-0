@@ -1,0 +1,36 @@
+{
+  "current_level": "level_10",
+  "exit": {
+    "x": 15,
+    "y": 3
+  },
+  "has_message": true,
+  "knife_positions": [],
+  "map": [
+    [ 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 2, 2, 2, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0 ],
+    [ 0, 0, 2, 2, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 2, 2, 0 ],
+    [ 2, 2, 1, 1, 1, 1, 1, 2, 2, 0, 2, 2, 1, 1, 1, 1, 2, 2 ],
+    [ 0, 0, 2, 2, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 2, 2, 0 ],
+    [ 0, 0, 0, 0, 0, 2, 2, 2, 1, 1, 1, 2, 2, 2, 0, 0, 0, 0 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0 ]
+  ],
+  "map_size": {
+    "x": 18,
+    "y": 7
+  },
+  "message_location": {
+    "x": 6,
+    "y": 3
+  },
+  "message_text": "To the rescue team: I got so caught up in my exploration I realize that constantly moving might be delaying my rescue.\nHowever, I am sure you can understand; when life gives you unexpected sub-portal travel, do your part and advance the field of portal research.\n- Archmage R",
+  "name": "level_10",
+  "next_level": "level_11",
+  "number_of_knives": 0,
+  "number_of_orbs": 0,
+  "orb_positions": [],
+  "spawn": {
+    "x": 2,
+    "y": 3
+  }
+}

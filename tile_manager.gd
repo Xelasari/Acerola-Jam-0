@@ -40,6 +40,7 @@ extends Node2D
 
 @export var tileScene : PackedScene
 @export var exitPointScene : PackedScene
+@export var knifeScene : PackedScene
 @export var orbScene : PackedScene
 @export var messageScene : PackedScene
 
@@ -62,13 +63,14 @@ var points_of_interest : Dictionary = {}
 var starting_tile : Node = null
 
 
-var current_level : int
-var next_level : int
+var current_level : String
+var next_level : String
 
 
-signal load_next_level(level_number : int)
-signal exit_entered(level_number : int)
+signal load_next_level(level_name : String)
+signal exit_entered(level_name : String)
 signal orb_collected()
+signal knife_collected()
 
 
 # Called when the node enters the scene tree for the first time.
@@ -128,12 +130,20 @@ func create_map(map_data : Dictionary):
 	next_level = map_data["next_level"]
 	points_of_interest["spawn"] = Vector2i(map_data["spawn"].x, map_data["spawn"].y)
 	points_of_interest["exit"] = Vector2i(map_data["exit"].x, map_data["exit"].y)
+	points_of_interest["number_of_knives"] = map_data["number_of_knives"]
+	points_of_interest["knife_positions"] = []
+	for i in range(points_of_interest["number_of_knives"]):
+		points_of_interest["knife_positions"].append(Vector2i(map_data["knife_positions"][i]["x"], map_data["knife_positions"][i]["y"]))
 	points_of_interest["number_of_orbs"] = map_data["number_of_orbs"]
 	points_of_interest["orb_positions"] = []
-	points_of_interest["message"] = Vector2i(map_data["message"].x, map_data["message"].y)
-	points_of_interest["message_text"] = map_data["message_text"]
 	for i in range(points_of_interest["number_of_orbs"]):
 		points_of_interest["orb_positions"].append(Vector2i(map_data["orb_positions"][i]["x"], map_data["orb_positions"][i]["y"]))
+	points_of_interest["has_message"] = false
+	if map_data["has_message"]:
+		points_of_interest["has_message"] = true
+		points_of_interest["message_location"] = Vector2i(map_data["message_location"].x, map_data["message_location"].y)
+		points_of_interest["message_text"] = map_data["message_text"]
+		
 	
 	#map_size = Vector2i(5, 6)
 	#test_map = [[0, 0, 0, 0, 0],
@@ -204,21 +214,27 @@ func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile
 			var exit_point = exitPointScene.instantiate()
 			exit_point.connect("player_entered_exit", _on_player_entered_exit)
 			tile_ref.add_child(exit_point)
+		for i in range(points_of_interest["number_of_knives"]):
+			if coord.x == points_of_interest["knife_positions"][i].x and coord.y == points_of_interest["knife_positions"][i].y:
+				var knife = knifeScene.instantiate()
+				knife.connect("player_touched_knife", _on_player_touched_knife)
+				tile_ref.add_child(knife)
 		for i in range(points_of_interest["number_of_orbs"]):
 			if coord.x == points_of_interest["orb_positions"][i].x and coord.y == points_of_interest["orb_positions"][i].y:
 				var orb = orbScene.instantiate()
 				orb.connect("player_touched_orb", _on_player_touched_orb)
 				tile_ref.add_child(orb)
-		if coord.x == points_of_interest["message"].x && coord.y == points_of_interest["message"].y:
-			var msg = messageScene.instantiate()
-			msg.set_message_text(points_of_interest["message_text"])
-			tile_ref.add_child(msg)
+		if points_of_interest["has_message"]:
+			if coord.x == points_of_interest["message_location"].x && coord.y == points_of_interest["message_location"].y:
+				var msg = messageScene.instantiate()
+				msg.set_message_text(points_of_interest["message_text"])
+				tile_ref.add_child(msg)
 		if !current_building_group.has(tile_ref):
 			#print("appending to group")
 			current_building_group.append(tile_ref)
 	
 	# Check top
-	if coord.y - 1 > 0 and coords_to_check.has(Vector2i(coord.x, coord.y - 1)):
+	if coord.y - 1 >= 0 and coords_to_check.has(Vector2i(coord.x, coord.y - 1)):
 		coords_to_check.erase(coord + Vector2i(0, -1))
 		process_coord(map, map_size, coord + Vector2i(0, -1))
 	# Check right
@@ -230,7 +246,7 @@ func process_coord(map, map_size : Vector2i, coord : Vector2i): #, previous_tile
 		coords_to_check.erase(coord + Vector2i(0, 1))
 		process_coord(map, map_size, coord + Vector2i(0, 1))
 	# Check left
-	if coord.x - 1 > 0 and coords_to_check.has(Vector2i(coord.x - 1, coord.y)):
+	if coord.x - 1 >= 0 and coords_to_check.has(Vector2i(coord.x - 1, coord.y)):
 		coords_to_check.erase(coord + Vector2i(-1, 0))
 		process_coord(map, map_size, coord + Vector2i(-1, 0))
 	
@@ -422,13 +438,13 @@ func can_cut(tile_group, direction_of_cut, location_of_cut) -> bool:
 		
 	for t in tile_group:
 		if direction_of_cut == "vertical":
-			if t.local_position.x == location_of_cut:
+			if t.local_position.x == location_of_cut.x:
 				if tiles_at.has(t.local_position) and tiles_at.has(t.local_position + Vector2i(1, 0)):
 					if !tiles_at[t.local_position].is_cuttable and !tiles_at[t.local_position + Vector2i(1, 0)].is_cuttable:
 						return false
 		
 		if direction_of_cut == "horizontal":
-			if t.local_position.y == location_of_cut:
+			if t.local_position.y == location_of_cut.y:
 				if tiles_at.has(t.local_position) and tiles_at.has(t.local_position + Vector2i(0, 1)):
 					if !tiles_at[t.local_position].is_cuttable and !tiles_at[t.local_position + Vector2i(0, 1)].is_cuttable:
 						return false
@@ -441,41 +457,71 @@ func cut_tiles(tile_group, direction_of_cut, location_of_cut):
 	var new_tile_group1 = []
 	var new_tile_group2 = []
 	
+	# Get bounds originating from cut
+	if direction_of_cut == "vertical":
+		# need to check y coords, up and down,
+		var done_checking : bool = false
+		var lower_bound : int
+		var upper_bound : int
+		var check_point : int 
+		
+		check_point = location_of_cut.y
+		while(!done_checking):
+			if tile_group[0].has_coord_in_group(Vector2i(location_of_cut.x, check_point)):
+				lower_bound = check_point
+				check_point -= 1
+			else: done_checking = true
+			
+		done_checking = false
+		
+		check_point = location_of_cut.y
+		while(!done_checking):
+			if tile_group[0].has_coord_in_group(Vector2i(location_of_cut.x, check_point)):
+				upper_bound = check_point
+				check_point += 1
+			else: done_checking = true
+			
+		print("Bounds: [" + str(lower_bound) + ", " + str(upper_bound) + "]")
 	
 	for t in tile_group:
 		if direction_of_cut == "vertical":
-			if t.local_position.x <= location_of_cut:
+			if t.local_position.x <= location_of_cut.x:
 				new_tile_group1.append(t)
 			else:
 				new_tile_group2.append(t)
 		elif direction_of_cut == "horizontal":
-			if t.local_position.y <= location_of_cut:
+			if t.local_position.y <= location_of_cut.y:
 				new_tile_group1.append(t)
 			else:
 				new_tile_group2.append(t)
 	
 	for t in new_tile_group1:
 		t.tiles_connected_to = new_tile_group1
+		# Recalculate player tile
+		t.cached_player_tile = null
+		t.does_group_have_player()
 		
 	for t in new_tile_group2:
 		t.tiles_connected_to = new_tile_group2
-	
+		# Recalculate player tile
+		t.cached_player_tile = null
+		t.does_group_have_player()
 	
 	
 	for t in new_tile_group1:
 		if direction_of_cut == "vertical":
-			if t.local_position.x == location_of_cut:
+			if t.local_position.x == location_of_cut.x:
 				t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.RIGHT, true)
 		elif direction_of_cut == "horizontal":
-			if t.local_position.y == location_of_cut:
+			if t.local_position.y == location_of_cut.y:
 				t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.BOTTOM, true)
 	
 	for t in new_tile_group2:
 		if direction_of_cut == "vertical":
-			if t.local_position.x == location_of_cut + 1:
+			if t.local_position.x == location_of_cut.x + 1:
 				t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.LEFT, true)
 		elif direction_of_cut == "horizontal":
-			if t.local_position.y == location_of_cut + 1:
+			if t.local_position.y == location_of_cut.y + 1:
 				t.set_edge_connectivity(EdgeComponent.EDGE_SIDE.TOP, true)
 	
 	
@@ -597,7 +643,9 @@ func ensure_contiguous_group(tile_group : Array):
 		# once no more tiles can be reached
 		for t in new_tile_group:
 			t.tiles_connected_to = new_tile_group
-			
+			t.cached_player_tile = null
+			t.does_group_have_player()
+		
 		recalculate_local_position(new_tile_group)
 		recalculate_edges(new_tile_group)
 		
@@ -610,3 +658,7 @@ func _on_player_entered_exit():
 func _on_player_touched_orb():
 	print("Orb Collected")
 	orb_collected.emit()
+	
+func _on_player_touched_knife():
+	print("Knife Collected")
+	knife_collected.emit()

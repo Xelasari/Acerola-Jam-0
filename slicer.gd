@@ -38,15 +38,16 @@ func _process(delta):
 		for e in currently_touching_edges:
 			if orientation == ORIENTATION.VERTICAL:
 				if e.edge_side == EdgeComponent.EDGE_SIDE.LEFT:
-					cut_at.emit(e.get_parent().tiles_connected_to, "vertical", e.get_parent().local_position.x - 1)
-					
+					#cut_at.emit(e.get_parent().tiles_connected_to, "vertical", e.get_parent().local_position.x - 1)
+					cut_at.emit(e.get_parent().tiles_connected_to, "vertical", e.get_parent().local_position - Vector2i(1, 0))
 					break
 				#if e.edge_side == EdgeComponent.EDGE_SIDE.RIGHT:
 				#	cut_at.emit(e.get_parent().tiles_connected_to, "vertical", e.get_parent().local_position.x - 1)
 				#	break
 			if orientation == ORIENTATION.HORIZONTAL:
 				if e.edge_side == EdgeComponent.EDGE_SIDE.TOP:
-					cut_at.emit(e.get_parent().tiles_connected_to, "horizontal", e.get_parent().local_position.y - 1)
+					#cut_at.emit(e.get_parent().tiles_connected_to, "horizontal", e.get_parent().local_position.y - 1)
+					cut_at.emit(e.get_parent().tiles_connected_to, "horizontal", e.get_parent().local_position - Vector2i(0, 1))
 					break
 				#if e.edge_side == EdgeComponent.EDGE_SIDE.BOTTOM:
 				#	cut_at.emit(e.get_parent().tiles_connected_to, "horizontal", e.get_parent().local_position.y - 1)

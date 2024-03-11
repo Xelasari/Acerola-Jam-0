@@ -15,11 +15,13 @@ texture = ExtResource("1_iq2c2")
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 0
+input_pickable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("RectangleShape2D_k5k5x")
 
 [node name="MessageText" type="RichTextLabel" parent="."]
+z_index = 50
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -31,6 +33,7 @@ offset_right = 155.0
 offset_bottom = -21.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 text = "[center][/center]"

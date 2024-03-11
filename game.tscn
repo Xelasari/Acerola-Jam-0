@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://3a66x5n51qbc"]
+[gd_scene load_steps=18 format=3 uid="uid://3a66x5n51qbc"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_koi76"]
 [ext_resource type="PackedScene" uid="uid://cv4h0203et3ea" path="res://tile_group.tscn" id="2_ppq8d"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://itwndqbeoi02" path="res://assets/Blackhole.png" id="9_ddfwp"]
 [ext_resource type="Texture2D" uid="uid://b07ea2sple2ge" path="res://assets/close_planets.png" id="9_ghelw"]
 [ext_resource type="Texture2D" uid="uid://djyipxrrphgeu" path="res://assets/small_stars.png" id="10_maf5a"]
+[ext_resource type="Texture2D" uid="uid://da6gfektd17gn" path="res://assets/eye_5.png" id="13_1by6n"]
 [ext_resource type="Texture2D" uid="uid://cxh4i0p0e6hmq" path="res://assets/q_indicator.png" id="14_6l63p"]
 [ext_resource type="Texture2D" uid="uid://bf18pcxgxuaxd" path="res://assets/mage_hand.png" id="14_h6n4d"]
 [ext_resource type="Texture2D" uid="uid://bojggysvoarrh" path="res://assets/e_indicator.png" id="16_pn0ia"]
@@ -82,8 +83,14 @@ z_index = -2
 texture_filter = 1
 texture_repeat = 2
 position = Vector2(640, 360)
-scale = Vector2(4, 4)
+scale = Vector2(16, 16)
 texture = ExtResource("9_ddfwp")
+
+[node name="Eye" type="Sprite2D" parent="Level/Background"]
+texture_filter = 1
+position = Vector2(640, 360)
+scale = Vector2(16, 16)
+texture = ExtResource("13_1by6n")
 
 [node name="Slicer" parent="Level" instance=ExtResource("7_8xnds")]
 

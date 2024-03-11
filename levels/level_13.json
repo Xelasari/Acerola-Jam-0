@@ -1,0 +1,39 @@
+{
+  "current_level": "level_13",
+  "exit": {
+    "x": 16,
+    "y": 2
+  },
+  "has_message": true,
+  "knife_positions": [],
+  "map": [
+    [ 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2 ],
+    [ 2, 1, 1, 1, 2, 0, 2, 2, 2, 0, 2, 1, 2, 0, 2, 1, 1, 1, 2 ],
+    [ 2, 1, 1, 1, 1, 0, 1, 1, 2, 0, 2, 1, 1, 0, 1, 1, 1, 1, 2 ],
+    [ 2, 1, 1, 1, 2, 0, 2, 1, 2, 0, 2, 2, 2, 0, 2, 1, 1, 1, 2 ],
+    [ 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2 ]
+  ],
+  "map_size": {
+    "x": 19,
+    "y": 5
+  },
+  "message_location": {
+    "x": 11,
+    "y": 2
+  },
+  "message_text": "My current theory is that rather than the material merging, it is space itself.\nIt would follow the main principals of portal travel, linking two distinct areas into a single span of distance.\nBut this only raises more questions than answering them.\nMore research needed.",
+  "name": "level_13",
+  "next_level": "level_14",
+  "number_of_knives": 0,
+  "number_of_orbs": 1,
+  "orb_positions": [
+    {
+      "x": 7,
+      "y": 2
+    }
+  ],
+  "spawn": {
+    "x": 2,
+    "y": 2
+  }
+}
