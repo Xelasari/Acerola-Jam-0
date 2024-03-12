@@ -43,7 +43,10 @@ func _process(delta):
 	# TODO: can put together a hacky solution for wall sliding here by testing zero'd x and y vectors
 	if !characterBody2D.test_move(self.transform, (speed * speed_scale) * input_vector):
 		position += (speed * speed_scale) * input_vector
-	
+	elif !characterBody2D.test_move(self.transform, (speed * speed_scale) * Vector2(input_vector.x, 0)):
+		position += (speed * speed_scale) * Vector2(input_vector.x, 0)
+	elif !characterBody2D.test_move(self.transform, (speed * speed_scale) * Vector2(0, input_vector.y)):
+		position += (speed * speed_scale) * Vector2(0, input_vector.y)
 	
 	
 	var test_hold : KinematicCollision2D = characterBody2D.move_and_collide(Vector2(0, 0))

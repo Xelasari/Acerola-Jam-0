@@ -1,5 +1,6 @@
 extends Control
 
+signal start_game()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -10,3 +11,7 @@ func _ready():
 func _process(delta):
 	pass
 
+
+
+func _on_start_button_pressed():
+	start_game.emit()

@@ -1,0 +1,95 @@
+"Story" follows unnamed apprentice as they follow the writings of Archmage R
+
+No Mechanics, just moving around in a maze like area
+Level  1: If you're reading this, you are the lucky soul who has been sent to fetch me from this little accident.
+	I have decided to make the most of this little [i]incident[/i] and will be exploring.
+	Follow these notes and we'll both be out of this mess before lunchtime.
+	- Archmage R
+Level  2: If [i]you're[/i] reading this Garmrow, this is why you leave well enough alone.
+	Portals have always had a "here" and "there," there was no need to pry that apart and see what was "between".
+	Expect disciplinary action as soon as I get out of here.
+	- Archmage R
+Level  3: Archmage R
+Level  4: Archmage R was here
+Level  5: Archmage R
+Orb gets introduced
+Level  6: [crossout?] This seems to be the end for me.
+	I've tried stepping through the gateway in this area to no avail.
+	I have lost track of how much time has passed, and I am losing hope.[end crossout]
+	Ignore this, I just needed to collect enough of these strange orbs.
+Level  7: To the apprentice who has been sent down here to find me:
+	As much as I hate to admit this, I think Garmrow might have been onto something.
+	Please record these writings as academic notes, as I do not have my usual research materials due to the impromptu nature of this expedition.
+Level  8: It seems that these gateways use an energy gradient to shift material from one place to another.
+	Gradient appears to be "powered" by whatever these orbs are made of, as they disappear upon close proximity to the gateway.
+	Could this be the underlying foundation of portal travel?
+Level  9: Some gateways need more orbs. Why is this? Will continue to investigate
+Level 10: To the apprentice: I got so caught up in my exploration I realize that constantly moving might be delaying my rescue.
+	However, I am sure you can understand; when life gives you unexpected sub-portal travel, do your part and advance the field of portal research.
+	- Archmage R
+Floating Platforms get introduced
+Level 11: Well this is fascinating, I had expected to see nothing but more hallways and corridors, but this area appears to open up into what I can only assume is the subspace that makes portal transfer possible.
+	It seems space is less stable here, as I can see what I presume to be the other end of the hallway floating in the ether.
+	Surely nothing a little Telekinesis can't fix.
+Level 12: Even more fascinating; I was able to use Telekinesis to pull on the hallway to a myriad of surprises.
+	First, there was no resistance to my telekinetic pull, so much so that even a simple cantrip like Mage Hand can suffice
+	Second, after I brought in the hallway and released my spell, it appears to have... combined perfectly with the surface I was standing on.
+	No matter how closely I look, I cannot even find a seam. Absolutely fascinating.
+Level 13: My current theory is that rather than the material merging, it is space itself.
+	It would follow the main principals of portal travel, linking two distinct areas into a single span of distance.
+	But this only raises more questions than answering them.
+	More research needed.
+Level 14: I had a most nerve-racking series of events.
+	I was trying different combinations of the material found here and I will admit, I did lose myself in the process a little bit.
+	I quickly realized that I had blocked off any possibility of progressing to the next gateway.
+	However, as I was frantically searching for a solution, turning back towards the direction of the gateway revealed everything had been put back in its original place.
+	Unsure what to make of this, but I am now able to continue onwards.
+Level 15: I am still thinking on what just happened.
+	It almost feels too convenient. By all accounts, I had exhausted my options, yet I was given another chance.
+	... Is there some sort of overseer of this domain?
+Slicer gets introduced
+Level 16: While I am still unsettled, those concerns must wait in the name of magical research.
+	I entered in this area, which appeared to be a sealed room, with nothing but a shapeless, black, mass.
+	As I approached it, it appeared to "collapse" into itself, forming what can only be described as a... Kitchen knife?
+	Even stranger still, as I was trying to discern its function, I swung it around and felt it "catch" on something, and now the room has been split in two.
+	Unfortunately, after this, the knife disappeared. Must attempt to find more to study.
+Level 17: Good news, I was able to find more of these objects.
+	It seems that these "knives" work in the opposite manner of whatever phenomena is causing spatial merging.
+	Perhaps two sides of the same coin?
+Level 18: The properties of splitting and merging space seems to only further support my theory of this being the foundation of portal traversal.
+	Could this process of spatial reconfiguration be occuring every time a portal is created?
+	Is this the hidden bridge that is crossed every time one steps into a portal?
+	Much to think about.
+Level 19:
+Level 20: I apologize for forgetting to leave a note.
+	The more I explore, the more I have questions, which in turn leads to further exploration.
+	I hope I have not traveled too far to prevent rescue, but stopping now would feel like locking the door to a treasure vault and throwing away the key.
+Black platforms get introduced
+Level 21: Another interesting discovery.
+	The usual bland hallways I've become accustomed to have given way to a darker variant.
+	While structurally it looks identical, I cannot help but feel it is related to these knives I've been using to progress.
+	This is further backed up by the fact that I cannot seem to get the knife to "catch" onto these areas and cut them, as I have done before.
+Level 22: While frustrating at times, I have become rather skilled at manipulating the environment down here.
+	I am sure that what I am uncovering now will advance the field by 10, or even 100 years.
+	However, I still cannot shake my unease that something, or someone is observing me...
+Level 23: As my concerns grow, I paused my exploration and realized I cannot tell if I have been down here for 10 minutes or 10 decades.
+	Further more, I have not had the desire to eat or drink, and upon testing it, realized I no longer need to continuously breathe to keep functioning.
+	I will explore only a little further. These discoveries will mean nothing if nobody is able to tell of them.
+Level 24:
+Level 25: [s]I am[\s][s] I have [\s][s]things are[\s]
+	I think something is chasing me.
+	I waited for some time in the previous area, though unable to tell exactly how long.
+	However, after either some eternity or instant after arriving, the deepest and darkest fear I have ever felt beset me.
+	Nothing appeared any different, but I had to leave, only once I arrived here did that inky coldness leave my body.
+	Please hurry.
+Combination of all mechanics until final level
+Level 26: Please hurry.
+	- Archmage R
+Level 27: Please hurry.
+	- Archmage R
+Level 28:
+Level 29:
+Level 30: I can see it.
+	It can see me.
+	I know it knows that I can see it
+	It knows I know that I can see it

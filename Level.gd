@@ -43,7 +43,7 @@ func _ready():
 	
 	load_map_data()
 	
-	load_level("level_30")
+	load_level("level_1")
 
 
 
@@ -94,7 +94,46 @@ func load_level(level_name : String):
 	current_level = map_data[level_name]["current_level"]
 	orb_counter = 0
 	orbs_in_level = map_data[level_name]["number_of_orbs"]
-
+	var pretty_name : String
+	pretty_name = level_name.split("_")[0].capitalize() + " " + level_name.split("_")[1]
+	var level_number = int(level_name.split("_")[1])
+	$LevelName.text = pretty_name
+	print(level_number)
+	
+	# needs to go from 1 to 4
+	var scale_factor
+	# 1 + 3 (
+	
+	$Background/Blackhole.scale = Vector2(4.0, 4.0) * ((1 + float((level_number * 3) / 30.0)))
+	print($Background/Blackhole.scale)
+	match level_number:
+		26:
+			$Background/Eye.visible = true
+			$Background/Eye.texture = load("res://assets/eye_1.png")
+			$Background/Eye.scale = Vector2(4.0, 4.0) * (4.0 * float(level_number / 30.0))
+			$Background/Eye.modulate = Color(1, 1, 1, 0.2)
+		27:
+			$Background/Eye.visible = true
+			$Background/Eye.texture = load("res://assets/eye_2.png")
+			$Background/Eye.scale = Vector2(4.0, 4.0) * (4.0 * float(level_number / 30.0))
+			$Background/Eye.modulate = Color(1, 1, 1, 0.4)
+		28:
+			$Background/Eye.visible = true
+			$Background/Eye.texture = load("res://assets/eye_3.png")
+			$Background/Eye.scale = Vector2(4.0, 4.0) * (4.0 * float(level_number / 30.0))
+			$Background/Eye.modulate = Color(1, 1, 1, 0.6)
+		29:
+			$Background/Eye.visible = true
+			$Background/Eye.texture = load("res://assets/eye_4.png")
+			$Background/Eye.scale = Vector2(4.0, 4.0) * (4.0 * float(level_number / 30.0))
+			$Background/Eye.modulate = Color(1, 1, 1, 0.8)
+		30:
+			$Background/Eye.visible = true
+			$Background/Eye.texture = load("res://assets/eye_5.png")
+			$Background/Eye.scale = Vector2(4.0, 4.0) * (4.0 * float(level_number / 30.0))
+			$Background/Eye.modulate = Color(1, 1, 1, 1)
+		_:
+			$Background/Eye.visible = false
 
 func _on_slicer_cut_at(tile_group, direction_of_cut, location_of_cut):
 	if tileManager.can_cut(tile_group, direction_of_cut, location_of_cut) and\

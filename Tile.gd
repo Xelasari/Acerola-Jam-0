@@ -65,7 +65,18 @@ func _process(delta):
 		draggableComponent.being_dragged = false
 		
 		
-		
+	if draggableComponent.is_hovered and !does_group_have_player():
+		for t in tiles_connected_to:
+			if t.get_node("LeftEdgeComponent").can_connect:
+				t.get_node("ColorLeft").color = Color(1, 1, 1, 1)
+			if t.get_node("TopEdgeComponent").can_connect:
+				t.get_node("ColorTop").color = Color(1, 1, 1, 1)
+			if t.get_node("RightEdgeComponent").can_connect:
+				t.get_node("ColorRight").color = Color(1, 1, 1, 1)
+			if t.get_node("BottomEdgeComponent").can_connect:
+				t.get_node("ColorBottom").color = Color(1, 1, 1, 1)
+			pass
+		# Do something with Color/left/right/etc to highlight to green? Or white maybe
 	
 	$Label.text = str(local_position)
 	if draggableComponent.being_dragged:
@@ -130,19 +141,19 @@ func _process(delta):
 	var c
 	c = $ColorRight.get_color()
 	if c.a > 0:
-		var new_color = Color(0, 0, 0, c.a - 0.05)
+		var new_color = Color(c.r, c.g, c.b, c.a - 0.05)
 		$ColorRight.set_color(new_color)
 	c = $ColorBottom.get_color()
 	if c.a > 0:
-		var new_color = Color(0, 0, 0, c.a - 0.05)
+		var new_color = Color(c.r, c.g, c.b, c.a - 0.05)
 		$ColorBottom.set_color(new_color)
 	c = $ColorTop.get_color()
 	if c.a > 0:
-		var new_color = Color(0, 0, 0, c.a - 0.05)
+		var new_color = Color(c.r, c.g, c.b, c.a - 0.05)
 		$ColorTop.set_color(new_color)
 	c = $ColorLeft.get_color()
 	if c.a > 0:
-		var new_color = Color(0, 0, 0, c.a - 0.05)
+		var new_color = Color(c.r, c.g, c.b, c.a - 0.05)
 		$ColorLeft.set_color(new_color)
 
 func propogate_new_position(delta_pos):

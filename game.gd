@@ -4,6 +4,7 @@ extends Node2D
 @export var tileGroupScene : PackedScene
 @export var tileManagerScene : PackedScene
 @export var slicerScene : PackedScene
+@export var levelScene : PackedScene
 
 var tileManager
 
@@ -30,13 +31,13 @@ var tileManager
 
 # Polish
 # - Main menu (play game, level select, credits)
-# - Highlight tiles for cut rather than use cursor
-# - Add some sort of lore?
+# - Highlight tiles for cut rather than use cursor DONE
+# - Add some sort of lore? DONE?
 # - Highlight tiles when valid for merging
-# - Bring in orbs earlier and use those as breadcrumbs for solving puzzles
-# - Highlight tilegroups when hovering/grabbable
+# - Bring in orbs earlier and use those as breadcrumbs for solving puzzles DONE
+# - Highlight tilegroups when hovering/grabbable DONE
 # - Maybe add z/x for left and right click?
-# - Total levels around 30 maybe?
+# - Total levels around 30 maybe? 
 # - Movement sliding on walls
 
 # Credit
@@ -44,9 +45,13 @@ var tileManager
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#$Level.load_level(1)
-	var test : Node
-	#$Level.process_mode = Node.PROCESS_MODE_DISABLED
+	#$StartScreen.process_mode = Node.PROCESS_MODE_PAUSABLE
+	#$Level.process_mode = Node.PROCESS_MODE_PAUSABLE
+	#$Level.hide()
+
+	#$Level.get_tree().paused = true
+	#$Level.paused = true
+	#$Level.visible = false
 	pass
 
 
@@ -57,3 +62,16 @@ func _process(delta):
 	pass
 
 
+
+func _on_start_screen_start_game():
+	print("????")
+
+	#$Level.show()
+	$StartScreen.hide()
+	
+	var level = levelScene.instantiate()
+	add_child(level)
+	
+	#$StartScreen.hide()
+	#$StartScreen.get_tree().paused = true
+	pass # Replace with function body.
