@@ -1,12 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://cf7ennk62553m"]
+[gd_scene load_steps=3 format=3 uid="uid://cf7ennk62553m"]
 
-[ext_resource type="Script" path="res://Background.gd" id="1_p7ykb"]
 [ext_resource type="Script" path="res://start_screen.gd" id="1_qyt0m"]
-[ext_resource type="Texture2D" uid="uid://d15ih7hfiwltq" path="res://assets/background.png" id="2_2tkoc"]
-[ext_resource type="Texture2D" uid="uid://djyipxrrphgeu" path="res://assets/small_stars.png" id="3_76d6v"]
-[ext_resource type="Texture2D" uid="uid://q171g8war6qe" path="res://assets/far_planets.png" id="4_t51km"]
-[ext_resource type="Texture2D" uid="uid://b07ea2sple2ge" path="res://assets/close_planets.png" id="5_vxo80"]
-[ext_resource type="Texture2D" uid="uid://itwndqbeoi02" path="res://assets/Blackhole.png" id="6_akkdh"]
 [ext_resource type="Texture2D" uid="uid://b73qftqghj1x7" path="res://assets/game_logo_lighter.png" id="7_n46i5"]
 
 [node name="StartScreen" type="Control"]
@@ -17,62 +11,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qyt0m")
-
-[node name="Background" type="ParallaxBackground" parent="."]
-script = ExtResource("1_p7ykb")
-
-[node name="SpaceBackground" type="Sprite2D" parent="Background"]
-modulate = Color(0.384314, 0.384314, 0.384314, 1)
-z_index = -6
-texture_filter = 1
-texture_repeat = 2
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("2_2tkoc")
-
-[node name="StarLayer" type="ParallaxLayer" parent="Background"]
-z_index = -5
-motion_scale = Vector2(0.2, 0.2)
-motion_mirroring = Vector2(1280, 0)
-
-[node name="Stars" type="Sprite2D" parent="Background/StarLayer"]
-z_index = -5
-texture_filter = 1
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("3_76d6v")
-
-[node name="FarPlanetsLayer" type="ParallaxLayer" parent="Background"]
-z_index = -4
-motion_scale = Vector2(0.6, 0.6)
-motion_mirroring = Vector2(1280, 0)
-
-[node name="FarPlanets" type="Sprite2D" parent="Background/FarPlanetsLayer"]
-z_index = -4
-texture_filter = 1
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("4_t51km")
-
-[node name="ClosePlanetsLayer" type="ParallaxLayer" parent="Background"]
-z_index = -3
-motion_mirroring = Vector2(1280, 0)
-
-[node name="ClosePlanets" type="Sprite2D" parent="Background/ClosePlanetsLayer"]
-z_index = -3
-texture_filter = 1
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("5_vxo80")
-
-[node name="Blackhole" type="Sprite2D" parent="Background"]
-modulate = Color(0.384314, 0.384314, 0.384314, 1)
-z_index = -2
-texture_filter = 1
-texture_repeat = 2
-position = Vector2(640, 360)
-scale = Vector2(4, 4)
-texture = ExtResource("6_akkdh")
 
 [node name="Title" type="TextureRect" parent="."]
 texture_filter = 1
@@ -99,16 +37,19 @@ grow_horizontal = 2
 alignment = 1
 
 [node name="LevelSelectButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 text = "Level Select
 "
 
 [node name="StartButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 text = "Start
 "
 
 [node name="CreditsButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 text = "Credits
 "
@@ -116,4 +57,5 @@ text = "Credits
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
+[connection signal="pressed" from="HBoxContainer/LevelSelectButton" to="." method="_on_level_select_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/StartButton" to="." method="_on_start_button_pressed"]

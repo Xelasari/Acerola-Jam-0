@@ -1,9 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://c1no6g63ae2al"]
+[gd_scene load_steps=17 format=3 uid="uid://c1no6g63ae2al"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_75cgs"]
 [ext_resource type="Texture2D" uid="uid://doeif5083xa6g" path="res://icon.svg" id="2_b858t"]
 [ext_resource type="Texture2D" uid="uid://c57ui22l7sh4j" path="res://assets/PlayerSprite.png" id="2_v68in"]
 [ext_resource type="Script" path="res://player_hitbox.gd" id="3_wt10o"]
+[ext_resource type="AudioStream" uid="uid://f6ln8fra8my5" path="res://assets/zapsplat_foley_footstep_single_gentle_high_heel_concrete_001_24257.mp3" id="5_7oqla"]
+[ext_resource type="AudioStream" uid="uid://cqo4ccvjmj4ab" path="res://assets/zapsplat_foley_footstep_single_gentle_high_heel_concrete_002_24258.mp3" id="6_w005a"]
+[ext_resource type="AudioStream" uid="uid://bh30hyw8mi73h" path="res://assets/zapsplat_foley_footstep_single_gentle_high_heel_concrete_003_24259.mp3" id="7_21vuh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kn3ua"]
 atlas = ExtResource("2_v68in")
@@ -55,6 +58,16 @@ radius = 4.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_cw3s0"]
 radius = 8.0
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dfeq1"]
+random_pitch = 1.1
+streams_count = 3
+stream_0/stream = ExtResource("5_7oqla")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("6_w005a")
+stream_1/weight = 0.0
+stream_2/stream = ExtResource("7_21vuh")
+stream_2/weight = 0.0
+
 [node name="Player" type="Node2D"]
 z_index = 1
 script = ExtResource("1_75cgs")
@@ -90,6 +103,11 @@ motion_mode = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 shape = SubResource("CircleShape2D_cw3s0")
+
+[node name="Footstep" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_dfeq1")
+volume_db = -6.0
+bus = &"SliceEffect"
 
 [connection signal="set_speed_scale" from="Hitbox" to="." method="_on_hitbox_set_speed_scale"]
 [connection signal="area_entered" from="GroundDetector" to="." method="_on_ground_detector_area_entered"]

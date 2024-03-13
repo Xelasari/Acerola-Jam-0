@@ -12,6 +12,10 @@ var walls_colliding_with : Array = []
 var tiles_on_top_of : Array = []
 
 
+var foot_step_counter : float = 0
+var foot_step_threshold : float = 0.27
+
+
 signal player_died()
 
 # Called when the node enters the scene tree for the first time.
@@ -32,6 +36,10 @@ func _process(delta):
 		elif input_vector.x > 0.05:
 			$PlayerAnimatedSprite.flip_h = false
 		$PlayerAnimatedSprite.play("walk")
+		foot_step_counter += delta
+		if foot_step_counter > foot_step_threshold:
+			$Footstep.play()
+			foot_step_counter -= foot_step_threshold
 	else:
 		$PlayerAnimatedSprite.play("idle")
 	

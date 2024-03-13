@@ -43,7 +43,7 @@ func _ready():
 	
 	load_map_data()
 	
-	load_level("level_1")
+	#load_level("level_1")
 
 
 

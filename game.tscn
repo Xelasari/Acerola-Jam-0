@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://3a66x5n51qbc"]
+[gd_scene load_steps=9 format=3 uid="uid://3a66x5n51qbc"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_koi76"]
 [ext_resource type="PackedScene" uid="uid://cv4h0203et3ea" path="res://tile_group.tscn" id="2_ppq8d"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://vvdlbyarcrqp" path="res://level.tscn" id="5_n2h7r"]
 [ext_resource type="PackedScene" uid="uid://cf7ennk62553m" path="res://start_screen.tscn" id="6_l73jm"]
 [ext_resource type="PackedScene" uid="uid://c3qol24ks2ua1" path="res://slicer.tscn" id="7_8xnds"]
+[ext_resource type="PackedScene" uid="uid://cve7n8m3vu465" path="res://background.tscn" id="7_qfa83"]
+[ext_resource type="PackedScene" uid="uid://br1rfm63eexi0" path="res://level_select_screen.tscn" id="8_v2ftf"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_koi76")
@@ -18,4 +20,12 @@ levelScene = ExtResource("5_n2h7r")
 offset_left = 638.0
 offset_right = 638.0
 
+[node name="Background" parent="." instance=ExtResource("7_qfa83")]
+
+[node name="LevelSelectScreen" parent="." instance=ExtResource("8_v2ftf")]
+visible = false
+
+[connection signal="level_select_menu" from="StartScreen" to="." method="_on_start_screen_level_select_menu"]
 [connection signal="start_game" from="StartScreen" to="." method="_on_start_screen_start_game"]
+[connection signal="level_select_button_pressed" from="LevelSelectScreen" to="." method="_on_level_select_screen_level_select_button_pressed"]
+[connection signal="return_to_main_menu" from="LevelSelectScreen" to="." method="_on_level_select_screen_return_to_main_menu"]

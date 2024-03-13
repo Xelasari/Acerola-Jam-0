@@ -1,7 +1,8 @@
 extends Control
 
-signal start_game()
-signal level_select_menu()
+var level_number : int
+
+signal level_select_button_pressed(level_number : int)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,10 +14,6 @@ func _process(delta):
 	pass
 
 
-
-func _on_start_button_pressed():
-	start_game.emit()
-
-
-func _on_level_select_button_pressed():
-	level_select_menu.emit()
+func _on_button_pressed():
+	print("Load level " + str(level_number))
+	level_select_button_pressed.emit(level_number)

@@ -20,6 +20,20 @@ input_pickable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("RectangleShape2D_k5k5x")
 
+[node name="Panel" type="Panel" parent="."]
+z_index = 49
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -210.0
+offset_top = -33.0
+offset_right = 210.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 0
+
 [node name="MessageText" type="RichTextLabel" parent="."]
 z_index = 50
 anchors_preset = 7
@@ -27,9 +41,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -206.0
+offset_left = -210.0
 offset_top = -33.0
-offset_right = 206.0
+offset_right = 210.0
 offset_bottom = -21.0
 grow_horizontal = 2
 grow_vertical = 0

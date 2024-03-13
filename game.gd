@@ -9,9 +9,9 @@ extends Node2D
 var tileManager
 
 # Things to finished before submission
-# - Cuts as pick-up-able resources
-# - Notes to provide lore breadcrumbs
-# - Goal of 20 levels, maybe 25-30 as stretch
+# - Cuts as pick-up-able resources DONE
+# - Notes to provide lore breadcrumbs DONE
+# - Goal of 20 levels, maybe 25-30 as stretch DONE
 # - Start menu + game end screen
 # - Music?
 # - BUG: Need to have a "last valid position" if overlapping player (maybe can use overlapping tiles fix?)
@@ -71,7 +71,26 @@ func _on_start_screen_start_game():
 	
 	var level = levelScene.instantiate()
 	add_child(level)
+	level.load_level("level_1")
 	
 	#$StartScreen.hide()
 	#$StartScreen.get_tree().paused = true
 	pass # Replace with function body.
+
+
+func _on_start_screen_level_select_menu():
+	$StartScreen.hide()
+	$LevelSelectScreen.show()
+
+
+func _on_level_select_screen_level_select_button_pressed(level_number):
+	$LevelSelectScreen.hide()
+	
+	var level = levelScene.instantiate()
+	add_child(level)
+	level.load_level("level_" + str(level_number))
+
+
+func _on_level_select_screen_return_to_main_menu():
+	$StartScreen.show()
+	$LevelSelectScreen.hide()
