@@ -106,7 +106,6 @@ shape = SubResource("CircleShape2D_cw3s0")
 
 [node name="Footstep" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_dfeq1")
-volume_db = -6.0
 bus = &"SliceEffect"
 
 [connection signal="set_speed_scale" from="Hitbox" to="." method="_on_hitbox_set_speed_scale"]

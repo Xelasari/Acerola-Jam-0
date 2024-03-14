@@ -33,7 +33,7 @@ func _process(delta):
 	
 	#print("areas in array: " + str(currently_touching_edges.size()))
 	
-	if Input.is_action_just_pressed("space"):
+	if Input.is_action_just_pressed("left click") and get_parent().selected_tool == "knife":
 		
 		for e in currently_touching_edges:
 			if orientation == ORIENTATION.VERTICAL:
@@ -65,32 +65,33 @@ func _process(delta):
 			knifeSprite.rotate(deg_to_rad(-90))
 			knifeSprite.position = Vector2(16, -14)
 	
-	for area in currently_touching_edges:
-		var tile_group = area.get_parent().tiles_connected_to
-		var coord_to_check : int
-		if orientation == ORIENTATION.VERTICAL && area.edge_side == area.EDGE_SIDE.LEFT:
-			coord_to_check = area.get_parent().local_position.x
-			for t in tile_group:
-				#if t.local_position.x == coord_to_check:
-				#	t.get_node("ColorRight").color = Color(0, 0, 0, 1)
-				if t.local_position.x == coord_to_check:
-					t.get_node("ColorLeft").color = Color(0, 0, 0, 1)
-		if orientation == ORIENTATION.VERTICAL && area.edge_side == area.EDGE_SIDE.RIGHT:
-			coord_to_check = area.get_parent().local_position.x
-			for t in tile_group:
-				if t.local_position.x == coord_to_check:
-					t.get_node("ColorRight").color = Color(0, 0, 0, 1)
-			
-		if orientation == ORIENTATION.HORIZONTAL && area.edge_side == area.EDGE_SIDE.TOP:
-			coord_to_check = area.get_parent().local_position.y
-			for t in tile_group:
-				if t.local_position.y == coord_to_check:
-					t.get_node("ColorTop").color = Color(0, 0, 0, 1)
-		if orientation == ORIENTATION.HORIZONTAL && area.edge_side == area.EDGE_SIDE.BOTTOM:
-			coord_to_check = area.get_parent().local_position.y
-			for t in tile_group:
-				if t.local_position.y == coord_to_check:
-					t.get_node("ColorBottom").color = Color(0, 0, 0, 1)
+	if get_parent().selected_tool == "knife":
+		for area in currently_touching_edges:
+			var tile_group = area.get_parent().tiles_connected_to
+			var coord_to_check : int
+			if orientation == ORIENTATION.VERTICAL && area.edge_side == area.EDGE_SIDE.LEFT:
+				coord_to_check = area.get_parent().local_position.x
+				for t in tile_group:
+					#if t.local_position.x == coord_to_check:
+					#	t.get_node("ColorRight").color = Color(0, 0, 0, 1)
+					if t.local_position.x == coord_to_check:
+						t.get_node("ColorLeft").color = Color(0, 0, 0, 1)
+			if orientation == ORIENTATION.VERTICAL && area.edge_side == area.EDGE_SIDE.RIGHT:
+				coord_to_check = area.get_parent().local_position.x
+				for t in tile_group:
+					if t.local_position.x == coord_to_check:
+						t.get_node("ColorRight").color = Color(0, 0, 0, 1)
+				
+			if orientation == ORIENTATION.HORIZONTAL && area.edge_side == area.EDGE_SIDE.TOP:
+				coord_to_check = area.get_parent().local_position.y
+				for t in tile_group:
+					if t.local_position.y == coord_to_check:
+						t.get_node("ColorTop").color = Color(0, 0, 0, 1)
+			if orientation == ORIENTATION.HORIZONTAL && area.edge_side == area.EDGE_SIDE.BOTTOM:
+				coord_to_check = area.get_parent().local_position.y
+				for t in tile_group:
+					if t.local_position.y == coord_to_check:
+						t.get_node("ColorBottom").color = Color(0, 0, 0, 1)
 
 # On rotate, somehow recheck these?
 # Or maybe, move this to _process and just check currently_touching_edges

@@ -1,1 +1,90 @@
-{"current_level":"level_25","exit":{"x":17,"y":17},"has_message":true,"knife_positions":[{"x":16,"y":13},{"x":17,"y":13},{"x":18,"y":13},{"x":1,"y":4},{"x":1,"y":5},{"x":1,"y":6}],"map":[[3,3,3,0,1,1,1,0,4,3,4,0,4,3,4,0,4,3,4],[3,3,3,0,1,1,1,0,3,3,4,0,3,3,3,0,3,0,3],[3,3,3,0,1,1,1,0,4,3,4,0,4,4,4,0,4,3,4],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[4,3,4,0,4,4,4,0,0,0,0,0,4,4,4,0,4,4,4],[4,3,4,0,4,3,3,0,0,0,0,0,3,3,4,0,0,3,4],[4,3,4,0,4,3,4,0,0,0,0,0,4,3,4,0,4,4,4],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[4,4,4,0,0,0,0,0,0,3,0,0,0,0,0,0,4,4,4],[4,3,4,0,0,0,0,0,3,3,3,0,0,0,0,0,4,3,0],[4,0,4,0,0,0,0,0,0,3,0,0,0,0,0,0,4,4,4],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[4,0,4,0,4,3,4,0,0,0,0,0,4,3,4,0,4,4,4],[4,3,4,0,4,3,3,0,0,0,0,0,3,3,4,0,3,3,3],[4,4,4,0,4,4,4,0,0,0,0,0,4,4,4,0,4,4,4],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[4,3,4,0,4,4,4,0,4,3,4,0,1,1,1,0,3,3,3],[3,0,3,0,3,3,3,0,4,3,3,0,1,1,1,0,3,3,3],[4,3,4,0,4,3,4,0,4,3,4,0,1,1,1,0,3,3,3]],"map_size":{"x":19,"y":19},"message_location":{"x":9,"y":9},"message_text":"[s]I am[/s]\n[s] I have[/s]\n[s]things are[/s]\nI think something is chasing me.\nI waited for some time in the previous area, though unable to tell exactly how long.\nHowever, after either some eternity or instant after arriving, the deepest and darkest fear I have ever felt beset me.\nNothing appeared any different, but I had to leave, only once I arrived here did that inky coldness leave my body.\nPlease hurry.","name":"level_25","next_level":"level_26","number_of_knives":6,"number_of_orbs":4,"orb_positions":[{"x":17,"y":9},{"x":17,"y":5},{"x":1,"y":9},{"x":1,"y":13}],"spawn":{"x":1,"y":1}}
+{
+  "current_level": "level_25",
+  "exit": {
+    "x": 17,
+    "y": 17
+  },
+  "has_message": true,
+  "knife_positions": [
+    {
+      "x": 16,
+      "y": 13
+    },
+    {
+      "x": 17,
+      "y": 13
+    },
+    {
+      "x": 18,
+      "y": 13
+    },
+    {
+      "x": 1,
+      "y": 4
+    },
+    {
+      "x": 1,
+      "y": 5
+    },
+    {
+      "x": 1,
+      "y": 6
+    }
+  ],
+  "map": [
+    [ 3, 3, 3, 0, 1, 1, 1, 0, 4, 3, 4, 0, 4, 3, 4, 0, 4, 3, 4 ],
+    [ 3, 3, 3, 0, 1, 1, 1, 0, 3, 3, 4, 0, 3, 3, 3, 0, 3, 0, 3 ],
+    [ 3, 3, 3, 0, 1, 1, 1, 0, 4, 3, 4, 0, 4, 4, 4, 0, 4, 3, 4 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 4, 3, 4, 0, 4, 4, 4, 0, 0, 0, 0, 0, 4, 4, 4, 0, 4, 4, 4 ],
+    [ 4, 3, 4, 0, 4, 3, 3, 0, 0, 0, 0, 0, 3, 3, 4, 0, 0, 3, 4 ],
+    [ 4, 3, 4, 0, 4, 3, 4, 0, 0, 0, 0, 0, 4, 3, 4, 0, 4, 4, 4 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 4, 4, 4, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 4, 4, 4 ],
+    [ 4, 3, 4, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 4, 3, 0 ],
+    [ 4, 0, 4, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 4, 4, 4 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 4, 0, 4, 0, 4, 3, 4, 0, 0, 0, 0, 0, 4, 3, 4, 0, 4, 4, 4 ],
+    [ 4, 3, 4, 0, 4, 3, 3, 0, 0, 0, 0, 0, 3, 3, 4, 0, 3, 3, 3 ],
+    [ 4, 4, 4, 0, 4, 4, 4, 0, 0, 0, 0, 0, 4, 4, 4, 0, 4, 4, 4 ],
+    [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    [ 4, 3, 4, 0, 4, 4, 4, 0, 4, 3, 4, 0, 1, 1, 1, 0, 3, 3, 3 ],
+    [ 3, 0, 3, 0, 3, 3, 3, 0, 4, 3, 3, 0, 1, 1, 1, 0, 3, 3, 3 ],
+    [ 4, 3, 4, 0, 4, 3, 4, 0, 4, 3, 4, 0, 1, 1, 1, 0, 3, 3, 3 ]
+  ],
+  "map_size": {
+    "x": 19,
+    "y": 19
+  },
+  "message_location": {
+    "x": 9,
+    "y": 9
+  },
+  "message_text": "[s]I am[/s]\n[s]I have[/s]\n[s]things are[/s]\nI think something is chasing me.\nI waited for some time in the previous area, though unable to tell exactly how long.\nHowever, after either some eternity or the instant after arriving, the deepest and darkest fear I have ever felt beset me.\nNothing appeared any different, but I had to leave, only once I arrived here did that inky coldness leave my body.\nPlease hurry.",
+  "name": "level_25",
+  "next_level": "level_26",
+  "number_of_knives": 6,
+  "number_of_orbs": 4,
+  "orb_positions": [
+    {
+      "x": 17,
+      "y": 9
+    },
+    {
+      "x": 17,
+      "y": 5
+    },
+    {
+      "x": 1,
+      "y": 9
+    },
+    {
+      "x": 1,
+      "y": 13
+    }
+  ],
+  "spawn": {
+    "x": 1,
+    "y": 1
+  }
+}

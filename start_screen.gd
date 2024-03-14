@@ -2,6 +2,7 @@ extends Control
 
 signal start_game()
 signal level_select_menu()
+signal credits_page()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,3 +21,7 @@ func _on_start_button_pressed():
 
 func _on_level_select_button_pressed():
 	level_select_menu.emit()
+
+
+func _on_credits_button_pressed():
+	credits_page.emit()

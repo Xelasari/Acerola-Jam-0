@@ -65,7 +65,7 @@ func _process(delta):
 		draggableComponent.being_dragged = false
 		
 		
-	if draggableComponent.is_hovered and !does_group_have_player():
+	if draggableComponent.is_hovered and !does_group_have_player() and get_parent().get_parent().selected_tool == "hand":
 		for t in tiles_connected_to:
 			if t.get_node("LeftEdgeComponent").can_connect:
 				t.get_node("ColorLeft").color = Color(1, 1, 1, 1)
@@ -173,7 +173,7 @@ func _on_draggable_component_mouse_exited():
 
 
 func _on_draggable_component_input_event(viewport, event, shape_idx):
-	if Input.is_action_just_pressed("left click") && draggableComponent.is_hovered && !does_group_have_player():
+	if Input.is_action_just_pressed("left click") && draggableComponent.is_hovered && !does_group_have_player() && get_parent().get_parent().selected_tool == "hand":
 		draggableComponent.being_dragged = true
 		position_drag_check = true
 		position_before_drag = position

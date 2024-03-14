@@ -39,3 +39,11 @@ func _on_level_select_button_pressed(level_number : int):
 
 func _on_return_to_title_screen_button_pressed():
 	return_to_main_menu.emit()
+
+func check_if_levels_unlocked(levels_cleared):
+	for c in $GridContainer.get_children():
+		print(c.level_number)
+		if c.level_number <= levels_cleared:
+			c.visible = true
+		else:
+			c.visible = false

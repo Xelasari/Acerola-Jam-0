@@ -31,7 +31,7 @@
     "x": 18,
     "y": 6
   },
-  "message_text": "Even more fascinating; I was able to use Telekinesis to pull on the hallway to a myriad of surprises.\nFirst, there was no resistance to my telekinetic pull, so much so that even a simple cantrip like Mage Hand can suffice\nSecond, after I brought in the hallway and released my spell, it appears to have... combined perfectly with the surface I was standing on.\nNo matter how closely I look, I cannot even find a seam. Absolutely fascinating.",
+  "message_text": "Even more fascinating: When I tired using Telekinesis to pull on the hallway, I had a myriad of surprises.\nFirst, there was no resistance to my telekinetic pull, so much so that even a low level variant of Telekinesis can easily suffice.\nSecond, after I brought in the hallway and released my spell, it appears to have... combined perfectly with the surface I was standing on.\nNo matter how closely I look, I cannot even find a seam. Absolutely fascinating.",
   "name": "level_12",
   "next_level": "level_13",
   "number_of_knives": 0,

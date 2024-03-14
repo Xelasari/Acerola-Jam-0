@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cve7n8m3vu465"]
+[gd_scene load_steps=9 format=3 uid="uid://cve7n8m3vu465"]
 
 [ext_resource type="Script" path="res://Background.gd" id="1_n5glb"]
 [ext_resource type="Texture2D" uid="uid://d15ih7hfiwltq" path="res://assets/background.png" id="2_pj8w7"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://q171g8war6qe" path="res://assets/far_planets.png" id="4_bna30"]
 [ext_resource type="Texture2D" uid="uid://b07ea2sple2ge" path="res://assets/close_planets.png" id="5_l7jc2"]
 [ext_resource type="Texture2D" uid="uid://itwndqbeoi02" path="res://assets/Blackhole.png" id="6_04olc"]
+[ext_resource type="Texture2D" uid="uid://da6gfektd17gn" path="res://assets/eye_5.png" id="7_7rwv1"]
+[ext_resource type="Texture2D" uid="uid://c5ut2k3xm1c5k" path="res://assets/eye_not_small.png" id="8_gm2fj"]
 
 [node name="Background" type="ParallaxBackground"]
 script = ExtResource("1_n5glb")
@@ -62,3 +64,18 @@ texture_repeat = 2
 position = Vector2(640, 360)
 scale = Vector2(4, 4)
 texture = ExtResource("6_04olc")
+
+[node name="Eye" type="Sprite2D" parent="."]
+visible = false
+z_index = -2
+texture_filter = 1
+position = Vector2(640, 360)
+scale = Vector2(4, 4)
+texture = ExtResource("7_7rwv1")
+
+[node name="Eyeball" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(640, 360)
+scale = Vector2(4, 4)
+texture = ExtResource("8_gm2fj")

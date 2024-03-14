@@ -20,6 +20,13 @@ func _process(delta):
 	$MessageText.modulate = Color(1, 1, 1, current_alpha)
 	$Panel.modulate = Color(1, 1, 1, current_alpha)
 	
+	if get_parent().position.y > 360:
+		$MessageText.set_anchors_preset(Control.PRESET_CENTER_TOP)
+		$Panel.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	else:
+		$MessageText.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+		$Panel.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	
 func set_message_text(text : String):
 	$MessageText.text = "[center]" + text + "[/center]"
 	var test_size_var = $MessageText.size

@@ -269,8 +269,6 @@ func write_map_to_json(filename):
 	
 	var json_string = JSON.stringify(save_data)
 	
-	FileAccess
-	
 	var file = FileAccess.open("res://levels/" + str(filename), FileAccess.WRITE)
 	file.store_string(json_string)
 

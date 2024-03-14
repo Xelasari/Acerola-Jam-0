@@ -8,6 +8,10 @@ extends Node2D
 
 var tileManager
 
+var levelReference
+
+var levels_cleared : int = 1
+
 # Things to finished before submission
 # - Cuts as pick-up-able resources DONE
 # - Notes to provide lore breadcrumbs DONE
@@ -45,52 +49,60 @@ var tileManager
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#$StartScreen.process_mode = Node.PROCESS_MODE_PAUSABLE
-	#$Level.process_mode = Node.PROCESS_MODE_PAUSABLE
-	#$Level.hide()
-
-	#$Level.get_tree().paused = true
-	#$Level.paused = true
-	#$Level.visible = false
-	pass
+	var file = FileAccess.open("res://save_data.txt", FileAccess.READ)
+	levels_cleared = int(file.get_as_text())
+	print(levels_cleared)
+	
+	$GameMusic.play()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#print(get_local_mouse_position())
-	#print(get_global_mouse_position())
 	pass
 
 
 
 func _on_start_screen_start_game():
-	print("????")
-
 	#$Level.show()
 	$StartScreen.hide()
 	
-	var level = levelScene.instantiate()
-	add_child(level)
-	level.load_level("level_1")
-	
-	#$StartScreen.hide()
-	#$StartScreen.get_tree().paused = true
-	pass # Replace with function body.
+	levelReference = levelScene.instantiate()
+	levelReference.connect("return_to_title", _on_return_to_title)
+	add_child(levelReference)
+	levelReference.load_level("level_1")
 
 
 func _on_start_screen_level_select_menu():
 	$StartScreen.hide()
+	$LevelSelectScreen.check_if_levels_unlocked(levels_cleared)
 	$LevelSelectScreen.show()
 
 
 func _on_level_select_screen_level_select_button_pressed(level_number):
 	$LevelSelectScreen.hide()
 	
-	var level = levelScene.instantiate()
-	add_child(level)
-	level.load_level("level_" + str(level_number))
+	levelReference = levelScene.instantiate()
+	levelReference.connect("return_to_title", _on_return_to_title)
+	add_child(levelReference)
+	levelReference.load_level("level_" + str(level_number))
 
 
 func _on_level_select_screen_return_to_main_menu():
 	$StartScreen.show()
 	$LevelSelectScreen.hide()
+
+
+func _on_start_screen_credits_page():
+	$StartScreen.hide()
+	$CreditsScreen.show()
+
+
+func _on_credits_screen_return_to_title():
+	$StartScreen.show()
+	$CreditsScreen.hide()
+
+
+func _on_return_to_title():
+	$StartScreen.show()
+	levelReference.queue_free()
+	

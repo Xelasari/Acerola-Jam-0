@@ -14,6 +14,7 @@ var tiles_on_top_of : Array = []
 
 var foot_step_counter : float = 0
 var foot_step_threshold : float = 0.27
+var play_foot_step : bool = true 
 
 
 signal player_died()
@@ -37,7 +38,7 @@ func _process(delta):
 			$PlayerAnimatedSprite.flip_h = false
 		$PlayerAnimatedSprite.play("walk")
 		foot_step_counter += delta
-		if foot_step_counter > foot_step_threshold:
+		if foot_step_counter > foot_step_threshold and play_foot_step:
 			$Footstep.play()
 			foot_step_counter -= foot_step_threshold
 	else:
@@ -91,6 +92,9 @@ func _process(delta):
 		if safe_or_not:
 			pass
 			#print("Safe")
+
+func toggle_footsteps(value : bool):
+	play_foot_step = value
 
 
 func _on_hitbox_set_speed_scale(scale):

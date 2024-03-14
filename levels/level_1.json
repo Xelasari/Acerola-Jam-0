@@ -21,7 +21,7 @@
 	"x": 4,
 	"y": 2
   },
-  "message_text": "If you're reading this, you are the lucky soul who has been sent to fetch me from this little accident.\nI have decided to make the most of this little [i]incident[/i] and will be exploring.\nFollow these notes and we'll both be out of this mess before lunchtime.\n\t- Archmage R",
+  "message_text": "If you're reading this, you are the lucky soul who has been sent to fetch me.\nI have decided to make the most of this little [i]incident[/i] and will be exploring.\nFollow these notes and we'll both be out of this mess before lunchtime.\n\t- Archmage R",
   "name": "Level 1",
   "next_level": "level_2",
   "number_of_knives": 0,

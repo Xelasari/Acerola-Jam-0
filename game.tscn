@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://3a66x5n51qbc"]
+[gd_scene load_steps=11 format=3 uid="uid://3a66x5n51qbc"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_koi76"]
 [ext_resource type="PackedScene" uid="uid://cv4h0203et3ea" path="res://tile_group.tscn" id="2_ppq8d"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://c3qol24ks2ua1" path="res://slicer.tscn" id="7_8xnds"]
 [ext_resource type="PackedScene" uid="uid://cve7n8m3vu465" path="res://background.tscn" id="7_qfa83"]
 [ext_resource type="PackedScene" uid="uid://br1rfm63eexi0" path="res://level_select_screen.tscn" id="8_v2ftf"]
+[ext_resource type="PackedScene" uid="uid://cli02815jm04w" path="res://credits_screen.tscn" id="9_jtkt6"]
+[ext_resource type="AudioStream" uid="uid://b121g4ol7uah7" path="res://assets/SCP-x2x.mp3" id="10_a3ajc"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_koi76")
@@ -25,7 +27,16 @@ offset_right = 638.0
 [node name="LevelSelectScreen" parent="." instance=ExtResource("8_v2ftf")]
 visible = false
 
+[node name="CreditsScreen" parent="." instance=ExtResource("9_jtkt6")]
+visible = false
+
+[node name="GameMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_a3ajc")
+volume_db = -10.0
+
+[connection signal="credits_page" from="StartScreen" to="." method="_on_start_screen_credits_page"]
 [connection signal="level_select_menu" from="StartScreen" to="." method="_on_start_screen_level_select_menu"]
 [connection signal="start_game" from="StartScreen" to="." method="_on_start_screen_start_game"]
 [connection signal="level_select_button_pressed" from="LevelSelectScreen" to="." method="_on_level_select_screen_level_select_button_pressed"]
 [connection signal="return_to_main_menu" from="LevelSelectScreen" to="." method="_on_level_select_screen_return_to_main_menu"]
+[connection signal="return_to_title" from="CreditsScreen" to="." method="_on_credits_screen_return_to_title"]
