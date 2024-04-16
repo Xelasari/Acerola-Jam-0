@@ -155,10 +155,10 @@ func load_level(level_name : String):
 	$LevelName.text = pretty_name
 	print(level_number)
 	
-	if get_parent().levels_cleared < int(current_level):
-		get_parent().levels_cleared = int(current_level)
+	if get_parent().levels_cleared < int(level_number):
+		get_parent().levels_cleared = int(level_number)
 		var file = FileAccess.open("res://save_data.txt", FileAccess.WRITE)
-		file.store_string(current_level)
+		file.store_string(level_number)
 	
 	# needs to go from 1 to 4
 	var scale_factor

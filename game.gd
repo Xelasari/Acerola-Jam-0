@@ -12,6 +12,8 @@ var levelReference
 
 var levels_cleared : int = 1
 
+var music_check : bool = false
+
 # Things to finished before submission
 # - Cuts as pick-up-able resources DONE
 # - Notes to provide lore breadcrumbs DONE
@@ -50,15 +52,17 @@ var levels_cleared : int = 1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var file = FileAccess.open("res://save_data.txt", FileAccess.READ)
-	levels_cleared = int(file.get_as_text())
+	levels_cleared = int(file.get_as_text().split("_")[1])
 	print(levels_cleared)
 	
-	$GameMusic.play()
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if !music_check:
+		$GameMusic.play()
+		music_check = true
 
 
 
@@ -106,3 +110,7 @@ func _on_return_to_title():
 	$StartScreen.show()
 	levelReference.queue_free()
 	
+
+
+func _on_game_music_finished():
+	$GameMusic.play()

@@ -40,3 +40,4 @@ volume_db = -10.0
 [connection signal="level_select_button_pressed" from="LevelSelectScreen" to="." method="_on_level_select_screen_level_select_button_pressed"]
 [connection signal="return_to_main_menu" from="LevelSelectScreen" to="." method="_on_level_select_screen_return_to_main_menu"]
 [connection signal="return_to_title" from="CreditsScreen" to="." method="_on_credits_screen_return_to_title"]
+[connection signal="finished" from="GameMusic" to="." method="_on_game_music_finished"]
